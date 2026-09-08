@@ -1,0 +1,1534 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Бесплатный калькулятор заработной платы работников образования Кыргызской Республики: учитель, воспитатель, директор. Расчёт с надбавками, районными коэффициентами и подоходным налогом по НК КР. AN Consulting.">
+<meta name="theme-color" content="#17352E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Мугалим Эсеп — калькулятор зарплаты работников образования КР">
+<meta property="og:description" content="Считает зарплату учителя, воспитателя и руководителя с разбором каждой строки: надбавки, высокогорье, районный коэффициент, взносы и подоходный налог.">
+<meta property="og:locale" content="ru_RU">
+<meta name="twitter:card" content="summary_large_image">
+<title>Мугалим Эсеп</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400&family=Golos+Text:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --board:#17352E; --board-2:#0C1F1A; --board-3:#20463C;
+  --paper:#F2F4EE; --surface:#FFFFFF; --surface-2:#F7F9F4;
+  --ink:#13201C; --ink-2:#41544C; --ink-3:#7B8C84;
+  --line:#D9E0D6; --line-2:#C3CEBE;
+  --ochre:#B8860B; --ochre-soft:#F3E4BC;
+  --clay:#A8442E;
+  --mint:#2E7D5B;
+  --chalk:#E9F1E7;
+  --shadow:0 1px 2px rgba(19,32,28,.06), 0 8px 24px -12px rgba(19,32,28,.18);
+  --radius:14px;
+  --maxw:1080px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --board:#0E1D19; --board-2:#08110F; --board-3:#18332C;
+    --paper:#0D1412; --surface:#141E1A; --surface-2:#101917;
+    --ink:#E7EFE9; --ink-2:#A9BBB2; --ink-3:#7F918A;
+    --line:#243530; --line-2:#2E423B;
+    --ochre:#E0B454; --ochre-soft:#3A3018;
+    --clay:#E08669;
+    --mint:#6FC79C;
+    --chalk:#E9F1E7;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --board:#0E1D19; --board-2:#08110F; --board-3:#18332C;
+  --paper:#0D1412; --surface:#141E1A; --surface-2:#101917;
+  --ink:#E7EFE9; --ink-2:#A9BBB2; --ink-3:#7F918A;
+  --line:#243530; --line-2:#2E423B;
+  --ochre:#E0B454; --ochre-soft:#3A3018;
+  --clay:#E08669;
+  --mint:#6FC79C;
+  --chalk:#E9F1E7;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Golos Text","Segoe UI",system-ui,sans-serif;
+  font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:Spectral,Georgia,"Times New Roman",serif; text-wrap:balance; margin:0; font-weight:600; letter-spacing:-.01em}
+p{margin:0}
+.num{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 20px}
+.eyebrow{font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:600; color:var(--ink-3)}
+
+/* ---------- hero ---------- */
+.hero{background:var(--board); color:var(--chalk); position:relative; overflow:hidden}
+.hero::after{
+  content:""; position:absolute; inset:0; pointer-events:none; opacity:.5;
+  background:
+    radial-gradient(120% 80% at 12% 0%, rgba(255,255,255,.07), transparent 60%),
+    radial-gradient(90% 70% at 100% 100%, rgba(184,134,11,.14), transparent 60%);
+}
+.hero .wrap{position:relative; z-index:1; padding-top:56px; padding-bottom:56px}
+.hero .eyebrow{color:rgba(233,241,231,.62)}
+.hero h1{font-size:clamp(34px,6.4vw,60px); line-height:1.04; margin:16px 0 0; color:#fff}
+.hero h1 em{font-style:italic; color:var(--ochre)}
+.hero-sub{margin-top:18px; max-width:56ch; color:rgba(233,241,231,.84); font-size:clamp(16px,2.2vw,18px)}
+.chalkline{margin-top:26px; padding:14px 16px; border:1px dashed rgba(233,241,231,.28); border-radius:12px;
+  font-family:"IBM Plex Mono",monospace; font-size:13.5px; color:rgba(233,241,231,.9); overflow-x:auto; white-space:nowrap}
+.chalkline b{color:var(--ochre); font-weight:500}
+.hero-cta{display:flex; flex-wrap:wrap; gap:12px; margin-top:26px; align-items:center}
+.btn{
+  display:inline-flex; align-items:center; gap:8px; border:0; cursor:pointer;
+  font-family:inherit; font-size:15px; font-weight:600; padding:13px 22px; border-radius:999px;
+  background:var(--ochre); color:#1A1305; text-decoration:none; transition:transform .15s ease, filter .15s ease;
+}
+.btn:hover{transform:translateY(-1px); filter:brightness(1.06)}
+.btn.ghost{background:transparent; color:var(--chalk); border:1px solid rgba(233,241,231,.35)}
+.hero-facts{display:flex; flex-wrap:wrap; gap:26px; margin-top:34px; padding-top:22px; border-top:1px solid rgba(233,241,231,.16)}
+.fact-v{font-family:"IBM Plex Mono",monospace; font-size:23px; color:#fff; font-variant-numeric:tabular-nums}
+.fact-l{font-size:12.5px; color:rgba(233,241,231,.6); margin-top:2px}
+
+/* ---------- section ---------- */
+section{padding:56px 0}
+.sec-head{margin-bottom:26px}
+.sec-head h2{font-size:clamp(24px,3.6vw,34px); margin-top:10px}
+.sec-head p{color:var(--ink-2); margin-top:10px; max-width:62ch}
+
+/* ---------- calculator ---------- */
+.calc{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden}
+.tabs{display:flex; gap:4px; padding:8px; background:var(--surface-2); border-bottom:1px solid var(--line); overflow-x:auto}
+.tab{
+  flex:1 1 auto; white-space:nowrap; border:0; background:transparent; cursor:pointer; border-radius:10px;
+  font-family:inherit; font-size:14px; font-weight:600; color:var(--ink-2); padding:11px 14px; transition:background .15s, color .15s;
+}
+.tab[aria-selected="true"]{background:var(--board); color:#fff}
+.tab:hover:not([aria-selected="true"]){background:var(--line)}
+.panel{display:grid; grid-template-columns:1.05fr .95fr}
+@media(max-width:860px){.panel{grid-template-columns:1fr}}
+.form{padding:24px; display:flex; flex-direction:column; gap:16px; border-right:1px solid var(--line)}
+@media(max-width:860px){.form{border-right:0; border-bottom:1px solid var(--line)}}
+.field{display:flex; flex-direction:column; gap:6px}
+.field label{font-size:14px; font-weight:600}
+.field .hint{font-size:12.5px; color:var(--ink-3); line-height:1.45}
+select,input[type="number"],input[type="text"]{
+  font-family:inherit; font-size:15px; color:var(--ink); background:var(--surface-2);
+  border:1px solid var(--line-2); border-radius:10px; padding:11px 12px; width:100%;
+}
+input[type="number"]{font-family:"IBM Plex Mono",monospace}
+select:focus-visible,input:focus-visible,.tab:focus-visible,.btn:focus-visible,summary:focus-visible{
+  outline:2px solid var(--ochre); outline-offset:2px;
+}
+.row2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+@media(max-width:520px){.row2{grid-template-columns:1fr}}
+.switch{display:flex; align-items:flex-start; gap:10px; padding:11px 12px; border:1px solid var(--line); border-radius:10px; background:var(--surface-2); cursor:pointer}
+.switch input{margin:3px 0 0; accent-color:var(--mint); width:17px; height:17px}
+.switch span{font-size:14px}
+.switch small{display:block; color:var(--ink-3); font-size:12.5px; line-height:1.4}
+.group-title{font-size:12px; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--ink-3); margin-top:6px}
+
+/* ---------- result ---------- */
+.result{padding:24px; background:var(--surface-2); display:flex; flex-direction:column; gap:14px}
+.headline{background:var(--board); color:#fff; border-radius:12px; padding:20px}
+.headline .lab{font-size:12.5px; color:rgba(233,241,231,.7); letter-spacing:.06em; text-transform:uppercase}
+.headline .big{font-family:"IBM Plex Mono",monospace; font-size:clamp(30px,7vw,42px); font-weight:600; line-height:1.1; margin-top:6px; color:var(--ochre); font-variant-numeric:tabular-nums}
+.headline .sub{font-size:13.5px; color:rgba(233,241,231,.75); margin-top:8px}
+.mini{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.mini div{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:12px}
+.mini .lab{font-size:12px; color:var(--ink-3)}
+.mini .v{font-family:"IBM Plex Mono",monospace; font-size:18px; font-weight:500; margin-top:2px; font-variant-numeric:tabular-nums}
+.lines{display:flex; flex-direction:column; gap:2px; margin-top:2px}
+details.line{border-bottom:1px dashed var(--line); background:transparent}
+details.line[open]{background:var(--surface); border-radius:8px}
+details.line summary{
+  list-style:none; cursor:pointer; display:flex; justify-content:space-between; gap:12px; align-items:baseline;
+  padding:9px 8px; font-size:14.5px;
+}
+details.line summary::-webkit-details-marker{display:none}
+details.line summary .t{display:flex; align-items:baseline; gap:7px}
+details.line summary .t::before{content:"+"; color:var(--ink-3); font-family:"IBM Plex Mono",monospace; font-size:13px}
+details.line[open] summary .t::before{content:"–"}
+details.line .v{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; white-space:nowrap; font-weight:500}
+details.line .why{padding:2px 8px 12px 24px; font-size:13.5px; color:var(--ink-2); line-height:1.55}
+details.line .why code{font-family:"IBM Plex Mono",monospace; font-size:12.5px; background:var(--surface-2); border:1px solid var(--line); border-radius:6px; padding:1px 6px; display:inline-block; margin-top:6px}
+.line.minus .v{color:var(--clay)}
+.line.total{border-bottom:0; font-weight:700}
+.subtotal{display:flex; justify-content:space-between; padding:10px 8px; border-top:1px solid var(--line-2); font-weight:600; font-size:14.5px}
+.subtotal .v{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+.notice{font-size:13px; border-radius:10px; padding:11px 13px; line-height:1.5}
+.notice.warn{background:var(--ochre-soft); color:var(--ink); border:1px solid var(--ochre)}
+.notice.info{background:var(--surface); border:1px solid var(--line); color:var(--ink-2)}
+.actions{display:flex; gap:10px; flex-wrap:wrap}
+.actions .btn{font-size:14px; padding:11px 18px}
+.actions .btn.sec{background:var(--surface); color:var(--ink); border:1px solid var(--line-2)}
+
+/* ---------- explainer ---------- */
+.steps{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px}
+.step{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:20px}
+.step .n{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ochre); font-weight:600}
+.step h3{font-size:18px; margin:8px 0 8px}
+.step p{font-size:14px; color:var(--ink-2)}
+.faq{display:flex; flex-direction:column; gap:10px}
+.faq details{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:2px 16px}
+.faq summary{cursor:pointer; list-style:none; padding:14px 0; font-weight:600; font-size:15.5px; display:flex; justify-content:space-between; gap:12px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+"; color:var(--ochre); font-family:"IBM Plex Mono",monospace}
+.faq details[open] summary::after{content:"–"}
+.faq .a{padding:0 0 16px; color:var(--ink-2); font-size:14.5px; line-height:1.65}
+.src{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:12px}
+.src div{background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--mint); border-radius:10px; padding:14px 16px}
+.src b{display:block; font-size:14px}
+.src span{font-size:13px; color:var(--ink-2)}
+footer{background:var(--board-2); color:rgba(233,241,231,.72); padding:38px 0; font-size:14px}
+footer b{color:#fff}
+footer .wrap{display:flex; flex-wrap:wrap; gap:20px; justify-content:space-between; align-items:center}
+
+.sticky{
+  position:sticky; bottom:0; z-index:20; display:none;
+  background:var(--board); color:#fff; padding:12px 20px; box-shadow:0 -8px 24px -14px rgba(0,0,0,.5);
+}
+.sticky.on{display:flex; justify-content:space-between; align-items:center; gap:14px}
+.sticky .l{font-size:12.5px; color:rgba(233,241,231,.72)}
+.sticky .v{font-family:"IBM Plex Mono",monospace; font-size:22px; font-weight:600; color:var(--ochre); font-variant-numeric:tabular-nums}
+@media(min-width:861px){.sticky{display:none !important}}
+@media (prefers-reduced-motion:reduce){*{animation:none !important; transition:none !important}}
+
+.cta-card{background:var(--board); color:var(--chalk); border-radius:12px; padding:18px}
+.cta-card h3{color:#fff; font-size:18px; margin-bottom:6px}
+.cta-card p{font-size:13.5px; color:rgba(233,241,231,.82); line-height:1.55}
+.cta-card .btn{margin-top:14px}
+.wa{background:#25D366; color:#06280F}
+.wa:hover{filter:brightness(1.05)}
+.offer{display:grid; grid-template-columns:1.15fr .85fr; gap:18px; align-items:center;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:26px; box-shadow:var(--shadow)}
+@media(max-width:760px){.offer{grid-template-columns:1fr}}
+.offer h3{font-size:clamp(20px,3vw,26px)}
+.offer p{color:var(--ink-2); margin-top:10px; font-size:15px}
+.offer ul{margin:14px 0 0; padding-left:18px; color:var(--ink-2); font-size:14.5px; line-height:1.7}
+.offer .side{display:flex; flex-direction:column; gap:10px}
+.price{background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:16px}
+.price b{display:block; font-family:"IBM Plex Mono",monospace; font-size:20px; color:var(--ink)}
+.price span{font-size:13px; color:var(--ink-3)}
+footer a{color:var(--ochre); text-decoration:none; font-weight:600}
+
+.langbar{display:flex; gap:6px; margin-bottom:22px}
+.langbtn{border:1px solid rgba(233,241,231,.3); background:transparent; color:rgba(233,241,231,.78);
+  font-family:inherit; font-size:13px; font-weight:600; padding:7px 14px; border-radius:999px; cursor:pointer; transition:background .15s, color .15s}
+.langbtn[aria-pressed="true"]{background:var(--ochre); color:#1A1305; border-color:var(--ochre)}
+.langbtn:hover[aria-pressed="false"]{background:rgba(233,241,231,.12); color:#fff}
+.langnote{font-size:13px; color:var(--ink-3); margin-top:8px}
+@media print{.hero,.tabs,.sticky,.actions,footer{display:none !important}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="langbar">
+      <button class="langbtn" data-lang="ru" aria-pressed="true">Русский</button>
+      <button class="langbtn" data-lang="kg" aria-pressed="false">Кыргызча</button>
+      <button class="langbtn" data-lang="en" aria-pressed="false">English</button>
+    </div>
+    <div class="eyebrow" data-i18n="eyebrow_hero"></div>
+    <h1><span data-i18n="h1_a"></span><em data-i18n="h1_em"></em><span data-i18n="h1_b"></span></h1>
+    <p class="hero-sub" data-i18n="hero_sub"></p>
+    <div class="chalkline" data-i18n="chalk"></div>
+    <div class="hero-cta">
+      <a class="btn" href="#calc" data-i18n="cta_calc"></a>
+      <a class="btn ghost" href="#how" data-i18n="cta_how"></a>
+      <a class="btn ghost" href="#uslugi" data-i18n="cta_school"></a>
+    </div>
+    <div class="hero-facts">
+      <div><div class="fact-v">7 040</div><div class="fact-l" data-i18n="fact1"></div></div>
+      <div><div class="fact-v">15 000</div><div class="fact-l" data-i18n="fact2"></div></div>
+      <div><div class="fact-v">767</div><div class="fact-l" data-i18n="fact3"></div></div>
+      <div><div class="fact-v">18</div><div class="fact-l" data-i18n="fact4"></div></div>
+      <div><div class="fact-v">188</div><div class="fact-l" data-i18n="fact5"></div></div>
+    </div>
+  </div>
+</header>
+
+<section id="calc">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow" data-i18n="eyebrow_calc"></div>
+      <h2 data-i18n="h2_calc"></h2>
+      <p data-i18n="p_calc"></p>
+      <p class="langnote" data-i18n="lang_note"></p>
+    </div>
+
+    <div class="calc">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" data-prof="teacher" data-i18n="tab_teacher"></button>
+        <button class="tab" role="tab" aria-selected="false" data-prof="kinder" data-i18n="tab_kinder"></button>
+        <button class="tab" role="tab" aria-selected="false" data-prof="oklad" data-i18n="tab_oklad"></button>
+        <button class="tab" role="tab" aria-selected="false" data-prof="vuz" data-i18n="tab_vuz"></button>
+        <button class="tab" role="tab" aria-selected="false" data-prof="top" data-i18n="tab_top"></button>
+        <button class="tab" role="tab" aria-selected="false" data-prof="mop" data-i18n="tab_mop"></button>
+      </div>
+      <div class="panel">
+        <div class="form" id="form"></div>
+        <div class="result" id="result"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sticky" id="sticky">
+  <div><div class="l" id="sticky-l"></div><div class="v" id="stickyv">—</div></div>
+  <a class="btn" href="#result-top" id="sticky-b" style="padding:10px 16px; font-size:14px"></a>
+</div>
+
+<section id="how" style="background:var(--surface-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow" data-i18n="eyebrow_how"></div>
+      <h2 data-i18n="h2_how"></h2>
+      <p data-i18n="p_how"></p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="n"><span data-i18n="step"></span> 1</div><h3 data-i18n="step1_h"></h3><p data-i18n="step1_p"></p></div>
+      <div class="step"><div class="n"><span data-i18n="step"></span> 2</div><h3 data-i18n="step2_h"></h3><p data-i18n="step2_p"></p></div>
+      <div class="step"><div class="n"><span data-i18n="step"></span> 3</div><h3 data-i18n="step3_h"></h3><p data-i18n="step3_p"></p></div>
+      <div class="step"><div class="n"><span data-i18n="step"></span> 4</div><h3 data-i18n="step4_h"></h3><p data-i18n="step4_p"></p></div>
+      <div class="step"><div class="n"><span data-i18n="step"></span> 5</div><h3 data-i18n="step5_h"></h3><p data-i18n="step5_p"></p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow" data-i18n="eyebrow_faq"></div>
+      <h2 data-i18n="h2_faq"></h2>
+    </div>
+    <div class="faq">
+      <details><summary data-i18n="q1"></summary><div class="a" data-i18n="a1"></div></details>
+      <details><summary data-i18n="q2"></summary><div class="a" data-i18n="a2"></div></details>
+      <details><summary data-i18n="q3"></summary><div class="a" data-i18n="a3"></div></details>
+      <details><summary data-i18n="q4"></summary><div class="a" data-i18n="a4"></div></details>
+      <details><summary data-i18n="q5"></summary><div class="a" data-i18n="a5"></div></details>
+      <details><summary data-i18n="q6"></summary><div class="a" data-i18n="a6"></div></details>
+    </div>
+  </div>
+</section>
+
+<section id="uslugi">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow" data-i18n="eyebrow_uslugi"></div>
+      <h2 data-i18n="h2_uslugi"></h2>
+      <p data-i18n="p_uslugi"></p>
+    </div>
+    <div class="offer">
+      <div>
+        <h3 data-i18n="offer_h"></h3>
+        <ul>
+          <li data-i18n="offer_1"></li>
+          <li data-i18n="offer_2"></li>
+          <li data-i18n="offer_3"></li>
+          <li data-i18n="offer_4"></li>
+          <li data-i18n="offer_5"></li>
+        </ul>
+        <p style="margin-top:16px" data-i18n="offer_tail"></p>
+      </div>
+      <div class="side">
+        <div class="price"><b data-i18n="price1_b"></b><span data-i18n="price1_s"></span></div>
+        <div class="price"><b data-i18n="price2_b"></b><span data-i18n="price2_s"></span></div>
+        <div class="price"><b data-i18n="price3_b"></b><span data-i18n="price3_s"></span></div>
+        <a class="btn wa" target="_blank" rel="noopener" href="https://wa.me/996550650033" data-i18n="wa_btn"></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--surface-2); border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow" data-i18n="eyebrow_src"></div>
+      <h2 data-i18n="h2_src"></h2>
+    </div>
+    <div class="src">
+      <div><b data-i18n="src1_b"></b><span data-i18n="src1_s"></span></div>
+      <div><b data-i18n="src2_b"></b><span data-i18n="src2_s"></span></div>
+      <div><b data-i18n="src3_b"></b><span data-i18n="src3_s"></span></div>
+      <div><b data-i18n="src4_b"></b><span data-i18n="src4_s"></span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div data-i18n="foot1"></div>
+    <div><span data-i18n="foot2"></span><br><span data-i18n="foot_wa"></span>
+      <a href="https://wa.me/996550650033" target="_blank" rel="noopener">WhatsApp +996 550 650 033</a></div>
+  </div>
+</footer>
+
+
+<script>
+const REGIONS = {"Баткенский район":[["Ак-Оток",1.1,"399"],["Ак-Сай",1.1,"399"],["Ак-Татыр",1.1,"399"],["Ак-Турпак",1.1,"399"],["Апкан",1.1,"399"],["Базар-Башы",1.1,"399"],["Баткен",1.1,"399"],["Беджей",1.1,"399"],["Боз-Адыр",1.1,"399"],["Бужум",1.1,"399"],["Булак-Башы",1.2,"398"],["Булак-Башы Калта-Була",1.1,"399"],["Газ",1.1,"399"],["Говсувар",1.1,"399"],["Джаны-Бак",1.1,"399"],["Джаны-Жер",1.1,"399"],["Джоопая",1.1,"399"],["Догмон",1.2,"398"],["Достук",1.1,"399"],["Жанырык",1.1,"399"],["Жиптик",1.8,"398"],["Зар-Таш",1.1,"399"],["Зардалы",1.2,"398"],["Кайынды",1.1,"398"],["Кан Сарталы",1.1,"399"],["Капчыгай",1.1,"399"],["Кара-Бак",1.1,"399"],["Кара-Булак",1.1,"399"],["Кара-Токой",1.1,"399"],["Каравшин",1.4,"398"],["Каспидан",1.1,"399"],["Кек-Таш",1.1,"399"],["Кек-Таш Шакча",1.1,"399"],["Коргон",1.2,"398"],["Коргон-Таш",1.1,"399"],["Коче-Бою",1.1,"399"],["Коче-Карын",1.1,"399"],["Кызыл-Бель",1.1,"399"],["Кызыл-Джол Тегермен-Ба",1.1,"399"],["Кыштут",1.1,"399"],["Мехнатабад",1.1,"399"],["Паскы-Арык",1.1,"399"],["Рават",1.1,"399"],["Сай",1.1,"399"],["Самаркандек",1.1,"399"],["Сары-Талаа",1.2,"399"],["Сары-Талаа",1.2,"399"],["Согмент",1.1,"399"],["Сымат",1.5,"398"],["Табылгы",1.1,"399"],["Таштумшук",1.2,"399"],["Таян",1.1,"399"],["Тенге",1.1,"399"],["Тунук-Суу",1.1,"399"],["Уч-Дебе",1.1,"399"],["Чарбак",1.2,"399"],["Чек",1.1,"399"],["Чет-Кызыл",1.1,"399"],["Чон-Гара",1.1,"399"],["Чон-Талаа",1.1,"399"],["Ширеш",1.1,"399"]],"Кадамджайский район":[["Айдаркен",1.2,"398"],["Джал",1.3,"сумма"],["Джаны-Коргон",1.2,"398"],["Кара-Шоро",1.1,"398"],["Кетерме",1.1,"398"],["Кичи-Айдаркен",1.2,"398"],["Лангар",1.3,"399"],["Тамаша",1.15,"сумма"],["Тескей",1.1,"398"],["Шак-Шак",1.3,"сумма"],["Эгин-Джай",1.05,"399"],["Эшме",1.1,"398"]],"Лейлекский район":[["17-й Шурф",1.1,"399"],["Ай-Кол",1.1,"399"],["Ак-Булак",1.1,"399"],["Ак-Суу",1.1,"399"],["Ак-Терек",1.1,"399"],["Ак-Чечек",1.1,"399"],["Алга Джар",1.1,"399"],["Андарак",1.1,"399"],["Арка",1.1,"399"],["Белео",1.1,"399"],["Берк-Суу",1.1,"398"],["Беш-Бала",1.1,"399"],["Бешкент",1.1,"399"],["Булак-Башы",1.1,"399"],["Булак-Башы Куру-Сай",1.1,"399"],["Голбо",1.1,"399"],["Джаны-Джер Центральная",1.1,"399"],["Джаны-Джол Чурбек",1.1,"399"],["Джаны-Турмуш",1.1,"399"],["Джениш",1.1,"399"],["Динау",1.1,"399"],["Им. Карла Маркса",1.1,"399"],["Им. Ленина",1.1,"399"],["Интернацио- нальное",1.1,"399"],["Искра",1.1,"399"],["Исфана",1.1,"399"],["Кайрагач",1.1,"399"],["Кара-Булак",1.1,"399"],["Кара-Даван",1.1,"399"],["Кара-Суу",1.1,"399"],["Кара-Суу Кара",1.1,"399"],["Кара-Чагат",1.1,"399"],["Катран",1.1,"399"],["Кашка",1.1,"399"],["Кек-Таш",1.1,"398"],["Коммунизм",1.1,"399"],["Коргон",1.1,"399"],["Кош-Булак",1.1,"399"],["Кулунду",1.1,"399"],["Кызыл-Байрак Даркум",1.1,"399"],["Кызыл-Танга",1.1,"399"],["Кызыл-Чарба",1.1,"399"],["Кыял-Сай",1.1,"399"],["Лайли",1.1,"399"],["Лейлек",1.1,"399"],["Маданият",1.1,"399"],["Маданият Айбике",1.1,"399"],["Майдан",1.1,"399"],["Макаевка Танги-Башы",1.1,"399"],["Озгерюш",1.1,"399"],["Панчак",1.1,"399"],["Патан",1.1,"399"],["Первое Мая Даргаз",1.1,"399"],["Сайданаузе",1.1,"399"],["Самат Шалды- Балды",1.1,"399"],["Сары-Добо",1.1,"399"],["Селькан",1.1,"399"],["Сулюкта",1.1,"399"],["Суу-Башы",1.1,"399"],["Таш-Булак",1.1,"399"],["Тогуз-Булак",1.1,"399"],["Центральное",1.1,"399"],["Чарбак-Сай Маргун",1.1,"399"],["Чуянчы",1.1,"399"],["Чымген Большевик",1.1,"399"],["Шахмур",1.1,"399"],["Шоро",1.1,"399"],["Шорчак",1.1,"399"],["Эски-Оочу",1.1,"399"],["им. Гагарина Тайлан",1.1,"399"],["им. Чапаева",1.1,"399"],["им. Чкалова Мырза-Патч",1.1,"399"],["лет Киргизии",1.1,"399"],["лет СССР",1.1,"399"]],"Ала-Букинский район":[["Арап",1.15,"399"],["Беш-Таш",1.15,"399"],["Джалгыз-Орюк",1.15,"399"],["Куруксай",1.15,"399"],["Кёк-Таш",1.15,"399"],["Орто-Суу",1.15,"399"],["Чолок-Тума",1.1,"399"],["Чон-Сай",1.15,"399"]],"Сузакский район":[["Туура-Джангак",1.1,"399"],["Чымчык",1.05,"399"]],"Тогуз-Тороузский район":[["Арал",1.2,"399"],["Атай",1.45,"399"],["Бирдик",1.2,"399"],["Дедемель",1.45,"сумма"],["Им.Карла Маркса Атай",1.2,"399"],["Казарман",1.45,"399"],["Кара-Суу",1.2,"399"],["Кош-Булак",1.2,"398"],["Макмал",1.5,"сумма"],["Орнек",1.2,"399"],["Орто- Канджыга",1.2,"399"],["Табылгыты",1.2,"399"],["Чалдыбар",1.2,"399"],["Чет-Булак",1.45,"399"],["Шоро",1.2,"399"]],"Токтогульский район":[["Ак-Жар",1.15,"399"],["Ак-Тектир",1.15,"399"],["Алмалуу",1.15,"399"],["Арал",1.15,"399"],["Балыкты",1.15,"399"],["Беке-Чал",1.15,"399"],["Бель-Алды",1.15,"399"],["Бир-Булак",1.15,"399"],["Бирлик",1.15,"399"],["Бор-Дебе Кызыл- Туу",1.15,"399"],["Бордобо",1.15,"399"],["Борлуу-Кыя",1.15,"399"],["Бууракан",1.15,"399"],["Джаны-Джер",1.45,"399"],["Джаны-Джол",1.15,"399"],["Джар-Таш",1.15,"399"],["Джетиген",1.15,"398"],["Кара-Джыгач",1.15,"399"],["Кара-Кель",1.15,"399"],["Кара-Кюнгей",1.15,"399"],["Кара-Суу",1.15,"399"],["Кек-Бель",1.15,"399"],["Кель",1.15,"399"],["Кен-Туулук",1.15,"399"],["Кескен-Тебе",1.15,"399"],["Кетерме",1.3,"398"],["Кетерме (отдалённый труднодоступный)",1.15,"399"],["Коджо-Сойду",1.15,"399"],["Комсомол Кумбасты",1.15,"399"],["Конур-Огюз",1.15,"399"],["Коргон",1.15,"399"],["Коргон",1.15,"399"],["Кош-Тебе",1.15,"399"],["Кушчу-Суу",1.15,"399"],["Кызыл- Жылдыз",1.15,"399"],["Кызыл- Озгорюш",1.15,"399"],["Кызыл-Туу",1.15,"399"],["Кызыл-Ураан",1.15,"399"],["Кызыл-Чарба",1.15,"399"],["Кыр-Коо",1.15,"399"],["Мазар-Суу",1.15,"399"],["Ничке",1.15,"399"],["Ничке-Сай",1.15,"399"],["Ноот",1.15,"399"],["Озгоруш",1.15,"399"],["Орнек",1.15,"399"],["Саргата",1.15,"399"],["Сары-Булак",1.15,"399"],["Сары-Камыш",1.1,"399"],["Сары-Сегет",1.15,"399"],["Совет",1.15,"399"],["Сугат",1.15,"399"],["Такталык",1.15,"399"],["Такталык",1.15,"399"],["Таш-Кечуу",1.15,"399"],["Терек-Суу",1.15,"399"],["Токтогул",1.15,"399"],["Толук",1.15,"399"],["Торкен",1.15,"399"],["Ултан-Камыш",1.15,"399"],["Уч-Терек",1.15,"399"],["Чаар-Таш",1.15,"399"],["Чеч-Дебе Таш- Коро",1.15,"399"],["Чолпон-Ата",1.15,"399"],["Чон-Арык",1.15,"399"],["Чоргочу",1.15,"399"],["Шиленкана",1.15,"399"],["Эшсай",1.15,"399"],["им. Куйбышева Эмгек",1.15,"399"],["лесн. Чычкан",1.15,"399"]],"Чаткальский район":[["Айгыр-Джал",1.3,"399"],["Ак-Таш Тегирмен-Таш",1.3,"399"],["Башкы-Терек",1.5,"сумма"],["Беш-Арал отд.с/х Чаткал",1.3,"399"],["Бузук",1.3,"399"],["Джаны-Базар с/х Чаткал",1.3,"399"],["Каныш-Кыя",1.3,"399"],["Коргон-Сай",1.3,"сумма"],["Куру-Тегерек",1.7,"сумма"],["Курулуш",1.3,"399"],["Кызыл-Токой",1.3,"399"],["Мандай",1.3,"399"],["Сарай-Сай",1.3,"399"],["Сумсар",1.3,"399"],["Тегермен-Сай",1.3,"399"],["Терек-Сай",1.3,"399"],["Туюк-Суу",1.3,"сумма"],["Чакмак-Суу",1.6,"сумма"],["Шекафтар",1.3,"399"],["к/ц Таласской области",1.6,"398"]],"Ак-Сууйский район":[["Ак-Булак",1.1,"398"],["Ак-Булун",1.1,"398"],["Ак-Суу",1.1,"398"],["Ак-Чий",1.1,"398"],["Алтын-Арашан",1.5,"398"],["База Кок-Кыя",1.6,"398"],["Боз-Учук",1.1,"398"],["Джол-Колот",1.1,"398"],["Жыргалан",1.6,"сумма"],["Ичке-Джергез",1.1,"398"],["Кайырма-Арык",1.1,"398"],["Кек-Джайык",1.3,"сумма"],["Кен-Суу",1.7,"398"],["Кереге-Таш",1.1,"398"],["Койлуу",1.6,"398"],["Кургак",1.8,"398"],["Курорт Ак-Суу",1.3,"398"],["Кызыл-Джар",1.3,"398"],["Лесное",1.1,"398"],["Май-Саз",1.6,"398"],["Ново-Вознесеновка",1.1,"398"],["Пионер",1.1,"398"],["Сары-Камыш",1.1,"398"],["Советское",1.1,"398"],["Таш-Кароо",1.6,"398"],["Токтогул",1.1,"398"],["Тюрген",1.4,"398"],["Энильчек",1.5,"398"],["Эчкили-Таш",1.7,"398"]],"Джети-Огузский район":[["Ак-Шыйрак",1.6,"398"],["База Оттук",1.45,"399"],["Барскоон",1.1,"398"],["Джууку",1.2,"398"],["Кара-Сай",1.85,"сумма"],["Каракол",1.8,"398"],["Кургак-Айрык",1.2,"398"],["Лесхоз",1.25,"399"],["Пикертык",1.8,"398"],["Подгорное",1.2,"399"],["Светлая Поляна",1.1,"398"],["Сеок",1.8,"398"],["Сутту-Булак",1.3,"398"],["Талды-Булак",1.3,"398"],["Уч-Кошкон",1.8,"398"],["Чон-Кызыл-Суу",1.2,"398"],["Ыштык",1.8,"398"],["к/ц Бедель",1.75,"399"],["курорт Джети-Огуз",1.3,"398"],["курорт Джылы-Суу",1.4,"398"]],"Иссык-Кульская область":[["г. Каракол",1.1,"398"]],"Иссык-Кульский район":[["Ак-Шибак",1.05,"399"],["Кек-Дебе",1.1,"398"],["Лесничество",1.05,"399"],["Чет-Байсоорун",1.1,"398"]],"Тонский район":[["Ак-Сай",1.1,"398"],["Ала-Баш",1.3,"398"],["Арчалы",1.6,"398"],["Боконбаев",1.1,"398"],["Ден-Талаа",1.2,"398"],["Джер-Уй",1.3,"398"],["Каджи-Саз",1.5,"398"],["Каджы-Сай",1.1,"398"],["Кек-Сай",1.3,"398"],["Кель-Тер",1.2,"398"],["Кок-Мойнок-1",1.05,"399"],["Кок-Мойнок-2",1.05,"399"],["Комсомол",1.3,"398"],["Конур-Олен",1.2,"398"],["Кызыл-Омпол (Кызыл-Тебе)",1.05,"399"],["Лесхоз",1.15,"399"],["Темир-Канат",1.3,"398"],["Тогуз-Булак",1.2,"398"],["Торт-Куль",1.1,"398"],["Туура-Суу-1",1.3,"398"],["Туура-Суу-2",1.3,"398"],["Четинди",1.3,"398"]],"Тюпский район":[["Джылуу-Булак",1.1,"398"],["Ичке-Суу",1.1,"398"],["Каркыра",1.3,"398"],["Кен-Суу",1.1,"398"],["Кеочю",1.1,"398"],["Корумду",1.1,"398"],["Сан-Таш",1.3,"398"],["Сары-Телегей",1.1,"398"],["Талды-Суу",1.1,"398"],["Токтоян",1.1,"398"],["Чон-Бет",1.05,"399"],["Чон-Таш",1.1,"398"],["Шаты",1.1,"398"]],"Ак-Талинский район":[["Ак-Кыя",1.2,"399"],["Ак-Тал",1.2,"399"],["Ак-Чий",1.3,"398"],["Баетов",1.5,"сумма"],["Байгенчек",1.2,"399"],["Джаны-Талап",1.5,"399"],["Джаны-Тилек",1.2,"398"],["Жерге-Тал",1.5,"сумма"],["Кадыралы",1.5,"сумма"],["Каиынды-Булак",1.5,"сумма"],["Кара-Бургон",1.5,"сумма"],["Кара-Ой",1.2,"399"],["Кек-Джар",1.2,"399"],["Конорчок",1.2,"сумма"],["Кош-Дебе",1.5,"сумма"],["Терек",1.5,"сумма"],["Угют",1.2,"399"],["Чолок-Кайын",1.2,"сумма"]],"Ат-Башинский район":[["Ак-Бейит",1.8,"398"],["Ак-Джар",1.5,"сумма"],["Ак-Моюн",1.5,"сумма"],["Ак-Муз",1.5,"398"],["Ат-Башы",1.5,"сумма"],["Ача-Каинды",1.5,"сумма"],["Баш-Кайынды",1.5,"сумма"],["Беш-Белчир",1.6,"398"],["Бирлик",1.5,"сумма"],["Большевик",1.5,"сумма"],["Босого",1.6,"сумма"],["ДЭУ Ак-Бейит",1.8,"398"],["ДЭУ Туз-Бел",1.5,"398"],["Джаны-Кюч",1.5,"сумма"],["Заготскот",1.6,"398"],["Казыбек",1.5,"сумма"],["Казыбек (Чон-Колот)",1.6,"398"],["Кара-Булун",1.5,"сумма"],["Кара-Суу",1.5,"сумма"],["Кароол-Добо",1.95,"сумма"],["Кель-Суу",1.8,"398"],["Кок-Айгыр",1.95,"сумма"],["Коргон-Таш (Кандубава)",1.85,"сумма"],["Корумду",1.85,"сумма"],["Кызыл-Туу",1.5,"сумма"],["Озгерюш",1.5,"398"],["Орто-Кашка-Суу",1.8,"398"],["Первомайское",1.5,"сумма"],["Талды-Суу",1.5,"сумма"],["Терек-Суу",1.5,"сумма"],["Торугарт",1.95,"сумма"],["Уселек",1.95,"сумма"],["Чатыр-Таш",1.8,"398"],["Чоко-Бий",1.5,"сумма"],["им. Калинина",1.5,"сумма"],["к/ц Ак-Сай",1.85,"сумма"],["к/ц Новый",1.8,"398"],["к/ц Сураш-Таш",1.85,"сумма"],["к/ц Чатыр-Таш",1.8,"398"]],"Джумгальский район":[["Ак-Татыр",1.2,"399"],["Ак-Улак",1.5,"сумма"],["Ак-Чий",1.1,"398"],["Арал",1.2,"399"],["Базар-Турук",1.5,"сумма"],["Байзак",1.2,"сумма"],["Баш-Кууганды",1.2,"сумма"],["Беш-Терек",1.2,"399"],["Джаны-Арык",1.5,"сумма"],["Джумгал",1.5,"сумма"],["Кара-Кече",1.7,"398"],["Кек-Ой",1.2,"399"],["Кен-Суу",1.5,"399"],["Кичи-Арал",1.2,"399"],["Кол-Арык",1.1,"398"],["Котур-Суу",1.2,"399"],["Куйручук",1.2,"398"],["Кызарт",1.5,"сумма"],["Кызыл- Жылдыз",1.2,"399"],["Кызыл-Коргон",1.2,"399"],["Кызыл-Сеок",1.5,"сумма"],["Кызыл-Эмгек",1.3,"398"],["Лама",1.5,"сумма"],["Мин-Куш",1.5,"сумма"],["Мин-Теке",1.2,"398"],["Сары-Булун",1.2,"399"],["Табылгы",1.2,"399"],["Табылгыты",1.2,"399"],["Таш-Добо",1.5,"сумма"],["Тугол-Сай",1.2,"398"],["Чаек",1.2,"399"],["Чон-Добо",1.5,"сумма"],["Эпкин",1.2,"398"]],"Кочкорский район":[["Ак-Джар",1.2,"сумма"],["Ак-Кыя",1.5,"398"],["Ак-Талаа",1.5,"сумма"],["Ак-Чий",1.5,"сумма"],["Ара-Кель",1.5,"сумма"],["Баялы Исакеев",1.2,"398"],["Бугучу",1.2,"398"],["Ден-Алыш",1.5,"сумма"],["Джаны-Джол",1.1,"398"],["Кара-Кюнгей",1.5,"сумма"],["Кара-Мойнок",1.5,"сумма"],["Кара-Саз",1.2,"398"],["Кара-Суу",1.2,"сумма"],["Кара-Тоо",1.1,"398"],["Кок-Джар",1.2,"сумма"],["Комсомол",1.5,"сумма"],["Кочкор",1.2,"сумма"],["Кум-Добо",1.2,"398"],["Кызыл-Дебе",1.5,"сумма"],["Мантыш",1.5,"сумма"],["Оро-Башы",1.5,"сумма"],["Орток",1.5,"сумма"],["Осовиахим",1.2,"398"],["Сары-Булак",1.5,"сумма"],["Тармал-Саз",1.1,"398"],["Телек",1.2,"сумма"],["Тендик",1.2,"сумма"],["Туз",1.5,"сумма"],["Узун-Булак",1.4,"398"],["Чекилдек",1.2,"сумма"],["Чолпон",1.2,"398"],["Шамшы",1.5,"сумма"],["Эпкин",1.5,"сумма"]],"Нарынская область":[["г. Нарын",1.5,"сумма"]],"Нарынский район":[["Ак-Булун",1.5,"сумма"],["Ак-Кудук",1.5,"сумма"],["Ак-Кыя",1.5,"сумма"],["Ак-Талаа",1.2,"сумма"],["Алыш",1.5,"сумма"],["Восьмое-Марта",1.5,"сумма"],["Джалгыз-Терек",1.2,"398"],["Джан-Булак",1.2,"398"],["Джер-Кечкю",1.7,"398"],["Доболу",1.5,"сумма"],["Достук",1.2,"сумма"],["Жерге-Тал",1.5,"сумма"],["Жылан-Арык",1.2,"399"],["Ийри-Суу",1.5,"сумма"],["Казан-Куйган",1.5,"сумма"],["Кайынды",1.5,"398"],["Кара-Ункюр",1.5,"398"],["Кенеш",1.5,"сумма"],["Куйбышев",1.5,"сумма"],["Куланак",1.2,"сумма"],["Кызыл-Джылдыз",1.5,"сумма"],["Лакол",1.6,"398"],["Мин-Булак",1.5,"сумма"],["Орнок",1.4,"398"],["Орто-Нура",1.5,"сумма"],["Орто-Саз",1.5,"сумма"],["Орюк-Там (часть)",1.5,"398"],["Оттук",1.5,"сумма"],["Тамды-Суу",1.5,"398"],["Таш-Башат",1.5,"сумма"],["Тегерек",1.5,"сумма"],["Тош-Булак",1.4,"398"],["Туура-Суу",1.8,"398"],["Учкун",1.2,"сумма"],["Чет-Нура",1.5,"сумма"],["Шоро",1.3,"сумма"],["Эки-Нарын",1.5,"сумма"],["Эмгек-Талаа",1.2,"сумма"],["Эмгекчил",1.5,"398"],["Эчки-Башы",1.5,"сумма"]],"Алайский район":[["Ак-Босого",1.7,"398"],["Ак-Джай",1.5,"398"],["Ак-Талаа (Кен-Джылга)",1.5,"398"],["Ак-Талаа (Мурдаш)",1.5,"398"],["Алмалы",1.45,"сумма"],["Алтын-Мазар",1.6,"398"],["Арал",1.2,"398"],["Арзыкулов",1.45,"сумма"],["Арпа-Тектир",1.15,"399"],["Арча-Булак",1.8,"398"],["Аскалы",1.45,"сумма"],["Аюу-Тапан",1.25,"сумма"],["Бай-Булак",1.15,"399"],["Боз",1.45,"сумма"],["Бор-Добо (Кызыл-Дон)",1.85,"сумма"],["Бортумшук",1.7,"398"],["Геджиге",1.5,"398"],["Гульчо",1.15,"399"],["Джаны-Турмуш",1.15,"сумма"],["Джар-Кыштак",1.15,"399"],["Джергетал",1.45,"сумма"],["Жол-Жылга",1.15,"сумма"],["Икизяк",1.8,"сумма"],["Иркештам",1.7,"398"],["Кабылан-Кол",1.15,"399"],["Кайнама",1.45,"сумма"],["Кара-Булак",1.15,"399"],["Кара-Киндик",1.8,"398"],["Кара-Суу",1.45,"сумма"],["Кара-Таш",1.45,"399"],["Кара-Шоро",1.15,"399"],["Кара-Шыбак (Кара-Шама)",1.5,"398"],["Карагансай (Оруклю)",1.2,"398"],["Кек-Суу",1.8,"398"],["Кел-Чаты",1.55,"сумма"],["Кен-Джылга",1.15,"сумма"],["Кен-Джылга (отдалённый труднодоступный)",1.2,"399"],["Кичи-Бюлелю",1.45,"сумма"],["Кичи-Каракол",1.45,"сумма"],["Кок-Булак",1.8,"398"],["Кок-Добо",1.8,"398"],["Колдук",1.45,"сумма"],["Коммунизм",1.15,"сумма"],["Кошулуш",1.45,"сумма"],["Кум-Шоро",1.45,"сумма"],["Кун-Элек",1.45,"сумма"],["Кунгей",1.15,"399"],["Кургак",1.8,"398"],["Кыз-Эмчек",1.15,"399"],["Кыз-Эмчек Карагаша",1.15,"399"],["Кызыл-Алай",1.6,"398"],["Кызыл-Булак",1.2,"398"],["Кызыл-Колот (Джусалы)",1.3,"398"],["Кызыл-Кыштоо",1.45,"сумма"],["Кызыл-Ой",1.15,"399"],["Кызыл-Ой",1.15,"399"],["Ленин-Джол",1.15,"399"],["Миязды",1.15,"сумма"],["Мукур",1.15,"сумма"],["Мурдаш",1.45,"сумма"],["Нура",1.7,"398"],["Оксой",1.45,"сумма"],["Октябрь",1.45,"сумма"],["Оро-Дебе Будалык-Чат",1.15,"399"],["Орто-Суу",1.25,"сумма"],["Осоавиахим",1.15,"сумма"],["Первое Мая",1.15,"399"],["Сары-Могол",1.8,"398"],["Сары-Таш",1.8,"398"],["Согонду",1.45,"399"],["Соку-Таш Шамшалы",1.15,"399"],["Сопу-Коргон",1.45,"сумма"],["Талды-Булак",1.45,"сумма"],["Талды-Суу",1.8,"398"],["Тамгатерек",1.45,"399"],["Тамды-Терек",1.15,"399"],["Таргалак",1.45,"сумма"],["Таш-Башат",1.15,"399"],["Таш-Короо",1.25,"сумма"],["Тельман-Чаты",1.15,"399"],["Терек",1.45,"сумма"],["Тогуз-Булак",1.15,"399"],["Тойкуло",1.45,"сумма"],["Чакмак Кырк- Кель",1.15,"399"],["Чекюле",1.45,"сумма"],["Чий-Талаа",1.45,"сумма"],["Чон-Бюлелю",1.45,"сумма"],["Чон-Каракол",1.6,"398"],["Шалба",1.25,"сумма"],["Шоро-Булак Олджоке",1.15,"399"],["им. Гагарина",1.5,"сумма"],["с/х Алай",1.45,"сумма"]],"Араванский район":[["Кичик-Алай",1.4,"398"],["Кюнделюк",1.1,"398"],["Майдан-Тал",1.4,"398"],["Мин-Теке",1.5,"398"],["Сары-Булак",1.3,"сумма"],["Чогом",1.6,"сумма"]],"Кара-Кульджинский район":[["Айдын-Кель",1.45,"399"],["Ак-Богуз",1.45,"399"],["Алтын-Кюрек",1.15,"сумма"],["Ара-Булак",1.5,"398"],["Беш-Кемпир",1.2,"398"],["Бору-Токой",1.4,"398"],["Будур",1.15,"399"],["Буйга",1.2,"398"],["Буура-Чаты",1.45,"399"],["Дарга",1.45,"399"],["Джаман-Тал",1.45,"399"],["Джаыклу Коргон",1.45,"399"],["Джетим-Дебе",1.15,"399"],["Джол-Джурга Ой- Мыя",1.45,"399"],["Джон-Булак",1.45,"399"],["Желе-Добо",1.5,"398"],["Кайын-Талаа",1.45,"сумма"],["Кан-Коргон",1.45,"сумма"],["Кара-Богуз",1.15,"399"],["Кара-Булак",1.3,"398"],["Кара-Джыгач",1.2,"сумма"],["Кара-Саз",1.45,"399"],["Кара-Таш",1.45,"399"],["Кара-Таш",1.15,"399"],["Кашка-Суу",1.45,"399"],["Кашка-Суу",1.55,"399"],["Кек-Арт",1.5,"398"],["Кичи-Талдысуу",1.1,"398"],["Кичине-Джон Джон-2",1.15,"399"],["Кичине-Ой-Тал",1.15,"399"],["Кол-Таш",1.45,"399"],["Кондук",1.45,"сумма"],["Конокбай-Талаа",1.3,"398"],["Коо-Чаты",1.5,"398"],["Куйо-Таш",1.15,"399"],["Куйоо-Таш",1.4,"398"],["Кызыл-Булак",1.45,"сумма"],["Кызыл-Джар",1.45,"сумма"],["Ой-Тал",1.45,"сумма"],["Ордеш",1.15,"399"],["Орто-Ой-Тал Джон-1",1.15,"399"],["Рават",1.2,"399"],["Сайталаа",1.3,"398"],["Сары-Булак",1.25,"сумма"],["Сары-Бээ",1.1,"399"],["Сары-Кюнгей",1.3,"399"],["Таш-Кыя",1.45,"399"],["Тегерек-Саз",1.45,"сумма"],["Терек",1.45,"сумма"],["Терек-Суу",1.1,"399"],["Тогуз-Булак",1.5,"сумма"],["Токбай-Талаа",1.2,"399"],["Тушунук",1.15,"399"],["Узун-Шоро",1.45,"399"],["Чон-Джон",1.15,"399"],["Чычырканак",1.45,"сумма"],["Шаркыратма",1.2,"398"],["Шырдай",1.15,"399"],["им. Калинина",1.45,"399"],["им. Сидорова",1.45,"399"]],"Кара-Сууйский район":[["Алга-Бас",1.2,"398"],["Алпордо",1.2,"399"],["Бек-Джар",1.1,"398"],["Карагур",1.4,"398"],["Кичик",1.3,"398"],["Коджо-Келен",1.4,"398"],["Куранкол",1.1,"398"],["Лаглан",1.2,"399"],["Лангар",1.1,"399"],["Сай",1.2,"398"],["Талдык",1.4,"398"],["Талдык (Катта-Талдык)",1.2,"398"],["Тээке",1.2,"398"],["Чыйырчык",1.4,"сумма"]],"Ноокатский район":[["Буудайлык",1.3,"398"],["Буудайлык 2",1.15,"399"],["Гезарт",1.1,"398"],["Жазы-Токой",1.1,"399"],["Кайынды",1.3,"398"],["Калдай",1.4,"398"],["Кара-Булак",1.1,"399"],["Кашка-Суу",1.6,"398"],["Кичик-Алай",1.6,"398"],["Кок-Бель",1.1,"399"],["Кок-Чукур",1.4,"398"],["Кызыл-Талаа",1.4,"сумма"],["Кызыл-Чара",1.5,"398"],["Лесхоз",1.35,"399"],["Ой-Тал",1.4,"398"],["Сары-Могол",1.7,"398"],["Турпа-Чаты",1.4,"398"],["Чаты",1.4,"398"],["Чон-Кыштоо",1.1,"398"],["Шамшаалы",1.1,"398"],["Эр-Булак",1.4,"398"],["Эчкиатар",1.1,"398"]],"Узгенский район":[["Ак-Терек",1.1,"398"],["Ийрек",1.1,"398"],["Кара-Баткак",1.1,"399"],["Коргон",1.1,"399"],["Орказган",1.1,"398"],["Семиз-Кель",1.1,"399"],["Топор",1.3,"398"],["Туз-Бель",1.2,"398"],["Ункюр",1.1,"398"],["Учкаптал",1.3,"398"],["Ынтымак",1.1,"398"],["Эльчибек",1.1,"399"],["им. Карла Маркса",1.1,"398"]],"Чон-Алайский район":[["Ачык-Суу",1.8,"398"],["Бурган-Суу",1.7,"398"],["Дароот-Коргон",1.5,"398"],["Жайылма",1.7,"398"],["Жаман-Жар",1.5,"398"],["Жар-Башы",1.5,"398"],["Жаш-Тилек",1.5,"398"],["Жекенди",1.5,"398"],["Жекенди (Батманкол)",1.5,"398"],["Жекенди (Чолок)",1.5,"398"],["Кабык",1.6,"398"],["Кара-Кабак",1.7,"398"],["Кара-Тейит",1.5,"сумма"],["Кара-Шыбак",1.5,"398"],["Карамык",1.5,"сумма"],["Кашка-Суу",1.7,"398"],["Кочкорчу",1.5,"398"],["Кулчу",1.5,"сумма"],["Кызыл-Туу",1.5,"398"],["Кызыл-Эшме",1.5,"398"],["Мукур",1.5,"сумма"],["Сары-Булак",1.5,"398"],["Чак",1.5,"398"],["Чулук",1.5,"398"],["Шибээ",1.5,"398"],["Ынтымак",1.7,"398"]],"Таласский район":[["Ак-Коргон",1.2,"398"],["Кара-Ой",1.1,"399"],["Кепюре-Базар",1.2,"398"],["Талды-Булак",1.3,"398"],["Участок Жеруй (до 2725 м)",1.6,"398"]],"Аламудунский район":[["Альплагерь",1.1,"398"],["Чункурчак",1.2,"398"]],"Жайылский район":[["Кайсар",1.3,"398"],["Каракол",1.3,"398"],["Кожомкул",1.3,"398"],["Кызыл-Ой",1.25,"399"],["Первое Мая",1.3,"398"],["Суусамыр",1.3,"398"],["Тунук",1.3,"398"]],"Кеминский район":[["Ак-Тюз",1.3,"398"],["Борду (Кашка)",1.3,"398"],["Участок Восточного лесхоза",1.1,"398"]],"Панфиловский район":[["Отмок",1.6,"398"]],"Ыссык-Атинский район":[["Курорт Ысык-Ата",1.1,"398"]]};
+
+const B = 7040;
+const EDU_T = {"Среднее общее":2.15,"Среднее профессиональное":3.10,"Высшее — бакалавр":3.45,"Высшее — специалист/магистр":3.85};
+const EDU_K = {"Среднее общее":3.10,"Среднее профессиональное":4.35,"Высшее — бакалавр":4.75,"Высшее — специалист/магистр":5.20};
+const EDU_I = {"Среднее общее":2.35,"Среднее профессиональное":3.35,"Высшее — бакалавр":3.50,"Высшее — специалист/магистр":3.70};
+const EDU_KR= {"Среднее общее":2.60,"Среднее профессиональное":3.70,"Высшее — бакалавр":4.10,"Высшее — специалист/магистр":4.50};
+const EDU14 = {"Среднее общее":2000,"Среднее профессиональное":3000,"Высшее — бакалавр":4000,"Высшее — специалист/магистр":5000};
+const KAT   = {"Нет":0,"Вторая":2000,"Первая":3000,"Высшая":5000};
+const TETR  = 2700, KLASS = 2100, SELO = 1800, PRES = 15000;
+const PF = .08, NPF = .02, TAX = .10, DED = 650, DED_CHILD = 100;
+
+const SPO = {"Среднее профессиональное":2.70,"Высшее — бакалавр":3.00,"Высшее — специалист/магистр":3.20};
+const VPO = {
+  "Профессор":{"Нет":2.90,"Кандидат наук":3.10,"Доктор наук":3.30},
+  "Доцент":{"Нет":2.70,"Кандидат наук":2.90,"Доктор наук":3.10},
+  "Старший преподаватель":{"Нет":2.45,"Кандидат наук":2.70,"Доктор наук":2.90},
+  "Преподаватель / ассистент":{"Нет":2.25,"Кандидат наук":2.45,"Доктор наук":2.70},
+  "Ассистент-стажёр":{"Нет":2.10,"Кандидат наук":2.10,"Доктор наук":2.10}
+};
+const VPO_NORM = post => post === "Профессор" ? 750 : post === "Доцент" ? 800 : 850;
+const ADMIN = {"Нет":0,"Заведующий кафедрой":900,"Заместитель декана факультета":1080,"Декан факультета":1440};
+const DEGREE_PAY = {"Нет":0,"Кандидат наук":0,"Доктор наук":2700};
+const ORG_VPO = {"Нет":0,"КНУКИ имени Бейшеналиевой, РИПКиППК — 80 %":0.80,"КГМИПиПК имени Даниярова и Южный филиал — 90 %":0.90,"Консерватория, Национальная академия художеств — 100 %":1.00};
+const ORG_SPO = {"Нет":0,"Медицинские колледжи Минздрава — 25 %":0.25,"Театральное училище, ГМУ — 50 %":0.50,"Хореографическое училище, музыкальные — 80 %":0.80};
+
+const TOP = {"Старший архивариус":1.95,"Секретарь / секретарь-машинистка / секретарь-референт / диспетчер / архивариус / делопроизводитель (ВПО)":1.9,"Агент по снабжению / секретарь учебной части / паспортист / архивариус / делопроизводитель (СПО, НПО)":2.1,"Водитель легкового автомобиля":2.65,"Водитель автобуса, грузового автомобиля":2.95,"Дежурный по режиму, дежурный по общежитию":2.1,"Дизайнер":2.65,"Дежурный по залу, портье":1.9,"Диспетчер":2.65,"Заведующий архивом / канцелярией / общежитием":2.65,"Заведующий хозяйством / складом / костюмерной":2.65,"Заведующий прачечной":2.65,"Инструктор по труду":2.1,"Кассир":2.1,"Киномеханик 1, 2, 3 категории":2.65,"Комендант":2.65,"Корректор":2.65,"Костюмер":2.1,"Механик (в т.ч. спортивных судов, по ремонту оружия)":2.65,"Оператор котельной, машинист":2.65,"Оператор копировально-множительной техники / ЭВМ / ПВМ":2.1,"Переводчик":2.95,"Плотник (столяр), сантехник, слесарь, автослесарь, электрик, электромонтер":2.1,"Редактор":2.8,"Ремонтировщик-настройщик музыкальных инструментов":2.8,"Сапожник (обувщик)":1.9,"Медицинская сестра":2.75,"Шеф-повар":3,"Повар":2.8,"Смотритель музея":2.1,"Техник":2.8,"Электрогазосварщик, сварщик":2.1};
+const MOP = {"Ассенизатор":2.1,"Гардеробщик, лифтер, сторож (вахтер, охранник), контролер пропускного пункта":1.8,"Дворник (уборщик территории), садовник, полотер, светокопировщик, стеклопротирщик":1.8,"Истопник (кочегар)":1.8,"Кубовщик, возчик, банщик":1.8,"Кладовщик, кастелянша, курьер":1.8,"Кухонный работник":1.8,"Подсобный рабочий":1.8,"Работник по сцене":2.1,"Экспедитор":2.1,"Рабочий по текущему ремонту зданий, сооружений и оборудования, маляр, штукатур":1.8,"Гладильщик белья, комплектовщик белья, прачка, машинист по стирке белья (спецодежды)":1.9,"Младший медицинский персонал":2.1,"Уборщик служебных, общественных и культурно-бытовых помещений":1.8};
+const POSTS = {"Школы, школы-интернаты, детские дома, спеццентры, детские школы культуры и искусства":[["Директор",null,[[100,4.1],[600,4.15],[1200,4.3],[1800,4.75],[1000000000,5.2]],15000],["Заместитель директора по учебно-воспитательной работе",null,[[100,3.4],[600,3.8],[1200,3.9],[1800,4.3],[1000000000,4.75]],15000],["Другой заместитель директора, организатор внеклассной и внешкольной работы",null,[[100,2.3],[600,2.6],[1200,2.9],[1800,3.25],[1000000000,3.55]],15000],["Дефектолог, логопед, сурдопедагог, учитель-логопед, учитель-дефектолог",4,null,15000],["Социальный педагог, психолог, врач, клинический психолог, педагог-психолог",3.55,null,15000],["Музыкальный руководитель, библиотекарь, библиограф, психиатр, сурдолог, врач-стоматолог, инструктор по лечебной физкультуре, заведующий лабораторией, заведующий библиотекой, инженер, инженер-программист, специалист, специалист по комплексной реабилитации и по реабилитации, заведующий интернатом, методист",3,null,15000],["Руководитель кружка, внеклассной физкультурной работы",3.1,null,15000]],"Дошкольные образовательные организации":[["Директор дошкольной образовательной организации",null,[[100,3.35],[200,3.65],[300,4],[1000000000,4],[1000000000,4.35]],15000],["Дефектолог, логопед, сурдопедагог",4,null,15000],["Психолог, психиатр, сурдолог, музыкальный работник, методист",3,null,15000]],"Внешкольные образовательные организации":[["Директор внешкольной образовательной организации",null,[[210,0],[420,2.65],[900,2.95],[1380,3.2],[1000000000,3.45]],15000],["Заместитель директора по учебно-воспитательной работе",null,[[210,0],[420,2.4],[900,2.65],[1380,2.9],[1000000000,3.15]],15000],["Другой заместитель директора",null,[[210,0],[420,2.3],[900,2.5],[1380,2.75],[1000000000,2.95]],15000],["Заведующий отделом, учебной частью",3.45,null,15000],["Методист, педагог-организатор, художник, художник-оформитель, организатор, психолог, звукорежиссер",3.2,null,15000],["Художественный руководитель ансамбля, хормейстер, балетмейстер, дирижер, концертмейстер, библиотекарь, врач",3.2,null,15000]],"Образовательные организации СПО":[["Директор организации СПО",null,[[280,2.45],[640,2.9],[1000,3.35],[1000000000,3.35],[1000000000,3.8]],15000],["Заместитель директора по учебной работе",null,[[280,2.2],[640,2.6],[1000,3],[1000000000,3],[1000000000,3.4]],15000],["Другой заместитель директора",null,[[280,2.1],[640,2.45],[1000,2.85],[1000000000,2.85],[1000000000,3.2]],15000],["Заведующий отделением, библиотекой, руководитель физического воспитания, производственной практики, военный руководитель, заведующий лабораторией",2.9,null,15000],["Бухгалтер-кассир, воспитатель",2.45,null,15000]],"Образовательные организации НПО":[["Директор организации НПО",null,[[250,2.95],[450,3.2],[1000000000,3.2],[1000000000,3.2],[1000000000,3.45]],15000],["Заместитель директора организации НПО",null,[[250,2.65],[450,2.95],[1000000000,2.95],[1000000000,2.95],[1000000000,3.2]],15000]],"Образовательные организации НПО — отдельные категории работников":[["Заведующий отделением",3.1,null,15000],["Психолог",3.2,null,15000],["Сурдопереводчик, сурдопедагог, врач-педиатр",2.9,null,15000],["Старший мастер",4,null,15000],["Руководитель физического воспитания",3.2,null,15000],["Руководитель ДПМ (допризывной подготовки молодежи), региональный инструктор по спорту",3.2,null,15000],["Методист",2.9,null,15000],["Воспитатель в общежитии",2.9,null,15000],["Заведующий библиотекой, художественный руководитель — региональный координатор творчества и культуры",3.2,null,15000]],"Образовательные организации ВПО":[["Ректор",null,[[280,2.25],[640,2.6],[1000,2.9],[1000000000,2.9],[1000000000,3.25]],15000],["Проректор по учебной работе",null,[[280,2],[640,2.3],[1000,2.65],[1000000000,2.65],[1000000000,2.95]],15000],["Другой проректор",null,[[280,1.9],[640,2.2],[1000,2.5],[1000000000,2.5],[1000000000,2.75]],15000],["Ученый секретарь, заведующий докторантурой и аспирантурой, лабораторией и другими отделами, заведующий сектором, директор библиотеки, директор музея, руководитель производственной практики, главный специалист, главный научный сотрудник, директор центра",2.15,null,15000],["Помощник ректора, библиотекарь, учебный мастер, специалист, лаборант, художник, воспитатель, иллюстратор с высшим образованием, инженер с высшим образованием, инспектор по кадрам",1.85,null,15000]],"Институты повышения квалификации: КАО, РИПКиППК, КГМИПиПК и его Южный филиал":[["Президент, ректор, директор",5.65,null,15000],["Вице-президент, проректор по учебной и лечебной работе, проректор по науке и государственному языку, заместитель директора по учебной работе",5.1,null,15000],["Президент, ректор, директор",5.65,null,15000],["Вице-президент, проректор по учебной и лечебной работе, проректор по науке и государственному языку, заместитель директора по учебной работе",5.1,null,15000],["Президент, ректор, директор",4.7,null,15000],["Вице-президент, проректор по учебной и лечебной работе, проректор по науке и государственному языку, заместитель директора по учебной работе",4.45,null,15000],["Директор центра",4.25,null,15000]],"Областные институты образования и учебно-методические центры":[["Президент, ректор, директор",4.4,null,15000],["Вице-президент, проректор по учебной и лечебной работе, проректор по науке и государственному языку, заместитель директора по учебной работе",4.2,null,15000],["Заведующий отделом, кабинетом, главный специалист",2.95,null,15000],["Методист",4.2,null,15000]],"Учебно-методические кабинеты при районных (городских) отделах (управлениях) образования":[["Заведующий",4.3,null,15000],["Методист",4.2,null,15000]],"Психолого-медико-педагогическая консультация":[["Заведующий",2.95,null,15000],["Логопед, психиатр, невропатолог, офтальмолог",2.65,null,15000]]};
+const RAZRYAD = {"Нет разряда":0,"2 разряд":.05,"3 разряд":.10,"4 разряд":.15,"5 разряд":.20,"6 разряд":.25};
+const NORM_TOP = 40, PRES_TOP = 5000, NENORM = .25, MOYUSCHIE = .25;
+
+
+/* ---------------- три языка ---------------- */
+const I18N = {
+ru: {
+  lang_note: "Названия должностей и населённых пунктов оставлены на русском — так они записаны в постановлениях.",
+  eyebrow_hero: "Расчёт по Положению об оплате труда · ПКМ КР № 286",
+  h1_a: "Из чего состоит ", h1_em: "ваша", h1_b: " зарплата, мугалим?",
+  hero_sub: "Введите свои данные — класс, образование, часы, стаж — и увидите каждую строчку: ставку, доплаты, надбавки, удержания и сумму на руки. С объяснением, откуда взялась каждая цифра и на какой пункт Положения она опирается.",
+  chalk: 'ставка = коэффициент × <b>7 040 сом</b> &nbsp;→&nbsp; оклад = ставка × часы ÷ норму &nbsp;→&nbsp; + доплаты &nbsp;→&nbsp; × районный коэффициент &nbsp;→&nbsp; + <b>15 000</b> &nbsp;→&nbsp; − удержания',
+  cta_calc: "Посчитать мою зарплату", cta_how: "Как это считается", cta_school: "Считаю всю школу",
+  fact1: "базовая ставка", fact2: "президентская компенсация", fact3: "сёл с районным коэффициентом",
+  fact4: "норма ставки, 5–11 классы", fact5: "должностей из приложений 1–24",
+  eyebrow_calc: "Калькулятор", h2_calc: "Выберите, кто вы, и заполните свои данные",
+  p_calc: "Шесть профилей: учитель школы, воспитатель, руководители и специалисты с окладом, преподаватель колледжа и вуза, технический и младший обслуживающий персонал. У каждого свои нормы, коэффициенты и надбавки. Ничего не сохраняется и никуда не отправляется: расчёт идёт прямо в вашем телефоне.",
+  tab_teacher: "Учитель школы", tab_kinder: "Воспитатель", tab_oklad: "Руководители и специалисты",
+  tab_vuz: "Колледж и вуз", tab_top: "Техперсонал", tab_mop: "Младший персонал",
+  sticky_net: "На руки за месяц", sticky_btn: "Разбор",
+  eyebrow_how: "Как устроена зарплата", h2_how: "Пять шагов, по которым бухгалтер считает вашу сумму",
+  p_how: "Порядок именно такой, и он важен: районный коэффициент применяется к сумме доплат, а президентская компенсация прибавляется уже после него.",
+  step: "ШАГ",
+  step1_h: "Ставка", step1_p: "Коэффициент кратности по вашему образованию умножается на базовую ставку 7 040 сом. У учителя с высшим образованием коэффициент 3,85 — ставка 27 104 сома за норму часов.",
+  step2_h: "Оклад по часам", step2_p: "Ставка делится на норму (16 часов в 1–4 классах, 18 в 5–11) и умножается на ваши фактические часы. 24 часа при норме 18 — это 1,33 ставки.",
+  step3_h: "Доплаты", step3_p: "Стаж, категория, классное руководство, тетради, село, замещение. Часть считается от ставки, часть — фиксированной суммой. В разборе видно, что откуда.",
+  step4_h: "Район и компенсация", step4_p: "Если школа в высокогорном или отдалённом селе, вся сумма умножается на районный коэффициент. Потом прибавляется президентская компенсация 15 000 сом.",
+  step5_h: "Удержания", step5_p: "Пенсионный фонд 8 %, накопительный 2 %, подоходный налог 10 % с учётом вычета 650 сом и по 100 сом на каждого ребёнка. На компенсацию 15 000 взносы не начисляются.",
+  eyebrow_faq: "Частые вопросы", h2_faq: "То, что чаще всего спрашивают в комментариях",
+  q1: "Почему у нас с коллегой одинаковые часы, а зарплата разная?",
+  a1: "Смотрите четыре вещи: образование (коэффициент 2,15 · 3,10 · 3,45 · 3,85 — разница до 12 тысяч сомов на ставке), педагогический стаж (0 · 10 · 20 · 30 процентов), квалификационная категория (2 000 · 3 000 · 5 000 сомов) и классное руководство с тетрадями. Одна ступень стажа — это уже около 2 700 сомов.",
+  q2: "Президентская компенсация 15 000 — её всем платят полностью?",
+  a2: "Она устанавливается за одну ставку. Если у вас неполная нагрузка — например, 9 часов при норме 18, — компенсация будет половиной, 7 500 сомов. Если нагрузка больше ставки, компенсация всё равно одна: 15 000, а не полторы. Страховые взносы с неё не удерживают, а подоходный налог считается вместе с ней.",
+  q3: "Почему сельская доплата 1 800 идёт не всем?",
+  a3: "Она положена только педагогическим работникам сельских организаций образования и начисляется один раз в месяц, независимо от объёма нагрузки. Техническому и младшему обслуживающему персоналу она не полагается.",
+  q4: "Мне не заплатили за замещение — так можно?",
+  a4: "Замещение отсутствующего учителя оплачивается почасово: ставка делится на норму, умноженную на 4,2, и получается цена одного часа. У учителя с высшим образованием и нормой 18 часов это 358,78 сома за час. Замена оплачивается не более четырёх месяцев подряд, а по решению работодателя — до конца учебного года.",
+  q5: "Что такое районный коэффициент и как узнать свой?",
+  a5: "Это множитель для сёл в высокогорных и отдалённых зонах — от 1,05 до 1,80. Он устанавливается постановлениями № 398 и № 399 от 5 июня 2026 года по конкретным населённым пунктам. Выберите в калькуляторе район и село — коэффициент подставится сам. Отдельно к нему идёт надбавка за стаж работы в высокогорье: от 5 до 30 процентов.",
+  q6: "Расчёт точный? Можно с ним идти к бухгалтеру?",
+  a6: "Формулы взяты из Положения об оплате труда работников образования и сверены с официальными примерами расчётов, приведёнными в самом Положении, — суммы совпадают до копейки. Но у вашей организации могут быть свои надбавки по отдельным приложениям и решения по премированию из экономии фонда. Считайте это точной базой для разговора, а не заменой расчётного листка.",
+  eyebrow_uslugi: "Если считать нужно не себя, а всю школу",
+  h2_uslugi: "Зарплатная книга для бухгалтера организации образования",
+  p_uslugi: "Тот же расчёт, но на всех сотрудников сразу: учителя, воспитатели, руководители с часами, технический и младший персонал. С проверками, которые не дадут ошибиться в нагрузке и надбавках.",
+  offer_h: "Что входит",
+  offer_1: "Расчётные листы по всем категориям работников — 188 должностей из приложений 1–24",
+  offer_2: "Справочник районных коэффициентов: 767 населённых пунктов, коэффициент подставляется сам",
+  offer_3: "Контрольные строки: предельная нагрузка, лимит надбавки за стаж, сверка итога",
+  offer_4: "Пояснение к каждой строке со ссылкой на пункт Положения",
+  offer_5: "Обновление книги при изменении постановлений в течение года",
+  offer_tail: "Считали по вашей школе вручную? Присылайте тарификацию — покажу, где расходится, и настрою книгу под вашу организацию.",
+  price1_b: "Проверка расчётного листка", price1_s: "разбор построчно, ответ в тот же день",
+  price2_b: "Зарплатная книга школы", price2_s: "настройка под организацию и обновления при смене норм",
+  price3_b: "Обучение бухгалтера", price3_s: "как вести расчёт зарплаты бюджетной организации без ошибок",
+  wa_btn: "Написать в WhatsApp",
+  eyebrow_src: "На чём основан расчёт", h2_src: "Нормативная база",
+  src1_b: "Положение об оплате труда работников образования", src1_s: "ПКМ КР № 286 от 25 апреля 2026 года, приложения 1–24 и 26",
+  src2_b: "Районные коэффициенты и надбавки за высокогорье", src2_s: "ПКМ КР № 398 и № 399 от 5 июня 2026 года",
+  src3_b: "Трудовой кодекс КР № 23 от 23 января 2025 года", src3_s: "статья 101 — совмещение, статья 164 — совместительство до 20 часов в неделю",
+  src4_b: "Налоговый кодекс КР", src4_s: "статьи 199 и 200: вычеты 650 и 100 сомов, подоходный налог 10 процентов",
+  foot1: "<b>AN Consulting</b> · калькулятор зарплаты работников образования Кыргызской Республики",
+  foot2: "Расчёт носит справочный характер. Официальные суммы — в расчётном листке вашей организации.",
+  foot_wa: "Вопросы и проверка расчётного листка:",
+
+  /* ---- калькулятор ---- */
+  res_net: "На руки за месяц", res_sub_a: "Начислено", res_sub_b: "удержано",
+  res_rate: "Ставка за норму часов", res_oklad: "Должностной оклад", res_presid: "Президентская компенсация",
+  res_lines_title: "Начисления — нажмите строку, чтобы увидеть расчёт",
+  res_sub_total: "Итого начислено", res_gross: "Всего начислено",
+  res_deduct: "Удержания", res_deduct_total: "Всего удержано",
+  reg_line: "Районный коэффициент ×",
+  reg_why: "На эту сумму умножаются все начисления, кроме президентской компенсации.",
+  presid_why: "15 000 сомов устанавливается за одну ставку", presid_why2: ", у вас нагрузка",
+  presid_why3: "процентов ставки, поэтому и компенсация такая же доля",
+  presid_why4: ". Районный коэффициент на неё не начисляется, страховые взносы с неё не удерживаются (пункт 18).",
+  pf: "Пенсионный фонд, 8 %", pf_why: "8 процентов от начислений без президентской компенсации.",
+  npf: "Накопительный фонд, 2 %", npf_why: "2 процента от той же базы — государственный накопительный пенсионный фонд.",
+  tax: "Подоходный налог, 10 %",
+  tax_high_note: "Надбавка за стаж в высокогорье и прирост от районного коэффициента — {sum} — подоходным налогом не облагаются: статья 191 часть 4 пункт 1 Налогового кодекса. Взносы вычитаются только в части, приходящейся на облагаемый доход (статья 194 пункт 3).",
+  tax_why: "Из начисленного вычитаются отчисления в фонды, стандартный вычет 650 сомов",
+  tax_why_children: "и {n} сомов на детей", tax_why_end: ", с остатка удерживается 10 процентов.",
+  copy: "Скопировать расчёт", copied: "Скопировано", print: "Распечатать",
+  disclaimer: "Расчёт справочный: он показывает, как ваши цифры превращаются в зарплату по Положению. Премии из экономии фонда и надбавки отдельных организаций сюда не входят.",
+  cta_h: "Сумма не сходится с расчётным листком?",
+  cta_p: "Пришлите фото листка и тарификации — разберу построчно и скажу, какой пункт Положения нарушен и сколько недоплачено. Отвечаю в WhatsApp.",
+  wa_msg_1: "Здравствуйте! Посчитала свою зарплату на вашем калькуляторе.", wa_msg_prof: "Профиль:",
+  wa_msg_gross: "Начислено:", wa_msg_net: "На руки:",
+  wa_msg_end: "В моём расчётном листке другая сумма — можете проверить?",
+  copy_title: "Расчёт зарплаты —", copy_src: "Посчитано по Положению об оплате труда работников образования КР (ПКМ № 286 от 25.04.2026).",
+  grp_extra: "Дополнительно", grp_hours: "Учебные часы", grp_special: "Особые надбавки", grp_sovm: "Совмещение должностей",
+  grp_high: "Высокогорье и отдалённость",
+  f_rayon: "Район", f_rayon_h: "Если школа не в высокогорной и не в отдалённой зоне, оставьте «Не применяется».",
+  f_village: "Село или город", f_village_h: "Коэффициент подставится автоматически по постановлениям № 398 и № 399.",
+  f_hstage: "Стаж работы в высокогорье, лет", f_hstage_h: "Надбавка: свыше 5 лет — 5 %, далее 10 · 15 · 20 · 25 · 30 процентов.",
+  na: "Не применяется"
+},
+
+kg: {
+  lang_note: "Кызматтардын жана айылдардын аталыштары орусча калтырылды — токтомдордо ошондой жазылган.",
+  eyebrow_hero: "Эмгек акы төлөө жөнүндө жободо эсептелет · КР МК № 286 токтому",
+  h1_a: "Мугалим, ", h1_em: "сиздин", h1_b: " айлыгыңыз эмнеден турат?",
+  hero_sub: "Классыңызды, билимиңизди, сааттарыңызды жана стажыңызды жазыңыз — ар бир сап көрүнөт: ставка, кошумча төлөмдөр, үстөк акылар, кармоолор жана колго тийүүчү сумма. Ар бир сан кайдан чыкканы жана жобонун кайсы пунктуна таянганы түшүндүрүлөт.",
+  chalk: 'ставка = коэффициент × <b>7 040 сом</b> &nbsp;→&nbsp; айлык = ставка × сааттар ÷ норма &nbsp;→&nbsp; + кошумчалар &nbsp;→&nbsp; × райондук коэффициент &nbsp;→&nbsp; + <b>15 000</b> &nbsp;→&nbsp; − кармоолор',
+  cta_calc: "Айлыгымды эсептөө", cta_how: "Кантип эсептелет", cta_school: "Мектепти толук эсептейм",
+  fact1: "базалык ставка", fact2: "президенттик компенсация", fact3: "райондук коэффициенттүү айыл",
+  fact4: "ставканын нормасы, 5–11-класс", fact5: "кызмат орду, 1–24-тиркеме",
+  eyebrow_calc: "Калькулятор", h2_calc: "Ким экениңизди тандап, маалыматыңызды жазыңыз",
+  p_calc: "Алты профиль: мектеп мугалими, тарбиячы, айлык акылуу жетекчилер жана адистер, колледж жана жогорку окуу жайынын окутуучусу, техникалык жана кичи тейлөө персоналы. Ар биринин өз нормасы, коэффициенти жана үстөк акысы бар. Эч нерсе сакталбайт жана эч жакка жөнөтүлбөйт: эсеп сиздин телефонуңузда жүрөт.",
+  tab_teacher: "Мектеп мугалими", tab_kinder: "Тарбиячы", tab_oklad: "Жетекчилер жана адистер",
+  tab_vuz: "Колледж жана ЖОЖ", tab_top: "Техникалык персонал", tab_mop: "Кичи персонал",
+  sticky_net: "Айына колго", sticky_btn: "Талдоо",
+  eyebrow_how: "Айлык кантип түзүлөт", h2_how: "Бухгалтер сиздин сумманы эсептеген беш кадам",
+  p_how: "Тартип так ушундай жана ал маанилүү: райондук коэффициент кошумчалардын суммасына колдонулат, президенттик компенсация андан кийин кошулат.",
+  step: "КАДАМ",
+  step1_h: "Ставка", step1_p: "Билимиңиз боюнча эселик коэффициент базалык 7 040 сомго көбөйтүлөт. Жогорку билимдүү мугалимдин коэффициенти 3,85 — норма сааттар үчүн ставка 27 104 сом.",
+  step2_h: "Сааттар боюнча айлык", step2_p: "Ставка нормага бөлүнөт (1–4-класста 16 саат, 5–11-класста 18) жана иш жүзүндөгү сааттарыңызга көбөйтүлөт. Норма 18 болгондо 24 саат — бул 1,33 ставка.",
+  step3_h: "Кошумча төлөмдөр", step3_p: "Стаж, категория, класс жетекчилик, дептер текшерүү, айыл, алмаштыруу. Бир бөлүгү ставкадан, бир бөлүгү туруктуу сумма менен эсептелет. Талдоодо кайсынысы кайдан экени көрүнөт.",
+  step4_h: "Район жана компенсация", step4_p: "Мектеп бийик тоолуу же алыскы айылда болсо, бардык сумма райондук коэффициентке көбөйтүлөт. Андан кийин 15 000 сом президенттик компенсация кошулат.",
+  step5_h: "Кармоолор", step5_p: "Пенсия фонду 8 %, топтоо фонду 2 %, киреше салыгы 10 % — 650 сом жана ар бир балага 100 сом чегерүү эске алынат. 15 000 компенсациядан камсыздандыруу төгүмдөрү кармалбайт.",
+  eyebrow_faq: "Көп берилүүчү суроолор", h2_faq: "Комментарийлерде эң көп сурала турган нерселер",
+  q1: "Кесиптешим экөөбүздүн сааттарыбыз бирдей, айлыгыбыз эмне үчүн ар башка?",
+  a1: "Төрт нерсени караңыз: билим (коэффициент 2,15 · 3,10 · 3,45 · 3,85 — ставкада 12 миң сомго чейин айырма), педагогикалык стаж (0 · 10 · 20 · 30 пайыз), квалификациялык категория (2 000 · 3 000 · 5 000 сом) жана класс жетекчилик менен дептер текшерүү. Стаждын бир баскычы эле болжол менен 2 700 сом.",
+  q2: "15 000 президенттик компенсация баарына толук төлөнөбү?",
+  a2: "Ал бир ставкага белгиленет. Жүктөмүңүз толук эмес болсо — мисалы, норма 18 болгондо 9 саат — компенсация жарымы, 7 500 сом болот. Жүктөм ставкадан ашса да компенсация бирөө: 15 000, бир жарым эмес. Андан камсыздандыруу төгүмдөрү кармалбайт, ал эми киреше салыгы аны кошуп эсептелет.",
+  q3: "Айылдык 1 800 кошумчасы эмне үчүн баарына берилбейт?",
+  a3: "Ал айылдык билим берүү уюмдарынын педагогикалык кызматкерлерине гана таандык жана жүктөмдүн көлөмүнө карабай айына бир жолу кошулат. Техникалык жана кичи тейлөө персоналына берилбейт.",
+  q4: "Алмаштыруу үчүн акы төлөшпөдү — ушундай болушу мүмкүнбү?",
+  a4: "Жок мугалимди алмаштыруу саат боюнча төлөнөт: ставка нормага 4,2 көбөйтүлгөн санга бөлүнөт да, бир сааттын баасы чыгат. Жогорку билимдүү, нормасы 18 саат мугалимде бул саатына 358,78 сом. Алмаштыруу катары менен төрт айдан ашпай, иш берүүчүнүн чечими менен окуу жылынын аягына чейин төлөнөт.",
+  q5: "Райондук коэффициент деген эмне жана өзүмдүкүн кантип билем?",
+  a5: "Бул бийик тоолуу жана алыскы аймактардагы айылдар үчүн көбөйтүүчү — 1,05тен 1,80ге чейин. Ал 2026-жылдын 5-июнундагы № 398 жана № 399 токтомдору менен конкреттүү айылдарга белгиленген. Калькулятордон районду жана айылды тандаңыз — коэффициент өзү коюлат. Мындан тышкары бийик тоодогу стаж үчүн 5тен 30 пайызга чейин үстөк акы бар.",
+  q6: "Эсеп тактыбы? Аны менен бухгалтерге барса болобу?",
+  a6: "Формулалар билим берүү кызматкерлеринин эмгек акысы жөнүндө жободон алынган жана жободогу расмий мисалдар менен тыйынга чейин салыштырылган. Бирок уюмуңузда өзүнчө тиркемелер боюнча үстөк акылар жана фонддун үнөмүнөн сыйлык чечимдери болушу мүмкүн. Муну эсептик баракчанын ордуна эмес, сүйлөшүү үчүн так негиз катары караңыз.",
+  eyebrow_uslugi: "Өзүңүздү эмес, бүт мектепти эсептеш керек болсо",
+  h2_uslugi: "Билим берүү уюмунун бухгалтери үчүн айлык китеби",
+  p_uslugi: "Ошол эле эсеп, бирок бардык кызматкерлерге бирден: мугалимдер, тарбиячылар, сааты бар жетекчилер, техникалык жана кичи персонал. Жүктөмдөн жана үстөк акылардан жаңылбай турган текшерүүлөр менен.",
+  offer_h: "Эмнелер кирет",
+  offer_1: "Бардык категориядагы кызматкерлер боюнча эсептик баракчалар — 1–24-тиркемедеги 188 кызмат орду",
+  offer_2: "Райондук коэффициенттердин маалымдамасы: 767 калктуу конуш, коэффициент өзү коюлат",
+  offer_3: "Көзөмөл саптары: чектик жүктөм, стаж үстөгүнүн чеги, жыйынтыкты салыштыруу",
+  offer_4: "Ар бир сапка жобонун пунктуна шилтемеси бар түшүндүрмө",
+  offer_5: "Жыл ичинде токтомдор өзгөргөндө китепти жаңыртуу",
+  offer_tail: "Мектебиңизди кол менен эсептеп жүрөсүзбү? Тарификацияны жөнөтүңүз — кайсы жерде айырма чыкканын көрсөтүп, китепти уюмуңузга ылайыктап берем.",
+  price1_b: "Эсептик баракчаны текшерүү", price1_s: "сап-сап талдоо, ошол эле күнү жооп",
+  price2_b: "Мектептин айлык китеби", price2_s: "уюмга ылайыкташтыруу жана нормалар өзгөргөндө жаңыртуу",
+  price3_b: "Бухгалтерди окутуу", price3_s: "бюджеттик уюмдун айлыгын катасыз эсептөө",
+  wa_btn: "WhatsApp жазуу",
+  eyebrow_src: "Эсеп эмнеге негизделген", h2_src: "Ченемдик база",
+  src1_b: "Билим берүү кызматкерлеринин эмгек акысы жөнүндө жобо", src1_s: "КР МК № 286, 2026-жылдын 25-апрели, 1–24 жана 26-тиркемелер",
+  src2_b: "Райондук коэффициенттер жана бийик тоо үстөгү", src2_s: "КР МК № 398 жана № 399, 2026-жылдын 5-июну",
+  src3_b: "КР Эмгек кодекси № 23, 2025-жылдын 23-январы", src3_s: "101-берене — кызмат айкалыштыруу, 164-берене — жумасына 20 саатка чейин кошумча иш",
+  src4_b: "КР Салык кодекси", src4_s: "199 жана 200-беренелер: 650 жана 100 сом чегерүү, киреше салыгы 10 пайыз",
+  foot1: "<b>AN Consulting</b> · Кыргыз Республикасынын билим берүү кызматкерлеринин айлык калькулятору",
+  foot2: "Эсеп маалымат үчүн. Расмий суммалар уюмуңуздун эсептик баракчасында.",
+  foot_wa: "Суроолор жана эсептик баракчаны текшерүү:",
+
+  res_net: "Айына колго", res_sub_a: "Эсептелди", res_sub_b: "кармалды",
+  res_rate: "Норма сааттар үчүн ставка", res_oklad: "Кызматтык айлык", res_presid: "Президенттик компенсация",
+  res_lines_title: "Эсептөөлөр — эсебин көрүү үчүн сапты басыңыз",
+  res_sub_total: "Бардыгы эсептелди", res_gross: "Жалпы эсептелди",
+  res_deduct: "Кармоолор", res_deduct_total: "Бардыгы кармалды",
+  reg_line: "Райондук коэффициент ×",
+  reg_why: "Бул санга президенттик компенсациядан башка бардык эсептөөлөр көбөйтүлөт.",
+  presid_why: "15 000 сом бир ставкага белгиленет", presid_why2: ", сиздин жүктөмүңүз",
+  presid_why3: "пайыз ставка, ошондуктан компенсация да ошол үлүштө",
+  presid_why4: ". Ага райондук коэффициент кошулбайт, камсыздандыруу төгүмдөрү кармалбайт (18-пункт).",
+  pf: "Пенсия фонду, 8 %", pf_why: "Президенттик компенсациясыз эсептөөлөрдөн 8 пайыз.",
+  npf: "Топтоо фонду, 2 %", npf_why: "Ошол эле базадан 2 пайыз — мамлекеттик топтоо пенсия фонду.",
+  tax: "Киреше салыгы, 10 %",
+  tax_high_note: "Бийик тоодогу стаж үчүн үстөк жана райондук коэффициенттин өсүшү — {sum} — киреше салыгына тартылбайт: Салык кодексинин 191-беренесинин 4-бөлүгүнүн 1-пункту. Төгүмдөр салык салынуучу бөлүккө туура келген өлчөмдө гана чегерилет (194-берене, 3-пункт).",
+  tax_why: "Эсептелгенден фонддорго төгүмдөр жана 650 сом чегерүү",
+  tax_why_children: "жана балдарга {n} сом чегерилет", tax_why_end: ", калганынан 10 пайыз кармалат.",
+  copy: "Эсепти көчүрүү", copied: "Көчүрүлдү", print: "Басып чыгаруу",
+  disclaimer: "Эсеп маалымат үчүн: ал сиздин сандарыңыз жобо боюнча кантип айлыкка айланарын көрсөтөт. Фонддун үнөмүнөн сыйлыктар жана айрым уюмдардын үстөк акылары бул жерге кирбейт.",
+  cta_h: "Сумма эсептик баракчаңызга дал келбей жатабы?",
+  cta_p: "Баракчаңыздын жана тарификацияңыздын сүрөтүн жөнөтүңүз — сап-сап талдап, жобонун кайсы пункту бузулганын жана канча кем төлөнгөнүн айтам. WhatsApp аркылуу жооп берем.",
+  wa_msg_1: "Салам! Калькуляторуңуздан айлыгымды эсептедим.", wa_msg_prof: "Профиль:",
+  wa_msg_gross: "Эсептелди:", wa_msg_net: "Колго:",
+  wa_msg_end: "Эсептик баракчамда башка сумма турат — текшерип бересизби?",
+  copy_title: "Айлык эсеби —", copy_src: "КР билим берүү кызматкерлеринин эмгек акысы жөнүндө жобо боюнча эсептелди (МК № 286, 25.04.2026).",
+  grp_extra: "Кошумча", grp_hours: "Окуу сааттары", grp_special: "Өзгөчө үстөк акылар", grp_sovm: "Кызмат айкалыштыруу",
+  grp_high: "Бийик тоо жана алыстык",
+  f_rayon: "Район", f_rayon_h: "Мектеп бийик тоолуу же алыскы аймакта эмес болсо, «Не применяется» деп калтырыңыз.",
+  f_village: "Айыл же шаар", f_village_h: "Коэффициент № 398 жана № 399 токтомдору боюнча өзү коюлат.",
+  f_hstage: "Бийик тоодогу иш стажы, жыл", f_hstage_h: "Үстөк акы: 5 жылдан ашса — 5 %, андан ары 10 · 15 · 20 · 25 · 30 пайыз.",
+  na: "Не применяется"
+},
+
+en: {
+  lang_note: "Job titles and place names are kept in Russian — that is how they appear in the regulations.",
+  eyebrow_hero: "Based on the Education Pay Regulation · Cabinet Resolution No. 286",
+  h1_a: "What ", h1_em: "your", h1_b: " teacher salary is actually made of",
+  hero_sub: "Enter your details — grade level, education, teaching hours, years of service — and see every line: the base rate, supplements, allowances, deductions and your take-home pay. Each figure comes with a plain explanation and the clause it rests on.",
+  chalk: 'rate = coefficient × <b>7,040 KGS</b> &nbsp;→&nbsp; salary = rate × hours ÷ norm &nbsp;→&nbsp; + supplements &nbsp;→&nbsp; × regional coefficient &nbsp;→&nbsp; + <b>15,000</b> &nbsp;→&nbsp; − deductions',
+  cta_calc: "Calculate my salary", cta_how: "How it is calculated", cta_school: "I calculate for a whole school",
+  fact1: "base rate", fact2: "presidential compensation", fact3: "villages with a regional coefficient",
+  fact4: "hours per rate, grades 5–11", fact5: "positions from appendices 1–24",
+  eyebrow_calc: "Calculator", h2_calc: "Choose your role and fill in your details",
+  p_calc: "Six profiles: school teacher, preschool educator, salaried managers and specialists, college and university lecturer, technical staff and junior support staff. Each has its own norms, coefficients and allowances. Nothing is stored or sent anywhere — the calculation runs on your own device.",
+  tab_teacher: "School teacher", tab_kinder: "Educator", tab_oklad: "Managers and specialists",
+  tab_vuz: "College and university", tab_top: "Technical staff", tab_mop: "Junior staff",
+  sticky_net: "Take-home per month", sticky_btn: "Breakdown",
+  eyebrow_how: "How the salary is built", h2_how: "The five steps an accountant follows",
+  p_how: "The order matters: the regional coefficient applies to the sum of the supplements, and the presidential compensation is added after it.",
+  step: "STEP",
+  step1_h: "The rate", step1_p: "Your education coefficient is multiplied by the base rate of 7,040 KGS. A teacher with a university degree has a coefficient of 3.85 — a rate of 27,104 KGS for the standard hours.",
+  step2_h: "Pay for your hours", step2_p: "The rate is divided by the norm (16 hours in grades 1–4, 18 in grades 5–11) and multiplied by your actual hours. 24 hours against a norm of 18 is 1.33 of a rate.",
+  step3_h: "Supplements", step3_p: "Service years, qualification category, class supervision, marking notebooks, rural work, substitution. Some are a share of the rate, some are fixed amounts — the breakdown shows which is which.",
+  step4_h: "Region and compensation", step4_p: "If the school sits in a highland or remote village, the whole amount is multiplied by the regional coefficient. Then the presidential compensation of 15,000 KGS is added.",
+  step5_h: "Deductions", step5_p: "Pension fund 8 %, savings fund 2 %, income tax 10 % after a 650 KGS allowance plus 100 KGS per child. No social contributions are taken from the 15,000 compensation.",
+  eyebrow_faq: "Frequently asked", h2_faq: "What people ask most in the comments",
+  q1: "My colleague and I teach the same hours — why is our pay different?",
+  a1: "Four things: education (coefficients 2.15 · 3.10 · 3.45 · 3.85 — up to 12,000 KGS difference on the rate), years of service (0 · 10 · 20 · 30 percent), qualification category (2,000 · 3,000 · 5,000 KGS) and class supervision with notebook marking. One service step alone is about 2,700 KGS.",
+  q2: "Is the 15,000 presidential compensation paid in full to everyone?",
+  a2: "It is set per full rate. With a partial load — say 9 hours against a norm of 18 — you get half, 7,500 KGS. If your load exceeds one rate, the compensation is still a single 15,000, not one and a half. Social contributions are not withheld from it, but income tax is calculated including it.",
+  q3: "Why doesn't everyone get the 1,800 rural supplement?",
+  a3: "It goes only to pedagogical staff of rural education organisations and is paid once a month regardless of workload. Technical and junior support staff are not entitled to it.",
+  q4: "I wasn't paid for covering a colleague's lessons — is that allowed?",
+  a4: "Substitution is paid hourly: the rate is divided by the norm multiplied by 4.2, which gives the price of one hour. For a teacher with a degree and a norm of 18 hours that is 358.78 KGS per hour. Substitution is paid for up to four consecutive months, or until the end of the school year if the employer decides so.",
+  q5: "What is the regional coefficient and how do I find mine?",
+  a5: "It is a multiplier for villages in highland and remote zones — from 1.05 to 1.80, set for specific settlements by resolutions No. 398 and No. 399 of 5 June 2026. Pick your district and village in the calculator and the coefficient fills in itself. On top of it there is a separate allowance for years worked in the highlands: 5 to 30 percent.",
+  q6: "Is this accurate enough to take to an accountant?",
+  a6: "The formulas come from the Education Pay Regulation and match the official worked examples inside it to the tiyin. Your organisation may still have its own allowances under specific appendices and bonus decisions from budget savings. Treat this as a solid basis for the conversation, not a replacement for your payslip.",
+  eyebrow_uslugi: "When you calculate for the whole school, not just yourself",
+  h2_uslugi: "A payroll workbook for the school accountant",
+  p_uslugi: "The same calculation for every employee at once: teachers, educators, managers who also teach, technical and junior staff — with checks that keep workloads and allowances within the rules.",
+  offer_h: "What it includes",
+  offer_1: "Payroll sheets for every staff category — 188 positions from appendices 1–24",
+  offer_2: "Regional coefficient directory: 767 settlements, the coefficient fills in automatically",
+  offer_3: "Control lines: maximum workload, the cap on the service allowance, totals reconciliation",
+  offer_4: "An explanation for every line with the clause it comes from",
+  offer_5: "Updates whenever the resolutions change during the year",
+  offer_tail: "Still calculating your school by hand? Send your workload plan — I will show where it diverges and set the workbook up for your organisation.",
+  price1_b: "Payslip review", price1_s: "line-by-line, answered the same day",
+  price2_b: "School payroll workbook", price2_s: "configured for your organisation, updated when norms change",
+  price3_b: "Accountant training", price3_s: "how to run public-sector payroll without errors",
+  wa_btn: "Message on WhatsApp",
+  eyebrow_src: "What this is based on", h2_src: "Legal basis",
+  src1_b: "Regulation on pay for education workers", src1_s: "Cabinet Resolution No. 286 of 25 April 2026, appendices 1–24 and 26",
+  src2_b: "Regional coefficients and highland allowances", src2_s: "Cabinet Resolutions No. 398 and No. 399 of 5 June 2026",
+  src3_b: "Labour Code No. 23 of 23 January 2025", src3_s: "article 101 — combining posts, article 164 — up to 20 hours a week of secondary work",
+  src4_b: "Tax Code of the Kyrgyz Republic", src4_s: "articles 199 and 200: allowances of 650 and 100 KGS, income tax of 10 percent",
+  foot1: "<b>AN Consulting</b> · salary calculator for education workers of the Kyrgyz Republic",
+  foot2: "This calculation is for reference. Official amounts are on your organisation's payslip.",
+  foot_wa: "Questions and payslip reviews:",
+
+  res_net: "Take-home per month", res_sub_a: "Gross", res_sub_b: "withheld",
+  res_rate: "Rate for standard hours", res_oklad: "Position salary", res_presid: "Presidential compensation",
+  res_lines_title: "Earnings — tap a line to see the calculation",
+  res_sub_total: "Subtotal", res_gross: "Total gross",
+  res_deduct: "Deductions", res_deduct_total: "Total withheld",
+  reg_line: "Regional coefficient ×",
+  reg_why: "Everything except the presidential compensation is multiplied by it.",
+  presid_why: "15,000 KGS is set per full rate", presid_why2: ", your load is",
+  presid_why3: "percent of a rate, so the compensation follows the same share",
+  presid_why4: ". The regional coefficient does not apply to it and no social contributions are withheld from it (clause 18).",
+  pf: "Pension fund, 8 %", pf_why: "8 percent of gross pay excluding the presidential compensation.",
+  npf: "Savings fund, 2 %", npf_why: "2 percent of the same base — the state savings pension fund.",
+  tax: "Income tax, 10 %",
+  tax_high_note: "The highland service allowance and the regional coefficient increase — {sum} — are exempt from income tax: Tax Code article 191 part 4 clause 1. Contributions are deducted only in the share attributable to taxable income (article 194 clause 3).",
+  tax_why: "Fund contributions and the standard allowance of 650 KGS",
+  tax_why_children: "plus {n} KGS for children", tax_why_end: " are deducted, and 10 percent is withheld from the remainder.",
+  copy: "Copy the calculation", copied: "Copied", print: "Print",
+  disclaimer: "For reference: this shows how your numbers turn into pay under the Regulation. Bonuses from budget savings and allowances specific to individual organisations are not included.",
+  cta_h: "Doesn't match your payslip?",
+  cta_p: "Send a photo of your payslip and workload plan — I will go through it line by line and tell you which clause was missed and how much is short. I reply on WhatsApp.",
+  wa_msg_1: "Hello! I calculated my salary with your calculator.", wa_msg_prof: "Profile:",
+  wa_msg_gross: "Gross:", wa_msg_net: "Take-home:",
+  wa_msg_end: "My payslip shows a different amount — could you check it?",
+  copy_title: "Salary calculation —", copy_src: "Calculated under the Regulation on pay for education workers of the Kyrgyz Republic (Resolution No. 286 of 25.04.2026).",
+  grp_extra: "Additional", grp_hours: "Teaching hours", grp_special: "Special allowances", grp_sovm: "Combining posts",
+  grp_high: "Highland and remote areas",
+  f_rayon: "District", f_rayon_h: "If the school is not in a highland or remote zone, leave «Не применяется».",
+  f_village: "Village or town", f_village_h: "The coefficient fills in automatically from resolutions No. 398 and No. 399.",
+  f_hstage: "Years worked in the highlands", f_hstage_h: "Allowance: over 5 years — 5 %, then 10 · 15 · 20 · 25 · 30 percent.",
+  na: "Не применяется"
+}
+};
+let LANG = "ru";
+try { LANG = localStorage.getItem("mugalim_lang") || "ru"; } catch (e) { LANG = "ru"; }
+if (!I18N[LANG]) LANG = "ru";
+const t = k => (I18N[LANG][k] !== undefined ? I18N[LANG][k] : I18N.ru[k]);
+
+/* ---------------- поля формы и строки расчёта ---------------- */
+const F = {
+ru: {
+  klass:"В каких классах ведёте уроки", klass_h:"От этого зависит норма ставки: 16 или 18 часов в неделю.",
+  g14:"1-4 классы", g511:"5-11 классы",
+  edu:"Ваше образование", edu_h:"Коэффициент кратности по приложению 1 Положения.",
+  edu_k_h:"Коэффициент кратности по приложениям 2 и 3 Положения.",
+  hours_w:"Часов в неделю по тарификации", hours_w_h:"Столько часов стоит в вашей тарификации, без замещений.",
+  stage:"Педагогический стаж, полных лет", stage_h:"0 · 10 · 20 · 30 процентов от ставки — ступени 3, 8 и 13 лет.",
+  kat:"Квалификационная категория", kat_h:"2 000 · 3 000 · 5 000 сомов в месяц, если категория присвоена по аттестации.",
+  kat_no:"Нет", kat_2:"Вторая", kat_1:"Первая", kat_h3:"Высшая",
+  subj:"Проверяете тетради по предмету", subj_h:"2 700 сомов за норму часов, при другой нагрузке — пропорционально.",
+  subj_no:"Не проверяю",
+  klassruk:"Классное руководство", klassruk_s:"2 100 сомов за один класс",
+  lang15:"Кыргызский или русский язык не как родной, сельская школа", lang15_s:"надбавка 15 % к окладу",
+  selo:"Работаю в сельской местности", selo_s:"доплата 1 800 сомов в месяц",
+  subst:"Часов замещения за месяц", subst_h:"Уроки за отсутствующего учителя — оплачиваются почасово.",
+  children:"Детей на иждивении", children_h:"По 100 сомов вычета из налоговой базы за каждого.",
+  org:"Где вы работаете", org_h:"От типа организации зависят коэффициент и норма часов: 36 · 30 · 20.",
+  org_ds:"Детский сад", org_int:"Школа-интернат общего типа", org_kr:"Внешкольная организация (кружок)",
+  hours_k:"Часов в неделю фактически", hours_k_h:"Норма — 36 часов в детском саду. Больше нормы оплачивается пропорционально.",
+  senior:"Старший воспитатель", senior_s:"надбавка 10 % к ставке",
+  mode:"Что считаем", mode_h:"Можно посмотреть отдельно оклад по должности и отдельно оплату за уроки.",
+  mode_both:"Оклад и учебные часы", mode_ok:"Только оклад по должности", mode_h2:"Только учебные часы",
+  orgp:"Тип организации", orgp_h:"Сначала выберите заведение — ниже останутся только его должности.",
+  post:"Ваша должность", post_h:"Руководители и работники, которым оклад установлен по должности: приложения 7–13, 14, 15, 17.",
+  contingent:"Учеников (воспитанников, студентов)", contingent_h:"Оклад зависит от контингента. Он устанавливается на учебный год и в течение года не пересматривается.",
+  stage_o_h:"Надбавка начисляется на оклад по основной должности (пункт 10).",
+  hklass:"В каких классах ведёте уроки", hklass_h:"Норма для оплаты часов: 16 или 18.",
+  hedu:"Образование для ставки учителя", hedu_h:"Часы оплачиваются по ставке учителя из приложения 1.",
+  hours_o:"Часов уроков в неделю", hours_o_h:"Не более 20 часов в неделю — статья 164 Трудового кодекса.",
+  level:"Где вы преподаёте", level_h:"В колледже и вузе нагрузка считается не в неделю, а за учебный год.",
+  lvl_spo:"Колледж (СПО)", lvl_vpo:"Вуз (ППС)",
+  post_v:"Должность", post_v_h:"Коэффициент кратности по приложению 6: должность и учёная степень.",
+  degree:"Учёная степень", degree_h:"Степень влияет и на коэффициент, и на норму часов.",
+  deg_no:"Нет", deg_k:"Кандидат наук", deg_d:"Доктор наук",
+  hours_y:"Учебная нагрузка за год, часов",
+  hours_y_v_h:"Норма: профессор 750, доцент и старший преподаватель со степенью 800, остальные 850 часов.",
+  hours_y_s_h:"Норма — 720 часов в год, предел — 1 080 часов (пункт 30).",
+  admin:"Административные обязанности", admin_h:"Заведующий кафедрой 900, заместитель декана 1 080, декан 1 440 сомов.",
+  orgv:"Надбавка отдельным организациям", orgv_h:"Проценты к окладу по перечню вузов из примечаний к приложению 6.",
+  orgs_h:"Проценты к окладу по перечню колледжей из примечаний к приложению 4.",
+  med:"Медицинская организация с клинической работой", med_s:"коэффициент выше на 25 процентов",
+  edu_s_h:"Коэффициент кратности по приложению 4 Положения.",
+  post_t:"Ваша должность", post_t_h:"Технический и обслуживающий персонал — приложение 19 Положения.",
+  post_m_h:"Младший обслуживающий персонал — приложение 20 Положения.",
+  hours_t:"Часов в неделю фактически", hours_t_h:"Норма — 40 часов в неделю (пункт 31).",
+  razryad:"Разряд за профессиональное мастерство", razryad_h:"Надбавка к окладу: 5 · 10 · 15 · 20 · 25 процентов по разряду.",
+  medstage:"Медицинский стаж, лет (для медсестры)", medstage_h:"Учитывается только у медицинской сестры: 10 · 20 · 30 процентов от ставки.",
+  nenorm:"Водитель с ненормированным рабочим днём", nenorm_s:"надбавка 25 процентов к окладу",
+  povar:"Повар дошкольной организации с ненормированным днём", povar_s:"надбавка 25 процентов к окладу",
+  moyu:"Работа с моющими и дезинфицирующими средствами", moyu_s:"надбавка 25 процентов — уборщикам, прачкам, работникам стирки",
+  sovm:"Совмещаемая должность", sovm_h:"Доплата не ниже 30 процентов оклада совмещаемой должности (статья 101 Трудового кодекса).",
+  sovm_no:"Нет совмещения",
+  sovmpct:"Процент доплаты за совмещение", sovmpct_h:"По соглашению сторон, но не ниже 30 процентов."
+},
+kg: {
+  klass:"Кайсы класстарда сабак бересиз", klass_h:"Ставканын нормасы ушундан көз каранды: жумасына 16 же 18 саат.",
+  g14:"1-4 классы", g511:"5-11 классы",
+  edu:"Билимиңиз", edu_h:"Жобонун 1-тиркемеси боюнча эселик коэффициент.",
+  edu_k_h:"Жобонун 2 жана 3-тиркемелери боюнча эселик коэффициент.",
+  hours_w:"Тарификация боюнча жумасына канча саат", hours_w_h:"Тарификацияңызда турган сааттар, алмаштыруусуз.",
+  stage:"Педагогикалык стаж, толук жыл", stage_h:"Ставкадан 0 · 10 · 20 · 30 пайыз — 3, 8 жана 13 жылдык баскычтар.",
+  kat:"Квалификациялык категория", kat_h:"Аттестациядан өткөн болсоңуз айына 2 000 · 3 000 · 5 000 сом.",
+  kat_no:"Жок", kat_2:"Экинчи", kat_1:"Биринчи", kat_h3:"Жогорку",
+  subj:"Кайсы предметтен дептер текшересиз", subj_h:"Норма сааттар үчүн 2 700 сом, башка жүктөмдө — пропорционалдуу.",
+  subj_no:"Текшербейм",
+  klassruk:"Класс жетекчилик", klassruk_s:"бир класс үчүн 2 100 сом",
+  lang15:"Кыргыз же орус тили эне тил эмес, айыл мектеби", lang15_s:"айлыкка 15 % үстөк",
+  selo:"Айылда иштейм", selo_s:"айына 1 800 сом кошумча",
+  subst:"Айына алмаштыруу сааттары", subst_h:"Жок мугалимдин сабагы — саат боюнча төлөнөт.",
+  children:"Багуудагы балдар", children_h:"Ар бирине салык базасынан 100 сом чегерилет.",
+  org:"Кайда иштейсиз", org_h:"Коэффициент жана саат нормасы уюмдун түрүнөн көз каранды: 36 · 30 · 20.",
+  org_ds:"Бала бакча", org_int:"Жалпы типтеги мектеп-интернат", org_kr:"Мектептен тышкаркы уюм (ийрим)",
+  hours_k:"Жумасына иш жүзүндөгү сааттар", hours_k_h:"Бала бакчада норма — 36 саат. Нормадан ашыгы пропорционалдуу төлөнөт.",
+  senior:"Улук тарбиячы", senior_s:"ставкага 10 % үстөк",
+  mode:"Эмнени эсептейбиз", mode_h:"Кызматтык айлыкты жана сабак үчүн акыны өзүнчө көрсө болот.",
+  mode_both:"Айлык жана окуу сааттары", mode_ok:"Кызматтык айлык гана", mode_h2:"Окуу сааттары гана",
+  orgp:"Уюмдун түрү", orgp_h:"Адегенде мекемени тандаңыз — төмөндө анын кызмат орундары гана калат.",
+  post:"Кызмат ордуңуз", post_h:"Кызмат боюнча айлыгы белгиленген жетекчилер жана кызматкерлер: 7–13, 14, 15, 17-тиркемелер.",
+  contingent:"Окуучулар (тарбиялануучулар, студенттер)", contingent_h:"Айлык контингентке көз каранды. Ал окуу жылына белгиленет жана жыл ичинде кайра каралбайт.",
+  stage_o_h:"Үстөк акы негизги кызмат боюнча айлыкка кошулат (10-пункт).",
+  hklass:"Кайсы класстарда сабак бересиз", hklass_h:"Сааттарды төлөө нормасы: 16 же 18.",
+  hedu:"Мугалимдин ставкасы үчүн билим", hedu_h:"Сааттар 1-тиркемедеги мугалимдин ставкасы боюнча төлөнөт.",
+  hours_o:"Жумасына сабак сааттары", hours_o_h:"Жумасына 20 сааттан ашпайт — Эмгек кодексинин 164-беренеси.",
+  level:"Кайда сабак бересиз", level_h:"Колледжде жана ЖОЖдо жүктөм жумасына эмес, окуу жылына эсептелет.",
+  lvl_spo:"Колледж (ОКБ)", lvl_vpo:"ЖОЖ (ПОК)",
+  post_v:"Кызмат орду", post_v_h:"6-тиркеме боюнча коэффициент: кызмат орду жана окумуштуулук даража.",
+  degree:"Окумуштуулук даража", degree_h:"Даража коэффициентке да, саат нормасына да таасир этет.",
+  deg_no:"Жок", deg_k:"Илимдин кандидаты", deg_d:"Илимдин доктору",
+  hours_y:"Жылдык окуу жүктөмү, саат",
+  hours_y_v_h:"Норма: профессор 750, доцент жана даражалуу улук окутуучу 800, калгандары 850 саат.",
+  hours_y_s_h:"Норма — жылына 720 саат, чеги — 1 080 саат (30-пункт).",
+  admin:"Административдик милдеттер", admin_h:"Кафедра башчысы 900, декандын орун басары 1 080, декан 1 440 сом.",
+  orgv:"Айрым уюмдарга үстөк акы", orgv_h:"6-тиркеменин эскертүүлөрүндөгү ЖОЖдордун тизмеси боюнча пайыздар.",
+  orgs_h:"4-тиркеменин эскертүүлөрүндөгү колледждердин тизмеси боюнча пайыздар.",
+  med:"Клиникалык иши бар медициналык уюм", med_s:"коэффициент 25 пайызга жогору",
+  edu_s_h:"Жобонун 4-тиркемеси боюнча эселик коэффициент.",
+  post_t:"Кызмат ордуңуз", post_t_h:"Техникалык жана тейлөө персоналы — жобонун 19-тиркемеси.",
+  post_m_h:"Кичи тейлөө персоналы — жобонун 20-тиркемеси.",
+  hours_t:"Жумасына иш жүзүндөгү сааттар", hours_t_h:"Норма — жумасына 40 саат (31-пункт).",
+  razryad:"Кесиптик чеберчилик разряды", razryad_h:"Айлыкка үстөк: разряд боюнча 5 · 10 · 15 · 20 · 25 пайыз.",
+  medstage:"Медициналык стаж, жыл (медайымга)", medstage_h:"Медициналык айымга гана эсептелет: ставкадан 10 · 20 · 30 пайыз.",
+  nenorm:"Ченемделбеген иш күнү бар айдоочу", nenorm_s:"айлыкка 25 пайыз үстөк",
+  povar:"Ченемделбеген күнү бар бала бакчанын ашпозчусу", povar_s:"айлыкка 25 пайыз үстөк",
+  moyu:"Жуучу жана дезинфекциялоочу каражаттар менен иштөө", moyu_s:"25 пайыз үстөк — тазалоочу, кир жуучуларга",
+  sovm:"Айкалыштырылган кызмат", sovm_h:"Айкалыштырылган кызматтын айлыгынын 30 пайызынан кем эмес (Эмгек кодексинин 101-беренеси).",
+  sovm_no:"Айкалыштыруу жок",
+  sovmpct:"Айкалыштыруу үчүн кошумча пайыз", sovmpct_h:"Тараптардын макулдашуусу боюнча, бирок 30 пайыздан кем эмес."
+},
+en: {
+  klass:"Which grades do you teach", klass_h:"This sets the norm: 16 or 18 hours a week.",
+  g14:"1-4 классы", g511:"5-11 классы",
+  edu:"Your education", edu_h:"Coefficient from appendix 1 of the Regulation.",
+  edu_k_h:"Coefficient from appendices 2 and 3 of the Regulation.",
+  hours_w:"Hours per week in your workload plan", hours_w_h:"The hours in your tarification, excluding substitutions.",
+  stage:"Years of pedagogical service", stage_h:"0 · 10 · 20 · 30 percent of the rate — steps at 3, 8 and 13 years.",
+  kat:"Qualification category", kat_h:"2,000 · 3,000 · 5,000 KGS a month if the category was awarded through attestation.",
+  kat_no:"Нет", kat_2:"Вторая", kat_1:"Первая", kat_h3:"Высшая",
+  subj:"Subject whose notebooks you mark", subj_h:"2,700 KGS for the standard hours, pro-rated for a different load.",
+  subj_no:"Не проверяю",
+  klassruk:"Class supervision", klassruk_s:"2,100 KGS for one class",
+  lang15:"Kyrgyz or Russian as a non-native language, rural school", lang15_s:"15 % on top of the salary",
+  selo:"I work in a rural area", selo_s:"1,800 KGS a month",
+  subst:"Substitution hours this month", subst_h:"Lessons covered for an absent teacher — paid by the hour.",
+  children:"Dependent children", children_h:"100 KGS off the tax base for each child.",
+  org:"Where you work", org_h:"The organisation type sets the coefficient and the norm: 36 · 30 · 20 hours.",
+  org_ds:"Детский сад", org_int:"Школа-интернат общего типа", org_kr:"Внешкольная организация (кружок)",
+  hours_k:"Actual hours per week", hours_k_h:"The norm is 36 hours in a preschool. Hours above the norm are paid pro-rata.",
+  senior:"Senior educator", senior_s:"10 % on top of the rate",
+  mode:"What to calculate", mode_h:"You can view the position salary and the teaching hours separately.",
+  mode_both:"Оклад и учебные часы", mode_ok:"Только оклад по должности", mode_h2:"Только учебные часы",
+  orgp:"Organisation type", orgp_h:"Pick the institution first — only its positions stay in the list below.",
+  post:"Your position", post_h:"Managers and staff whose salary is set by position: appendices 7–13, 14, 15, 17.",
+  contingent:"Students (pupils, children)", contingent_h:"The salary depends on enrolment. It is set for the school year and is not revised during it.",
+  stage_o_h:"The allowance applies to the salary of the main position (clause 10).",
+  hklass:"Which grades do you teach", hklass_h:"The norm used to pay the hours: 16 or 18.",
+  hedu:"Education for the teaching rate", hedu_h:"Hours are paid at the teacher rate from appendix 1.",
+  hours_o:"Teaching hours per week", hours_o_h:"No more than 20 hours a week — article 164 of the Labour Code.",
+  level:"Where you teach", level_h:"In colleges and universities the load is counted per academic year, not per week.",
+  lvl_spo:"Колледж (СПО)", lvl_vpo:"Вуз (ППС)",
+  post_v:"Position", post_v_h:"Coefficient from appendix 6: position and academic degree.",
+  degree:"Academic degree", degree_h:"The degree affects both the coefficient and the hours norm.",
+  deg_no:"Нет", deg_k:"Кандидат наук", deg_d:"Доктор наук",
+  hours_y:"Annual teaching load, hours",
+  hours_y_v_h:"Norm: professor 750, docent and senior lecturer with a degree 800, others 850 hours.",
+  hours_y_s_h:"The norm is 720 hours a year, the cap is 1,080 hours (clause 30).",
+  admin:"Administrative duties", admin_h:"Head of department 900, deputy dean 1,080, dean 1,440 KGS.",
+  orgv:"Allowance for specific organisations", orgv_h:"Percentages of salary for the universities listed in the notes to appendix 6.",
+  orgs_h:"Percentages of salary for the colleges listed in the notes to appendix 4.",
+  med:"Medical organisation with clinical work", med_s:"coefficient raised by 25 percent",
+  edu_s_h:"Coefficient from appendix 4 of the Regulation.",
+  post_t:"Your position", post_t_h:"Technical and support staff — appendix 19 of the Regulation.",
+  post_m_h:"Junior support staff — appendix 20 of the Regulation.",
+  hours_t:"Actual hours per week", hours_t_h:"The norm is 40 hours a week (clause 31).",
+  razryad:"Skill grade allowance", razryad_h:"On top of the salary: 5 · 10 · 15 · 20 · 25 percent by grade.",
+  medstage:"Years of medical service (for nurses)", medstage_h:"Counted only for a nurse: 10 · 20 · 30 percent of the rate.",
+  nenorm:"Driver with irregular working hours", nenorm_s:"25 percent on top of the salary",
+  povar:"Preschool cook with irregular hours", povar_s:"25 percent on top of the salary",
+  moyu:"Work with detergents and disinfectants", moyu_s:"25 percent — cleaners, laundry and washing staff",
+  sovm:"Combined position", sovm_h:"At least 30 percent of the combined position's salary (article 101 of the Labour Code).",
+  sovm_no:"Нет совмещения",
+  sovmpct:"Percentage paid for combining", sovmpct_h:"Agreed between the parties, but not below 30 percent."
+}
+};
+const f = k => (F[LANG][k] !== undefined ? F[LANG][k] : F.ru[k]);
+
+/* строки расчёта: подпись и объяснение */
+const L10N = {
+ru: {
+  l_oklad:"Оклад по вашим часам",
+  e_oklad:"Ставка {rate} делится на норму {norm} часов и умножается на ваши {h} часов.",
+  l_lang:"Надбавка за язык обучения", e_lang:"15 процентов к окладу учителям кыргызского и русского языка не как родного в сельских школах (пункт 25).",
+  l_tetr:"Проверка тетрадей", e_tetr:"2 700 сомов за норму часов, при другой нагрузке — пропорционально (пункт 27).",
+  l_klass:"Классное руководство", e_klass:"2 100 сомов в месяц за один класс (пункт 27).",
+  l_edu14:"Надбавка учителю 1–4 классов", e_edu14:"Фиксированная надбавка по уровню образования (приложение 1, примечание 6).",
+  l_kat:"Квалификационная категория", e_kat:"Категория «{k}» — фиксированная сумма в месяц (пункт 24).",
+  l_stage:"Надбавка за педагогический стаж", e_stage:"Стаж {y} лет: {txt} от ставки (пункт 10).",
+  l_selo:"Сельская местность", e_selo:"1 800 сомов в месяц педагогическим работникам села, один раз независимо от нагрузки (пункт 21).",
+  l_subst:"Часы замещения ({h} ч)", e_subst:"Один час замещения стоит {price}: ставка ÷ (норма × 4,2) — пункт 30.",
+  l_senior:"Надбавка старшему воспитателю", e_senior:"10 процентов к ставке старшему воспитателю (примечание к приложению 2).",
+  l_post:"Должностной оклад", e_post_c:"Коэффициент {c} — по числу обучающихся ({n}) из приложений 7–13 Положения.",
+  e_post_f:"Коэффициент {c} закреплён за должностью в приложениях 14, 15 и 17 Положения.",
+  e_post_tail:" Оклад не зависит от числа уроков и в течение учебного года не пересматривается (пункт 14).",
+  l_hours:"Оплата за учебные часы ({h} ч)", e_hours:"Часы оплачиваются сверх оклада по ставке учителя {rate}: ставка × часы ÷ норму {norm} часов.",
+  l_stage_o:"Надбавка за педагогический стаж", e_stage_o:"Стаж {y} лет: {txt} от оклада основной должности (пункт 10).",
+  l_oklad_y:"Оклад по вашей нагрузке", e_oklad_y:"{why} Ставка {rate} делится на годовую норму {norm} часов и умножается на ваши {h} часов.",
+  e_coef_spo:"Коэффициент {c} по вашему образованию из приложения 4 Положения.",
+  e_coef_vpo:"Коэффициент {c} из приложения 6: должность «{p}», степень — {d}.",
+  e_coef_med:" Для медицинской организации с клинической работой коэффициент повышен на 25 процентов.",
+  d_no:"без степени",
+  l_orgbonus:"Надбавка отдельной организации", e_orgbonus:"Надбавка {p} процентов к окладу по перечню организаций в примечаниях к приложению {ap}.",
+  l_degree:"Доплата за учёную степень", e_degree:"Доктору наук — 2 700 сомов в месяц (пункт 17). Для кандидата наук размер в Положении не установлен.",
+  l_admin:"Административные обязанности", e_admin:"«{a}» — фиксированная доплата по примечанию 1 к приложению 6.",
+  l_oklad_t:"Оклад по вашим часам", e_oklad_t:"Коэффициент {c} из приложения {ap} × базовую ставку 7 040 сомов, делённые на норму 40 часов и умноженные на ваши {h} часов.",
+  l_razryad:"Надбавка за профессиональное мастерство", e_razryad:"Разряд «{r}» — {p} процентов к окладу (приложение 19, примечание 3).",
+  l_nenorm:"Ненормированный рабочий день водителя", e_nenorm:"25 процентов к окладу водителям с ненормированным рабочим днём (приложение 19, примечание 2).",
+  l_povar:"Ненормированный день повара", e_povar:"25 процентов к окладу поварам дошкольных организаций (приложение 19, примечание 7).",
+  l_medstage:"Доплата за медицинский стаж", e_medstage:"Стаж {y} лет: {txt} от ставки.",
+  l_moyu:"Работа с моющими и дезсредствами", e_moyu:"25 процентов к окладу за работу с синтетическими моющими и дезинфицирующими средствами (приложение 20, примечание 2).",
+  l_sovm:"Доплата за совмещение", e_sovm:"Совмещение должности «{p}»: {pct} процентов её оклада {sum}. По статье 101 Трудового кодекса — не ниже 30 процентов.",
+  l_high:"Надбавка за стаж в высокогорье", e_high:"Стаж {y} лет в высокогорной зоне — {p} процентов от оклада без учёта других надбавок (приложения 2 и 3 постановления № 398).",
+  fx:"фиксированная сумма",
+  ped0:"менее 3 лет — надбавки нет", ped1:"от 3 до 8 лет — 10 %", ped2:"от 8 до 13 лет — 20 %", ped3:"свыше 13 лет — 30 %",
+  reg398:"приложение 1 постановления № 398 — высокогорная зона",
+  reg399:"приложение 1 постановления № 399 — отдалённый труднодоступный пункт",
+  regsum:"базовый коэффициент по № 398 плюс дополнительный по приложению 2 постановления № 399",
+  w_load:"Нагрузка {h} часов выше обычного предела {max} часов в неделю без замещения — проверьте тарификацию (пункт 29).",
+  w_zero:"Поставьте количество часов — без них считается только то, что не зависит от нагрузки.",
+  w_kinder:"Нагрузка выше 54 часов в неделю — предельная нагрузка воспитателя (пункт 29).",
+  w_20:"Педагогическая работа сверх основной должности не может превышать 20 часов в неделю — статья 164 Трудового кодекса.",
+  w_hours_only:"Показана только оплата за уроки. Оклад по должности в этом режиме не начисляется.",
+  w_1080:"Годовая нагрузка выше 1 080 часов — это предел для преподавателя колледжа (пункт 30).",
+  w_kand:"Доплата за степень кандидата наук в Положении не установлена — в расчёте стоит ноль. Степень влияет только на коэффициент и норму часов.",
+  w_zeroy:"Укажите годовую нагрузку — от неё зависит и оклад, и размер компенсации.",
+  w_driver:"Надбавка за ненормированный день положена водителям — для должности «{p}» она не начисляется.",
+  w_cook:"Надбавка за ненормированный день повара положена поварам дошкольных организаций — для этой должности она не начисляется.",
+  w_moyu:"Надбавка за моющие и дезинфицирующие средства положена уборщикам, прачкам и работникам стирки — для этой должности она не начисляется.",
+  w_sovm:"Доплата за совмещение ниже 30 процентов — статья 101 Трудового кодекса устанавливает этот минимум.",
+  w_40:"Свыше 40 часов в неделю — это уже сверхурочная работа, она оплачивается отдельно по статье 133 Трудового кодекса."
+},
+kg: {
+  l_oklad:"Сааттарыңыз боюнча айлык",
+  e_oklad:"{rate} ставка {norm} саат нормага бөлүнүп, сиздин {h} саатыңызга көбөйтүлөт.",
+  l_lang:"Окутуу тили үчүн үстөк", e_lang:"Айыл мектептеринде кыргыз жана орус тилин эне тил эмес катары окуткандарга айлыкка 15 пайыз (25-пункт).",
+  l_tetr:"Дептер текшерүү", e_tetr:"Норма сааттар үчүн 2 700 сом, башка жүктөмдө — пропорционалдуу (27-пункт).",
+  l_klass:"Класс жетекчилик", e_klass:"Бир класс үчүн айына 2 100 сом (27-пункт).",
+  l_edu14:"1–4-класс мугалимине үстөк", e_edu14:"Билим деңгээли боюнча туруктуу үстөк (1-тиркеме, 6-эскертүү).",
+  l_kat:"Квалификациялык категория", e_kat:"«{k}» категория — айына туруктуу сумма (24-пункт).",
+  l_stage:"Педагогикалык стаж үчүн үстөк", e_stage:"Стаж {y} жыл: ставкадан {txt} (10-пункт).",
+  l_selo:"Айылдык жер", e_selo:"Айылдагы педагогикалык кызматкерлерге айына 1 800 сом, жүктөмгө карабай бир жолу (21-пункт).",
+  l_subst:"Алмаштыруу сааттары ({h} с)", e_subst:"Бир саат алмаштыруу {price}: ставка ÷ (норма × 4,2) — 30-пункт.",
+  l_senior:"Улук тарбиячыга үстөк", e_senior:"Улук тарбиячыга ставкага 10 пайыз (2-тиркемеге эскертүү).",
+  l_post:"Кызматтык айлык", e_post_c:"{c} коэффициенти — окугандардын санына ({n}) жараша, жобонун 7–13-тиркемелери.",
+  e_post_f:"{c} коэффициенти кызмат ордуна жобонун 14, 15 жана 17-тиркемелеринде бекитилген.",
+  e_post_tail:" Айлык сабактардын санына көз каранды эмес жана окуу жылы ичинде кайра каралбайт (14-пункт).",
+  l_hours:"Окуу сааттары үчүн акы ({h} с)", e_hours:"Сааттар айлыктан тышкары мугалимдин {rate} ставкасы боюнча төлөнөт: ставка × сааттар ÷ {norm} саат норма.",
+  l_stage_o:"Педагогикалык стаж үчүн үстөк", e_stage_o:"Стаж {y} жыл: негизги кызматтын айлыгынан {txt} (10-пункт).",
+  l_oklad_y:"Жүктөмүңүз боюнча айлык", e_oklad_y:"{why} {rate} ставка жылдык {norm} саат нормага бөлүнүп, сиздин {h} саатыңызга көбөйтүлөт.",
+  e_coef_spo:"Билимиңиз боюнча {c} коэффициенти, жобонун 4-тиркемеси.",
+  e_coef_vpo:"6-тиркемедеги {c} коэффициенти: «{p}» кызматы, даража — {d}.",
+  e_coef_med:" Клиникалык иши бар медициналык уюм үчүн коэффициент 25 пайызга жогорулатылган.",
+  d_no:"даражасыз",
+  l_orgbonus:"Айрым уюмга үстөк акы", e_orgbonus:"{ap}-тиркеменин эскертүүлөрүндөгү уюмдардын тизмеси боюнча айлыкка {p} пайыз үстөк.",
+  l_degree:"Окумуштуулук даража үчүн кошумча", e_degree:"Илимдин докторуна — айына 2 700 сом (17-пункт). Илимдин кандидатына жободо өлчөм белгиленген эмес.",
+  l_admin:"Административдик милдеттер", e_admin:"«{a}» — 6-тиркеменин 1-эскертүүсү боюнча туруктуу кошумча.",
+  l_oklad_t:"Сааттарыңыз боюнча айлык", e_oklad_t:"{ap}-тиркемедеги {c} коэффициенти × базалык 7 040 сом, 40 саат нормага бөлүнүп, сиздин {h} саатыңызга көбөйтүлөт.",
+  l_razryad:"Кесиптик чеберчилик үчүн үстөк", e_razryad:"«{r}» разряды — айлыкка {p} пайыз (19-тиркеме, 3-эскертүү).",
+  l_nenorm:"Айдоочунун ченемделбеген иш күнү", e_nenorm:"Ченемделбеген иш күнү бар айдоочуларга айлыкка 25 пайыз (19-тиркеме, 2-эскертүү).",
+  l_povar:"Ашпозчунун ченемделбеген күнү", e_povar:"Бала бакчанын ашпозчуларына айлыкка 25 пайыз (19-тиркеме, 7-эскертүү).",
+  l_medstage:"Медициналык стаж үчүн кошумча", e_medstage:"Стаж {y} жыл: ставкадан {txt}.",
+  l_moyu:"Жуучу жана дезинфекциялоочу каражаттар", e_moyu:"Синтетикалык жуучу жана дезинфекциялоочу каражаттар менен иштегени үчүн айлыкка 25 пайыз (20-тиркеме, 2-эскертүү).",
+  l_sovm:"Айкалыштыруу үчүн кошумча", e_sovm:"«{p}» кызматын айкалыштыруу: анын {sum} айлыгынын {pct} пайызы. Эмгек кодексинин 101-беренеси боюнча 30 пайыздан кем эмес.",
+  l_high:"Бийик тоодогу стаж үчүн үстөк", e_high:"Бийик тоо зонасында {y} жыл стаж — башка үстөктөрсүз айлыктан {p} пайыз (№ 398 токтомдун 2 жана 3-тиркемелери).",
+  fx:"туруктуу сумма",
+  ped0:"3 жылдан аз — үстөк жок", ped1:"3төн 8 жылга чейин — 10 %", ped2:"8ден 13 жылга чейин — 20 %", ped3:"13 жылдан ашык — 30 %",
+  reg398:"№ 398 токтомдун 1-тиркемеси — бийик тоолуу зона",
+  reg399:"№ 399 токтомдун 1-тиркемеси — алыскы жеткиликсиз конуш",
+  regsum:"№ 398 боюнча базалык коэффициент кошумча № 399 токтомдун 2-тиркемеси",
+  w_load:"{h} саат жүктөм алмаштыруусуз жумасына {max} саат чегинен жогору — тарификацияны текшериңиз (29-пункт).",
+  w_zero:"Сааттардын санын коюңуз — аларсыз жүктөмгө көз каранды эмес нерселер гана эсептелет.",
+  w_kinder:"Жумасына 54 сааттан жогору — тарбиячынын чектик жүктөмү (29-пункт).",
+  w_20:"Негизги кызматтан тышкары педагогикалык иш жумасына 20 сааттан ашпайт — Эмгек кодексинин 164-беренеси.",
+  w_hours_only:"Сабак үчүн акы гана көрсөтүлдү. Бул режимде кызматтык айлык кошулбайт.",
+  w_1080:"Жылдык жүктөм 1 080 сааттан жогору — колледж окутуучусу үчүн чек (30-пункт).",
+  w_kand:"Илимдин кандидаты даражасы үчүн кошумча жободо белгиленген эмес — эсепте нөл турат. Даража коэффициентке жана саат нормасына гана таасир этет.",
+  w_zeroy:"Жылдык жүктөмдү жазыңыз — андан айлык да, компенсациянын өлчөмү да көз каранды.",
+  w_driver:"Ченемделбеген күн үчүн үстөк айдоочуларга таандык — «{p}» кызматына кошулбайт.",
+  w_cook:"Ченемделбеген күн үчүн үстөк бала бакчанын ашпозчуларына таандык — бул кызматка кошулбайт.",
+  w_moyu:"Жуучу жана дезинфекциялоочу каражаттар үчүн үстөк тазалоочуларга, кир жуучуларга таандык — бул кызматка кошулбайт.",
+  w_sovm:"Айкалыштыруу үчүн кошумча 30 пайыздан төмөн — Эмгек кодексинин 101-беренеси ушул минимумду белгилейт.",
+  w_40:"Жумасына 40 сааттан ашыгы — бул иштен тышкары иш, ал Эмгек кодексинин 133-беренеси боюнча өзүнчө төлөнөт."
+},
+en: {
+  l_oklad:"Pay for your hours",
+  e_oklad:"The rate of {rate} is divided by the norm of {norm} hours and multiplied by your {h} hours.",
+  l_lang:"Language of instruction allowance", e_lang:"15 percent on top of salary for teachers of Kyrgyz and Russian as a non-native language in rural schools (clause 25).",
+  l_tetr:"Notebook marking", e_tetr:"2,700 KGS for the standard hours, pro-rated for a different load (clause 27).",
+  l_klass:"Class supervision", e_klass:"2,100 KGS a month for one class (clause 27).",
+  l_edu14:"Grades 1–4 teacher allowance", e_edu14:"A fixed allowance by education level (appendix 1, note 6).",
+  l_kat:"Qualification category", e_kat:"Category «{k}» — a fixed monthly amount (clause 24).",
+  l_stage:"Service allowance", e_stage:"{y} years of service: {txt} of the rate (clause 10).",
+  l_selo:"Rural area", e_selo:"1,800 KGS a month for rural pedagogical staff, once regardless of workload (clause 21).",
+  l_subst:"Substitution hours ({h} h)", e_subst:"One substitution hour costs {price}: rate ÷ (norm × 4.2) — clause 30.",
+  l_senior:"Senior educator allowance", e_senior:"10 percent on top of the rate for a senior educator (note to appendix 2).",
+  l_post:"Position salary", e_post_c:"Coefficient {c} — based on enrolment ({n}) from appendices 7–13 of the Regulation.",
+  e_post_f:"Coefficient {c} is fixed for the position in appendices 14, 15 and 17 of the Regulation.",
+  e_post_tail:" The salary does not depend on lessons taught and is not revised during the school year (clause 14).",
+  l_hours:"Pay for teaching hours ({h} h)", e_hours:"Hours are paid on top of the salary at the teacher rate of {rate}: rate × hours ÷ norm of {norm} hours.",
+  l_stage_o:"Service allowance", e_stage_o:"{y} years of service: {txt} of the main position salary (clause 10).",
+  l_oklad_y:"Pay for your load", e_oklad_y:"{why} The rate of {rate} is divided by the annual norm of {norm} hours and multiplied by your {h} hours.",
+  e_coef_spo:"Coefficient {c} for your education from appendix 4 of the Regulation.",
+  e_coef_vpo:"Coefficient {c} from appendix 6: position «{p}», degree — {d}.",
+  e_coef_med:" For a medical organisation with clinical work the coefficient is raised by 25 percent.",
+  d_no:"none",
+  l_orgbonus:"Organisation-specific allowance", e_orgbonus:"{p} percent on top of the salary per the list of organisations in the notes to appendix {ap}.",
+  l_degree:"Academic degree payment", e_degree:"2,700 KGS a month for a doctor of sciences (clause 17). For a candidate of sciences the Regulation sets no amount.",
+  l_admin:"Administrative duties", e_admin:"«{a}» — a fixed payment under note 1 to appendix 6.",
+  l_oklad_t:"Pay for your hours", e_oklad_t:"Coefficient {c} from appendix {ap} × the base rate of 7,040 KGS, divided by the 40-hour norm and multiplied by your {h} hours.",
+  l_razryad:"Skill grade allowance", e_razryad:"Grade «{r}» — {p} percent on top of the salary (appendix 19, note 3).",
+  l_nenorm:"Driver's irregular hours", e_nenorm:"25 percent on top of the salary for drivers with irregular working hours (appendix 19, note 2).",
+  l_povar:"Cook's irregular hours", e_povar:"25 percent on top of the salary for preschool cooks (appendix 19, note 7).",
+  l_medstage:"Medical service payment", e_medstage:"{y} years of service: {txt} of the rate.",
+  l_moyu:"Detergents and disinfectants", e_moyu:"25 percent on top of the salary for work with synthetic detergents and disinfectants (appendix 20, note 2).",
+  l_sovm:"Combined position payment", e_sovm:"Combining «{p}»: {pct} percent of its salary of {sum}. Article 101 of the Labour Code sets a floor of 30 percent.",
+  l_high:"Highland service allowance", e_high:"{y} years in a highland zone — {p} percent of the salary excluding other allowances (appendices 2 and 3 to Resolution No. 398).",
+  fx:"fixed amount",
+  ped0:"under 3 years — no allowance", ped1:"3 to 8 years — 10 %", ped2:"8 to 13 years — 20 %", ped3:"over 13 years — 30 %",
+  reg398:"appendix 1 to Resolution No. 398 — highland zone",
+  reg399:"appendix 1 to Resolution No. 399 — remote hard-to-reach settlement",
+  regsum:"base coefficient from No. 398 plus the additional one from appendix 2 to Resolution No. 399",
+  w_load:"A load of {h} hours exceeds the usual cap of {max} hours a week without substitution — check your workload plan (clause 29).",
+  w_zero:"Enter your hours — without them only the load-independent items are calculated.",
+  w_kinder:"Above 54 hours a week — that is the cap for an educator (clause 29).",
+  w_20:"Teaching beyond the main position cannot exceed 20 hours a week — article 164 of the Labour Code.",
+  w_hours_only:"Only the teaching hours are shown. The position salary is not included in this mode.",
+  w_1080:"An annual load above 1,080 hours exceeds the cap for a college lecturer (clause 30).",
+  w_kand:"The Regulation sets no payment for a candidate of sciences degree — it is zero here. The degree affects only the coefficient and the hours norm.",
+  w_zeroy:"Enter the annual load — both the salary and the compensation depend on it.",
+  w_driver:"The irregular-hours allowance is for drivers — it does not apply to «{p}».",
+  w_cook:"The cook's irregular-hours allowance is for preschool cooks — it does not apply to this position.",
+  w_moyu:"The detergents allowance is for cleaners, laundry and washing staff — it does not apply to this position.",
+  w_sovm:"The combining payment is below 30 percent — article 101 of the Labour Code sets that minimum.",
+  w_40:"Above 40 hours a week counts as overtime and is paid separately under article 133 of the Labour Code."
+}
+};
+const g = (k, vars) => {
+  let v = (L10N[LANG][k] !== undefined ? L10N[LANG][k] : L10N.ru[k]);
+  if (vars) for (const p in vars) v = v.split("{" + p + "}").join(vars[p]);
+  return v;
+};
+
+const pedPct = y => y < 3 ? 0 : y < 8 ? .10 : y < 13 ? .20 : .30;
+const pedTxt = y => g(y < 3 ? "ped0" : y < 8 ? "ped1" : y < 13 ? "ped2" : "ped3");
+const highPct = y => y < 5 ? 0 : y < 10 ? .05 : y < 15 ? .10 : y < 20 ? .15 : y < 25 ? .20 : y < 30 ? .25 : .30;
+const LOC = () => LANG === "en" ? "en-US" : "ru-RU";
+const CUR = () => LANG === "en" ? " KGS" : " с";
+const som = v => (Math.round(v * 100) / 100).toLocaleString(LOC(), {minimumFractionDigits:2, maximumFractionDigits:2}) + CUR();
+const num = v => v.toLocaleString(LOC(), {maximumFractionDigits:2});
+const EDU_LIST = Object.keys(EDU_T);
+const SUBJ = ["Кыргызский язык и чтение","Русский язык и чтение","Узбекский язык и чтение","Таджикский язык и чтение","Иностранный язык","Математика"];
+
+/* ---------------- поля ---------------- */
+const FIELDS = {
+  teacher: () => [
+    {k:"klass", t:"select", label:f("klass"), opts:[f("g14"), f("g511")], def:f("g511"), hint:f("klass_h")},
+    {k:"edu", t:"select", label:f("edu"), opts:EDU_LIST, def:"Высшее — специалист/магистр", hint:f("edu_h")},
+    {k:"hours", t:"num", label:f("hours_w"), def:18, min:0, max:54, step:.5, hint:f("hours_w_h")},
+    {k:"stage", t:"num", label:f("stage"), def:12, min:0, max:60, step:1, hint:f("stage_h")},
+    {k:"kat", t:"select", label:f("kat"), opts:[f("kat_no"), f("kat_2"), f("kat_1"), f("kat_h3")], def:f("kat_no"), hint:f("kat_h")},
+    {k:"subject", t:"select", label:f("subj"), opts:[f("subj_no"), ...SUBJ], def:f("subj_no"), hint:f("subj_h")},
+    {k:"gr", t:"title", label:t("grp_extra")},
+    {k:"klassruk", t:"check", label:f("klassruk"), sub:f("klassruk_s")},
+    {k:"lang", t:"check", label:f("lang15"), sub:f("lang15_s")},
+    {k:"selo", t:"check", label:f("selo"), sub:f("selo_s")},
+    {k:"subst", t:"num", label:f("subst"), def:0, min:0, max:200, step:1, hint:f("subst_h")},
+    {k:"children", t:"num", label:f("children"), def:0, min:0, max:15, step:1, hint:f("children_h")}
+  ],
+  kinder: () => [
+    {k:"org", t:"select", label:f("org"), opts:[f("org_ds"), f("org_int"), f("org_kr")], def:f("org_ds"), hint:f("org_h")},
+    {k:"edu", t:"select", label:f("edu"), opts:EDU_LIST, def:"Среднее профессиональное", hint:f("edu_k_h")},
+    {k:"hours", t:"num", label:f("hours_k"), def:36, min:0, max:72, step:.5, hint:f("hours_k_h")},
+    {k:"stage", t:"num", label:f("stage"), def:10, min:0, max:60, step:1, hint:f("stage_h")},
+    {k:"gr", t:"title", label:t("grp_extra")},
+    {k:"senior", t:"check", label:f("senior"), sub:f("senior_s")},
+    {k:"selo", t:"check", label:f("selo"), sub:f("selo_s")},
+    {k:"subst", t:"num", label:f("subst"), def:0, min:0, max:200, step:1, hint:f("subst_h")},
+    {k:"children", t:"num", label:f("children"), def:0, min:0, max:15, step:1, hint:f("children_h")}
+  ],
+  oklad: () => {
+    const org = state.orgp || Object.keys(POSTS)[0];
+    const list = POSTS[org] || [];
+    const cur = list.find(x => x[0] === state.post) || list[0];
+    const modes = [f("mode_both"), f("mode_ok"), f("mode_h2")];
+    const a = [
+      {k:"mode", t:"select", label:f("mode"), opts:modes, def:modes[0], hint:f("mode_h")},
+      {k:"orgp", t:"select", label:f("orgp"), opts:Object.keys(POSTS), def:Object.keys(POSTS)[0], hint:f("orgp_h")},
+      {k:"post", t:"select", label:f("post"), opts:list.map(x => x[0]), def:list[0][0], hint:f("post_h")}
+    ];
+    if (state.mode !== modes[2]){
+      if (cur && cur[2]) a.push({k:"contingent", t:"num", label:f("contingent"), def:700, min:0, max:9000, step:10, hint:f("contingent_h")});
+      a.push({k:"stage", t:"num", label:f("stage"), def:15, min:0, max:60, step:1, hint:f("stage_o_h")});
+    }
+    if (state.mode !== modes[1]){
+      a.push({k:"gr", t:"title", label:t("grp_hours")});
+      a.push({k:"hklass", t:"select", label:f("hklass"), opts:[f("g14"), f("g511")], def:f("g511"), hint:f("hklass_h")});
+      a.push({k:"hedu", t:"select", label:f("hedu"), opts:EDU_LIST, def:"Высшее — специалист/магистр", hint:f("hedu_h")});
+      a.push({k:"hours", t:"num", label:f("hours_o"), def:9, min:0, max:20, step:.5, hint:f("hours_o_h")});
+      a.push({k:"klassruk", t:"check", label:f("klassruk"), sub:f("klassruk_s")});
+      a.push({k:"kat", t:"select", label:f("kat"), opts:[f("kat_no"), f("kat_2"), f("kat_1"), f("kat_h3")], def:f("kat_no"), hint:f("kat_h")});
+    }
+    a.push({k:"selo", t:"check", label:f("selo"), sub:f("selo_s")});
+    a.push({k:"children", t:"num", label:f("children"), def:0, min:0, max:15, step:1, hint:f("children_h")});
+    return a;
+  },
+  vuz: () => {
+    const lv = [f("lvl_spo"), f("lvl_vpo")];
+    const base = [{k:"level", t:"select", label:f("level"), opts:lv, def:lv[0], hint:f("level_h")}];
+    if (state.level === lv[1]){
+      return base.concat([
+        {k:"post", t:"select", label:f("post_v"), opts:Object.keys(VPO), def:"Старший преподаватель", hint:f("post_v_h")},
+        {k:"degree", t:"select", label:f("degree"), opts:[f("deg_no"), f("deg_k"), f("deg_d")], def:f("deg_no"), hint:f("degree_h")},
+        {k:"hours", t:"num", label:f("hours_y"), def:850, min:0, max:1200, step:10, hint:f("hours_y_v_h")},
+        {k:"stage", t:"num", label:f("stage"), def:15, min:0, max:60, step:1, hint:f("stage_h")},
+        {k:"admin", t:"select", label:f("admin"), opts:Object.keys(ADMIN), def:"Нет", hint:f("admin_h")},
+        {k:"orgv", t:"select", label:f("orgv"), opts:Object.keys(ORG_VPO), def:"Нет", hint:f("orgv_h")},
+        {k:"med", t:"check", label:f("med"), sub:f("med_s")},
+        {k:"selo", t:"check", label:f("selo"), sub:f("selo_s")},
+        {k:"children", t:"num", label:f("children"), def:0, min:0, max:15, step:1, hint:f("children_h")}
+      ]);
+    }
+    return base.concat([
+      {k:"edu", t:"select", label:f("edu"), opts:Object.keys(SPO), def:"Высшее — специалист/магистр", hint:f("edu_s_h")},
+      {k:"hours", t:"num", label:f("hours_y"), def:720, min:0, max:1200, step:10, hint:f("hours_y_s_h")},
+      {k:"stage", t:"num", label:f("stage"), def:15, min:0, max:60, step:1, hint:f("stage_h")},
+      {k:"orgs", t:"select", label:f("orgv"), opts:Object.keys(ORG_SPO), def:"Нет", hint:f("orgs_h")},
+      {k:"selo", t:"check", label:f("selo"), sub:f("selo_s")},
+      {k:"children", t:"num", label:f("children"), def:0, min:0, max:15, step:1, hint:f("children_h")}
+    ]);
+  },
+  top: () => [
+    {k:"post", t:"select", label:f("post_t"), opts:Object.keys(TOP), def:"Повар", hint:f("post_t_h")},
+    {k:"hours", t:"num", label:f("hours_t"), def:40, min:0, max:80, step:1, hint:f("hours_t_h")},
+    {k:"razryad", t:"select", label:f("razryad"), opts:Object.keys(RAZRYAD), def:"Нет разряда", hint:f("razryad_h")},
+    {k:"medstage", t:"num", label:f("medstage"), def:0, min:0, max:60, step:1, hint:f("medstage_h")},
+    {k:"gr", t:"title", label:t("grp_special")},
+    {k:"nenorm", t:"check", label:f("nenorm"), sub:f("nenorm_s")},
+    {k:"povar", t:"check", label:f("povar"), sub:f("povar_s")},
+    {k:"gr2", t:"title", label:t("grp_sovm")},
+    {k:"sovm", t:"select", label:f("sovm"), opts:[f("sovm_no"), ...Object.keys(TOP), ...Object.keys(MOP)], def:f("sovm_no"), hint:f("sovm_h")},
+    {k:"sovmpct", t:"num", label:f("sovmpct"), def:30, min:0, max:100, step:5, hint:f("sovmpct_h")},
+    {k:"children", t:"num", label:f("children"), def:0, min:0, max:15, step:1, hint:f("children_h")}
+  ],
+  mop: () => [
+    {k:"post", t:"select", label:f("post_t"), opts:Object.keys(MOP), def:"Уборщик служебных, общественных и культурно-бытовых помещений", hint:f("post_m_h")},
+    {k:"hours", t:"num", label:f("hours_t"), def:40, min:0, max:80, step:1, hint:f("hours_t_h")},
+    {k:"razryad", t:"select", label:f("razryad"), opts:Object.keys(RAZRYAD), def:"Нет разряда", hint:f("razryad_h")},
+    {k:"moyu", t:"check", label:f("moyu"), sub:f("moyu_s")},
+    {k:"gr2", t:"title", label:t("grp_sovm")},
+    {k:"sovm", t:"select", label:f("sovm"), opts:[f("sovm_no"), ...Object.keys(MOP), ...Object.keys(TOP)], def:f("sovm_no"), hint:f("sovm_h")},
+    {k:"sovmpct", t:"num", label:f("sovmpct"), def:30, min:0, max:100, step:5, hint:f("sovmpct_h")},
+    {k:"children", t:"num", label:f("children"), def:0, min:0, max:15, step:1, hint:f("children_h")}
+  ]
+};
+const fieldsOf = p => FIELDS[p]();
+let profile = "teacher";
+const state = {};
+
+/* ---------------- форма ---------------- */
+function buildForm(){
+  const box = document.getElementById("form");
+  box.innerHTML = "";
+  fieldsOf(profile).forEach(fl => {
+    if (fl.t === "title"){
+      const d = document.createElement("div");
+      d.className = "group-title"; d.textContent = fl.label; box.appendChild(d); return;
+    }
+    if (fl.t === "check"){
+      const l = document.createElement("label");
+      l.className = "switch";
+      l.innerHTML = '<input type="checkbox" data-k="' + fl.k + '"><span>' + fl.label + '<small>' + fl.sub + '</small></span>';
+      if (state[fl.k]) l.querySelector("input").checked = true;
+      box.appendChild(l); return;
+    }
+    const w = document.createElement("div");
+    w.className = "field";
+    const id = "f_" + fl.k;
+    let ctrl;
+    if (fl.t === "select"){
+      ctrl = '<select id="' + id + '" data-k="' + fl.k + '">' +
+        fl.opts.map(o => '<option' + (state[fl.k] === o ? " selected" : "") + '>' + o + '</option>').join("") + '</select>';
+    } else {
+      ctrl = '<input id="' + id + '" type="number" data-k="' + fl.k + '" value="' + (state[fl.k] ?? fl.def) +
+        '" min="' + fl.min + '" max="' + fl.max + '" step="' + fl.step + '" inputmode="decimal">';
+    }
+    w.innerHTML = '<label for="' + id + '">' + fl.label + '</label>' + ctrl +
+      (fl.hint ? '<div class="hint">' + fl.hint + '</div>' : "");
+    box.appendChild(w);
+  });
+
+  const ttl = document.createElement("div");
+  ttl.className = "group-title"; ttl.textContent = t("grp_high");
+  box.appendChild(ttl);
+  const rayons = Object.keys(REGIONS).sort((a, b) => a.localeCompare(b, "ru"));
+  const w = document.createElement("div");
+  w.className = "field";
+  w.innerHTML = '<label for="f_rayon">' + t("f_rayon") + '</label>' +
+    '<select id="f_rayon" data-k="rayon"><option>' + t("na") + '</option>' +
+    rayons.map(r => '<option' + (state.rayon === r ? " selected" : "") + '>' + r + '</option>').join("") + '</select>' +
+    '<div class="hint">' + t("f_rayon_h") + '</div>';
+  box.appendChild(w);
+  const w2 = document.createElement("div"); w2.className = "field"; w2.id = "villagewrap"; box.appendChild(w2);
+  const w3 = document.createElement("div"); w3.className = "field"; w3.id = "highstagewrap"; box.appendChild(w3);
+  buildVillage();
+  bind();
+}
+
+function buildVillage(){
+  const wrap = document.getElementById("villagewrap");
+  const hs = document.getElementById("highstagewrap");
+  const list = REGIONS[state.rayon];
+  if (!list){ wrap.innerHTML = ""; hs.innerHTML = ""; state.village = null; return; }
+  if (!list.some(v => v[0] === state.village)) state.village = list[0][0];
+  wrap.innerHTML = '<label for="f_village">' + t("f_village") + '</label>' +
+    '<select id="f_village" data-k="village">' +
+    list.map(v => '<option' + (state.village === v[0] ? " selected" : "") + '>' + v[0] + '</option>').join("") + '</select>' +
+    '<div class="hint">' + t("f_village_h") + '</div>';
+  hs.innerHTML = '<label for="f_hstage">' + t("f_hstage") + '</label>' +
+    '<input id="f_hstage" type="number" data-k="hstage" value="' + (state.hstage ?? 0) + '" min="0" max="60" step="1" inputmode="numeric">' +
+    '<div class="hint">' + t("f_hstage_h") + '</div>';
+}
+
+function bind(){
+  document.querySelectorAll("#form [data-k]").forEach(el => {
+    el.addEventListener("input", () => {
+      const k = el.dataset.k;
+      state[k] = el.type === "checkbox" ? el.checked : (el.type === "number" ? parseFloat(el.value || 0) : el.value);
+      if (k === "rayon"){ state.village = null; buildVillage(); bind(); }
+      if (k === "orgp"){ state.post = POSTS[state.orgp][0][0]; buildForm(); }
+      if (k === "post" || k === "mode" || k === "level"){
+        fieldsOf(profile).forEach(fl => { if (state[fl.k] === undefined && fl.t !== "title") state[fl.k] = fl.t === "check" ? false : fl.def; });
+        buildForm();
+      }
+      render();
+    });
+  });
+}
+
+function regionCoef(){
+  const list = REGIONS[state.rayon];
+  if (!list) return {c:1, why:null};
+  const row = list.find(v => v[0] === state.village);
+  if (!row) return {c:1, why:null};
+  return {c: row[1], why: g(row[2] === "398" ? "reg398" : row[2] === "399" ? "reg399" : "regsum")};
+}
+
+/* ---------------- расчёт ---------------- */
+function calc(){
+  const s = state, L = [], warn = [];
+  const part = h => Math.min(1, h);
+  let stavka = 0, norm = 0, hours = 0, base = 0, highBase = 0, presidSet = PRES;
+
+  if (profile === "teacher"){
+    norm = s.klass === f("g14") ? 16 : 18;
+    hours = +s.hours || 0;
+    const k = EDU_T[s.edu];
+    stavka = k * B;
+    const ratio = norm ? hours / norm : 0, p = part(ratio);
+    const oklad = stavka * ratio;
+    L.push([g("l_oklad"), oklad, g("e_oklad", {rate:som(stavka), norm:norm, h:num(hours)}), k + " × 7 040 × " + num(hours) + " ÷ " + norm]);
+    if (s.lang) L.push([g("l_lang"), oklad * .15, g("e_lang"), num(oklad) + " × 15 %"]);
+    if (s.subject !== f("subj_no")) L.push([g("l_tetr"), TETR * ratio, g("e_tetr"), "2 700 × " + num(hours) + " ÷ " + norm]);
+    if (s.klassruk) L.push([g("l_klass"), KLASS, g("e_klass"), g("fx")]);
+    if (s.klass === f("g14")) L.push([g("l_edu14"), EDU14[s.edu] * p, g("e_edu14"), num(EDU14[s.edu]) + " × " + num(p * 100) + " %"]);
+    const katIdx = [f("kat_no"), f("kat_2"), f("kat_1"), f("kat_h3")].indexOf(s.kat);
+    const katSum = [0, 2000, 3000, 5000][katIdx < 0 ? 0 : katIdx];
+    if (katSum) L.push([g("l_kat"), katSum, g("e_kat", {k:s.kat}), g("fx")]);
+    const st = stavka * p * pedPct(+s.stage || 0);
+    if (st) L.push([g("l_stage"), st, g("e_stage", {y:(+s.stage || 0), txt:pedTxt(+s.stage || 0)}),
+      num(stavka) + " × " + num(p * 100) + " % × " + num(pedPct(+s.stage || 0) * 100) + " %"]);
+    if (s.selo) L.push([g("l_selo"), SELO, g("e_selo"), g("fx")]);
+    base = p; highBase = stavka * p;
+    if (+s.subst > 0){
+      const hp = stavka / (norm * 4.2);
+      L.push([g("l_subst", {h:num(+s.subst)}), hp * s.subst, g("e_subst", {price:som(hp)}), num(stavka) + " ÷ (" + norm + " × 4,2) × " + num(+s.subst)]);
+    }
+    const maxLoad = s.klass === f("g14") ? 24 : 27;
+    if (hours > maxLoad) warn.push(g("w_load", {h:num(hours), max:maxLoad}));
+    if (hours === 0) warn.push(g("w_zero"));
+  }
+
+  if (profile === "kinder"){
+    const map = {}; map[f("org_ds")] = [EDU_K, 36]; map[f("org_int")] = [EDU_I, 30]; map[f("org_kr")] = [EDU_KR, 20];
+    const pair = map[s.org] || [EDU_K, 36];
+    const tab = pair[0]; norm = pair[1]; hours = +s.hours || 0;
+    const k = tab[s.edu];
+    const base0 = k * B;
+    stavka = s.senior ? base0 * 1.1 : base0;
+    const ratio = norm ? hours / norm : 0, p = part(ratio);
+    if (s.senior) L.push([g("l_senior"), base0 * .1, g("e_senior"), num(base0) + " × 10 %"]);
+    L.push([g("l_oklad"), stavka * ratio, g("e_oklad", {rate:som(stavka), norm:norm, h:num(hours)}), k + " × 7 040 × " + num(hours) + " ÷ " + norm]);
+    const st = stavka * p * pedPct(+s.stage || 0);
+    if (st) L.push([g("l_stage"), st, g("e_stage", {y:(+s.stage || 0), txt:pedTxt(+s.stage || 0)}),
+      num(stavka) + " × " + num(p * 100) + " % × " + num(pedPct(+s.stage || 0) * 100) + " %"]);
+    if (s.selo) L.push([g("l_selo"), SELO, g("e_selo"), g("fx")]);
+    if (+s.subst > 0){
+      const hp = stavka / (norm * 4.2);
+      L.push([g("l_subst", {h:num(+s.subst)}), hp * s.subst, g("e_subst", {price:som(hp)}), num(stavka) + " ÷ (" + norm + " × 4,2) × " + num(+s.subst)]);
+    }
+    base = p; highBase = stavka * p;
+    if (hours > 54) warn.push(g("w_kinder"));
+  }
+
+  if (profile === "oklad"){
+    const org = s.orgp || Object.keys(POSTS)[0];
+    const list = POSTS[org] || [];
+    const cur = list.find(x => x[0] === s.post) || list[0];
+    const modes = [f("mode_both"), f("mode_ok"), f("mode_h2")];
+    const mode = s.mode || modes[0];
+    presidSet = cur[3];
+    let oklad = 0;
+    if (mode !== modes[2]){
+      let coef, why;
+      if (cur[2]){
+        const c = +s.contingent || 0;
+        let row = cur[2][cur[2].length - 1];
+        for (const q of cur[2]){ if (c <= q[0]){ row = q; break; } }
+        coef = row[1]; why = g("e_post_c", {c:coef, n:num(c)});
+      } else { coef = cur[1]; why = g("e_post_f", {c:coef}); }
+      oklad = coef * B;
+      L.push([g("l_post"), oklad, why + g("e_post_tail"), coef + " × 7 040"]);
+      const st = oklad * pedPct(+s.stage || 0);
+      if (st) L.push([g("l_stage_o"), st, g("e_stage_o", {y:(+s.stage || 0), txt:pedTxt(+s.stage || 0)}),
+        num(oklad) + " × " + num(pedPct(+s.stage || 0) * 100) + " %"]);
+    }
+    let hourPay = 0;
+    const hn = s.hklass === f("g14") ? 16 : 18;
+    if (mode !== modes[1]){
+      const hstavka = EDU_T[s.hedu] * B;
+      const hh = +s.hours || 0;
+      hourPay = hstavka * hh / hn;
+      if (hh > 0) L.push([g("l_hours", {h:num(hh)}), hourPay, g("e_hours", {rate:som(hstavka), norm:hn}), num(hstavka) + " × " + num(hh) + " ÷ " + hn]);
+      if (s.klassruk) L.push([g("l_klass"), KLASS, g("e_klass"), g("fx")]);
+      const ki = [f("kat_no"), f("kat_2"), f("kat_1"), f("kat_h3")].indexOf(s.kat);
+      const ks = [0, 2000, 3000, 5000][ki < 0 ? 0 : ki];
+      if (ks) L.push([g("l_kat"), ks, g("e_kat", {k:s.kat}), g("fx")]);
+      if (hh > 20) warn.push(g("w_20"));
+      if (mode === modes[2]) warn.push(g("w_hours_only"));
+    }
+    if (s.selo) L.push([g("l_selo"), SELO, g("e_selo"), g("fx")]);
+    stavka = oklad || EDU_T[s.hedu] * B;
+    base = mode === modes[2] ? Math.min(1, (+s.hours || 0) / hn) : 1;
+    highBase = oklad + hourPay;
+  }
+
+  if (profile === "vuz"){
+    const spo = s.level !== f("lvl_vpo");
+    let coef, normY, why;
+    if (spo){
+      coef = SPO[s.edu]; normY = 720; why = g("e_coef_spo", {c:coef});
+    } else {
+      const dmap = {}; dmap[f("deg_no")] = "Нет"; dmap[f("deg_k")] = "Кандидат наук"; dmap[f("deg_d")] = "Доктор наук";
+      const deg = dmap[s.degree] || "Нет";
+      coef = VPO[s.post][deg];
+      normY = deg !== "Нет" && s.post === "Старший преподаватель" ? 800 : VPO_NORM(s.post);
+      why = g("e_coef_vpo", {c:coef, p:s.post, d:(deg === "Нет" ? g("d_no") : s.degree)});
+      if (s.med){ coef = coef * 1.25; why += g("e_coef_med"); }
+      s.__deg = deg;
+    }
+    stavka = coef * B; norm = normY; hours = +s.hours || 0;
+    const ratio = normY ? hours / normY : 0, p = part(ratio);
+    const oklad = stavka * ratio;
+    L.push([g("l_oklad_y"), oklad, g("e_oklad_y", {why:why, rate:som(stavka), norm:normY, h:num(hours)}),
+      num(coef) + " × 7 040 × " + num(hours) + " ÷ " + normY]);
+    const pct = spo ? ORG_SPO[s.orgs] : ORG_VPO[s.orgv];
+    if (pct) L.push([g("l_orgbonus"), oklad * pct, g("e_orgbonus", {p:num(pct * 100), ap:(spo ? "4" : "6")}), num(oklad) + " × " + num(pct * 100) + " %"]);
+    const st = stavka * p * pedPct(+s.stage || 0);
+    if (st) L.push([g("l_stage"), st, g("e_stage", {y:(+s.stage || 0), txt:pedTxt(+s.stage || 0)}),
+      num(stavka) + " × " + num(p * 100) + " % × " + num(pedPct(+s.stage || 0) * 100) + " %"]);
+    if (!spo){
+      if (DEGREE_PAY[s.__deg]) L.push([g("l_degree"), DEGREE_PAY[s.__deg], g("e_degree"), g("fx")]);
+      if (ADMIN[s.admin]) L.push([g("l_admin"), ADMIN[s.admin], g("e_admin", {a:s.admin}), g("fx")]);
+    }
+    if (s.selo) L.push([g("l_selo"), SELO, g("e_selo"), g("fx")]);
+    base = p; highBase = stavka * p;
+    if (spo && hours > 1080) warn.push(g("w_1080"));
+    if (!spo && s.__deg === "Кандидат наук") warn.push(g("w_kand"));
+    if (hours === 0) warn.push(g("w_zeroy"));
+  }
+
+  if (profile === "top" || profile === "mop"){
+    const isTop = profile === "top";
+    const tab = isTop ? TOP : MOP;
+    const coef = tab[s.post] || 0;
+    norm = NORM_TOP; hours = +s.hours || 0;
+    stavka = coef * B;
+    const ratio = hours / norm, p = part(ratio);
+    const oklad = stavka * ratio;
+    presidSet = PRES_TOP;
+    L.push([g("l_oklad_t"), oklad, g("e_oklad_t", {c:coef, ap:(isTop ? "19" : "20"), h:num(hours)}), coef + " × 7 040 × " + num(hours) + " ÷ 40"]);
+    const rz = RAZRYAD[s.razryad] || 0;
+    if (rz) L.push([g("l_razryad"), oklad * rz, g("e_razryad", {r:s.razryad, p:num(rz * 100)}), num(oklad) + " × " + num(rz * 100) + " %"]);
+    if (isTop){
+      if (s.nenorm && /одител/.test(s.post)) L.push([g("l_nenorm"), oklad * NENORM, g("e_nenorm"), num(oklad) + " × 25 %"]);
+      if (s.povar && /овар/.test(s.post)) L.push([g("l_povar"), oklad * NENORM, g("e_povar"), num(oklad) + " × 25 %"]);
+      if (s.post === "Медицинская сестра" && pedPct(+s.medstage || 0) > 0)
+        L.push([g("l_medstage"), stavka * p * pedPct(+s.medstage || 0), g("e_medstage", {y:(+s.medstage || 0), txt:pedTxt(+s.medstage || 0)}),
+          num(stavka) + " × " + num(p * 100) + " % × " + num(pedPct(+s.medstage || 0) * 100) + " %"]);
+      if (s.nenorm && !/одител/.test(s.post)) warn.push(g("w_driver", {p:s.post}));
+      if (s.povar && !/овар/.test(s.post)) warn.push(g("w_cook"));
+    } else {
+      const may = /борщик|прачка|стирке|Гладильщик|Кухонный/.test(s.post);
+      if (s.moyu && may) L.push([g("l_moyu"), oklad * MOYUSCHIE, g("e_moyu"), num(oklad) + " × 25 %"]);
+      if (s.moyu && !may) warn.push(g("w_moyu"));
+    }
+    if (s.sovm && s.sovm !== f("sovm_no")){
+      const sc = TOP[s.sovm] !== undefined ? TOP[s.sovm] : MOP[s.sovm];
+      const pct = (+s.sovmpct || 0) / 100;
+      if (sc !== undefined){
+        L.push([g("l_sovm"), sc * B * pct, g("e_sovm", {p:s.sovm, pct:num(pct * 100), sum:som(sc * B)}), num(sc * B) + " × " + num(pct * 100) + " %"]);
+        if (pct < .3) warn.push(g("w_sovm"));
+      }
+    }
+    base = p; highBase = stavka * p;
+    if (hours > 40) warn.push(g("w_40"));
+  }
+
+  const hstage = +s.hstage || 0;
+  const reg = regionCoef();
+  if (reg.why && highPct(hstage) > 0){
+    L.push([g("l_high"), highBase * highPct(hstage), g("e_high", {y:hstage, p:num(highPct(hstage) * 100)}),
+      num(highBase) + " × " + num(highPct(hstage) * 100) + " %"]);
+  }
+
+  const itogo = L.reduce((a, r) => a + r[1], 0);
+  const withReg = itogo * reg.c;
+  const presidSum = presidSet * base;
+  const gross = withReg + presidSum;
+  const insBase = gross - presidSum;
+  const pf = insBase * PF, npf = insBase * NPF;
+  const children = +s.children || 0;
+  // НК КР ст. 191 ч. 4 п. 1: надбавка за высокогорье и районный коэффициент не облагаются
+  const highLine = L.filter(x => x[0] === g("l_high")).reduce((a, x) => a + x[1], 0);
+  const nonTaxable = highLine + (withReg - itogo);
+  // НК КР ст. 194 п. 3: вычет взносов — только по облагаемым доходам
+  const insDeduction = Math.max(0, insBase - nonTaxable) * (PF + NPF);
+  const taxBase = gross - nonTaxable - insDeduction - DED - children * DED_CHILD;
+  const tax = Math.max(0, taxBase) * TAX;
+  const net = gross - pf - npf - tax;
+
+  if (profile === "teacher") state.__stavka = EDU_T[s.edu] * B;
+  else if (profile === "kinder") state.__stavka = stavka;
+  else if (profile === "vuz") state.__stavka = stavka;
+  else if (profile === "top" || profile === "mop") state.__stavka = stavka;
+  else state.__stavka = stavka;
+
+  return {L, itogo, reg, withReg, presidSum, gross, pf, npf, tax, net, warn, children, taxBase,
+          base, nonTaxable, insDeduction};
+}
+
+/* ---------------- вывод ---------------- */
+const WA = "996550650033";
+function waLink(r){
+  const prof = document.querySelector('.tab[aria-selected="true"]').textContent;
+  const txt = [t("wa_msg_1"), t("wa_msg_prof") + " " + prof, t("wa_msg_gross") + " " + som(r.gross),
+    t("wa_msg_net") + " " + som(r.net), t("wa_msg_end")].join("\n");
+  return "https://wa.me/" + WA + "?text=" + encodeURIComponent(txt);
+}
+
+function render(){
+  const r = calc();
+  const box = document.getElementById("result");
+  const lines = r.L.map(x =>
+    '<details class="line"><summary><span class="t">' + x[0] + '</span><span class="v">' + som(x[1]) + '</span></summary>' +
+    '<div class="why">' + x[2] + '<br><code>' + x[3] + '</code></div></details>').join("");
+
+  const regLine = r.reg.why
+    ? '<details class="line"><summary><span class="t">' + t("reg_line") + num(r.reg.c) + '</span><span class="v">+ ' + som(r.withReg - r.itogo) + '</span></summary>' +
+      '<div class="why">' + state.village + ", " + state.rayon + ": " + r.reg.why + '. ' + t("reg_why") + '<br><code>' + num(r.itogo) + " × " + num(r.reg.c) + '</code></div></details>'
+    : "";
+
+  box.innerHTML =
+    '<div id="result-top" class="headline"><div class="lab">' + t("res_net") + '</div>' +
+    '<div class="big">' + som(r.net) + '</div>' +
+    '<div class="sub">' + t("res_sub_a") + ' ' + som(r.gross) + ' · ' + t("res_sub_b") + ' ' + som(r.pf + r.npf + r.tax) + '</div></div>' +
+
+    '<div class="mini"><div><div class="lab">' + (profile === "oklad" ? t("res_oklad") : t("res_rate")) + '</div>' +
+    '<div class="v">' + som(state.__stavka || 0) + '</div></div>' +
+    '<div><div class="lab">' + t("res_presid") + '</div><div class="v">' + som(r.presidSum) + '</div></div></div>' +
+
+    (r.warn.length ? r.warn.map(w => '<div class="notice warn">' + w + '</div>').join("") : "") +
+
+    '<div><div class="group-title" style="margin:6px 0 4px">' + t("res_lines_title") + '</div>' +
+    '<div class="lines">' + lines + regLine +
+    '<div class="subtotal"><span>' + t("res_sub_total") + '</span><span class="v">' + som(r.withReg) + '</span></div>' +
+    '<details class="line"><summary><span class="t">' + t("res_presid") + '</span><span class="v">' + som(r.presidSum) + '</span></summary>' +
+    '<div class="why">' + t("presid_why") + (r.base < 1 ? t("presid_why2") + " " + num(r.base * 100) + " " + t("presid_why3") : "") +
+    t("presid_why4") + '<br><code>' + num(r.presidSum / (r.base || 1)) + ' × ' + num(r.base * 100) + ' %</code></div></details>' +
+    '<div class="subtotal"><span>' + t("res_gross") + '</span><span class="v">' + som(r.gross) + '</span></div>' +
+
+    '<div class="group-title" style="margin:14px 0 4px">' + t("res_deduct") + '</div>' +
+    '<details class="line minus"><summary><span class="t">' + t("pf") + '</span><span class="v">− ' + som(r.pf) + '</span></summary>' +
+    '<div class="why">' + t("pf_why") + '<br><code>' + num(r.gross - r.presidSum) + ' × 8 %</code></div></details>' +
+    '<details class="line minus"><summary><span class="t">' + t("npf") + '</span><span class="v">− ' + som(r.npf) + '</span></summary>' +
+    '<div class="why">' + t("npf_why") + '<br><code>' + num(r.gross - r.presidSum) + ' × 2 %</code></div></details>' +
+    '<details class="line minus"><summary><span class="t">' + t("tax") + '</span><span class="v">− ' + som(r.tax) + '</span></summary>' +
+    '<div class="why">' + t("tax_why") + (r.children ? ' ' + t("tax_why_children").split("{n}").join(r.children * 100) : '') + t("tax_why_end") +
+    (r.nonTaxable > 0 ? '<br>' + t("tax_high_note").split("{sum}").join(som(r.nonTaxable)) : '') +
+    '<br><code>' + num(Math.max(0, r.taxBase)) + ' × 10 %</code></div></details>' +
+    '<div class="subtotal"><span>' + t("res_deduct_total") + '</span><span class="v">− ' + som(r.pf + r.npf + r.tax) + '</span></div></div></div>' +
+
+    '<div class="actions"><button class="btn sec" id="copy">' + t("copy") + '</button>' +
+    '<button class="btn sec" onclick="window.print()">' + t("print") + '</button></div>' +
+    '<div class="notice info">' + t("disclaimer") + '</div>' +
+    '<div class="cta-card"><h3>' + t("cta_h") + '</h3><p>' + t("cta_p") + '</p>' +
+    '<a class="btn wa" target="_blank" rel="noopener" href="' + waLink(r) + '">' + t("wa_btn") + '</a></div>';
+
+  document.getElementById("sticky").classList.add("on");
+  document.getElementById("stickyv").textContent = som(r.net);
+
+  document.getElementById("copy").onclick = () => {
+    const txt = [t("copy_title") + " " + document.querySelector('.tab[aria-selected="true"]').textContent, ""]
+      .concat(r.L.map(x => x[0] + ": " + som(x[1])))
+      .concat(r.reg.why ? [t("reg_line") + num(r.reg.c) + ": +" + som(r.withReg - r.itogo)] : [])
+      .concat([t("res_presid") + ": " + som(r.presidSum), t("res_gross") + ": " + som(r.gross),
+        t("pf") + ": −" + som(r.pf), t("npf") + ": −" + som(r.npf), t("tax") + ": −" + som(r.tax),
+        t("res_net") + ": " + som(r.net), "", t("copy_src")]).join("\n");
+    navigator.clipboard.writeText(txt).then(() => {
+      const b = document.getElementById("copy"); b.textContent = t("copied");
+      setTimeout(() => b.textContent = t("copy"), 1600);
+    });
+  };
+}
+
+/* ---------------- профили и язык ---------------- */
+function setProfile(p, keepState){
+  profile = p;
+  document.querySelectorAll(".tab").forEach(x => x.setAttribute("aria-selected", String(x.dataset.prof === p)));
+  if (!keepState){
+    for (const k of Object.keys(state)) if (k !== "rayon" && k !== "village" && k !== "hstage") delete state[k];
+    fieldsOf(p).forEach(fl => {
+      if (fl.t === "num" || fl.t === "select") state[fl.k] = fl.def;
+      if (fl.t === "check") state[fl.k] = false;
+    });
+  }
+  buildForm(); render();
+}
+
+function applyLang(){
+  document.documentElement.lang = LANG === "kg" ? "ky" : LANG;
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.innerHTML = t(el.dataset.i18n); });
+  document.querySelectorAll(".langbtn").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === LANG)));
+  document.getElementById("sticky-l").textContent = t("sticky_net");
+  document.getElementById("sticky-b").textContent = t("sticky_btn");
+  setProfile(profile);
+}
+
+document.querySelectorAll(".tab").forEach(x => x.addEventListener("click", () => setProfile(x.dataset.prof)));
+document.querySelectorAll(".langbtn").forEach(b => b.addEventListener("click", () => {
+  LANG = b.dataset.lang;
+  try { localStorage.setItem("mugalim_lang", LANG); } catch (e) {}
+  applyLang();
+}));
+state.rayon = t("na");
+applyLang();
+
+</script>
+</body>
+</html>
