@@ -1,4 +1,24 @@
 <!doctype html>
+<!--
+================================================================================
+  МУГАЛИМ ЭСЕП — калькулятор зарплаты работников образования
+  Кыргызской Республики
+
+  © 2026 AN Consulting (Асель Мамарасулова). Все права защищены.
+  Официальный адрес: https://mamarasulovaasel-spec.github.io/anc-calc/
+  WhatsApp: +996 550 650 033
+
+  Методика расчёта, справочник населённых пунктов с районными коэффициентами
+  (767 позиций, 33 района) и реализация — авторская работа AN Consulting.
+  Копирование, размещение на других ресурсах и коммерческое использование
+  без письменного разрешения правообладателя не допускается.
+
+  Обозначение «Мугалим Эсеп» заявлено на регистрацию в Кыргызпатенте.
+
+  Сборка: ANC-CALC-EDU-2026.09.08
+  Подпись: f283d892ba0c8cc0c50c79dfc4b01dc6
+================================================================================
+-->
 <html lang="ru">
 <head>
 <meta charset="utf-8">
@@ -10,6 +30,33 @@
 <meta property="og:description" content="Считает зарплату учителя, воспитателя и руководителя с разбором каждой строки: надбавки, высокогорье, районный коэффициент, взносы и подоходный налог.">
 <meta property="og:locale" content="ru_RU">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="author" content="AN Consulting — Асель Мамарасулова">
+<meta name="copyright" content="© 2026 AN Consulting. Все права защищены.">
+<meta name="generator" content="ANC-CALC-EDU-2026.09.08">
+<link rel="canonical" href="https://mamarasulovaasel-spec.github.io/anc-calc/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Мугалим Эсеп",
+  "alternateName": "Калькулятор зарплаты работников образования КР",
+  "url": "https://mamarasulovaasel-spec.github.io/anc-calc/",
+  "applicationCategory": "FinanceApplication",
+  "inLanguage": ["ru", "ky", "en"],
+  "isAccessibleForFree": true,
+  "creator": {
+    "@type": "Organization",
+    "name": "AN Consulting",
+    "founder": {"@type": "Person", "name": "Асель Мамарасулова"},
+    "areaServed": "KG",
+    "telephone": "+996550650033"
+  },
+  "copyrightHolder": {"@type": "Organization", "name": "AN Consulting"},
+  "copyrightYear": 2026,
+  "license": "https://mamarasulovaasel-spec.github.io/anc-calc/",
+  "identifier": "f283d892ba0c8cc0c50c79dfc4b01dc6"
+}
+</script>
 <title>Мугалим Эсеп</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -222,6 +269,7 @@ footer a{color:var(--ochre); text-decoration:none; font-weight:600}
 .langbtn[aria-pressed="true"]{background:var(--ochre); color:#1A1305; border-color:var(--ochre)}
 .langbtn:hover[aria-pressed="false"]{background:rgba(233,241,231,.12); color:#fff}
 .langnote{font-size:13px; color:var(--ink-3); margin-top:8px}
+.foot-copy{margin-top:18px; padding-top:14px; border-top:1px solid var(--line); font-size:12.5px; color:var(--ink-3); line-height:1.5}
 @media print{.hero,.tabs,.sticky,.actions,footer{display:none !important}}
 </style>
 </head>
@@ -367,6 +415,7 @@ footer a{color:var(--ochre); text-decoration:none; font-weight:600}
     <div data-i18n="foot1"></div>
     <div><span data-i18n="foot2"></span><br><span data-i18n="foot_wa"></span>
       <a href="https://wa.me/996550650033" target="_blank" rel="noopener">WhatsApp +996 550 650 033</a></div>
+    <div class="foot-copy"><span data-i18n="foot_copy"></span></div>
   </div>
 </footer>
 
@@ -462,6 +511,7 @@ ru: {
   src3_b: "Трудовой кодекс КР № 23 от 23 января 2025 года", src3_s: "статья 101 — совмещение, статья 164 — совместительство до 20 часов в неделю",
   src4_b: "Налоговый кодекс КР", src4_s: "статьи 199 и 200: вычеты 650 и 100 сомов, подоходный налог 10 процентов",
   foot1: "<b>AN Consulting</b> · калькулятор зарплаты работников образования Кыргызской Республики",
+  foot_copy: "© 2026 <b>AN Consulting</b> · Асель Мамарасулова. Методика расчёта и справочник районных коэффициентов — авторская работа. Копирование и размещение на других ресурсах без разрешения не допускается. Обозначение «Мугалим Эсеп» заявлено на регистрацию в Кыргызпатенте.",
   foot2: "Расчёт носит справочный характер. Официальные суммы — в расчётном листке вашей организации.",
   foot_wa: "Вопросы и проверка расчётного листка:",
 
@@ -553,6 +603,7 @@ kg: {
   src3_b: "КР Эмгек кодекси № 23, 2025-жылдын 23-январы", src3_s: "101-берене — кызмат айкалыштыруу, 164-берене — жумасына 20 саатка чейин кошумча иш",
   src4_b: "КР Салык кодекси", src4_s: "199 жана 200-беренелер: 650 жана 100 сом чегерүү, киреше салыгы 10 пайыз",
   foot1: "<b>AN Consulting</b> · Кыргыз Республикасынын билим берүү кызматкерлеринин айлык калькулятору",
+  foot_copy: "© 2026 <b>AN Consulting</b> · Асель Мамарасулова. Эсептөө ыкмасы жана райондук коэффициенттердин тизмеси — автордук иш. Уруксатсыз көчүрүүгө жана башка ресурстарга жайгаштырууга жол берилбейт. «Мугалим Эсеп» белгиси Кыргызпатентке катталууга берилген.",
   foot2: "Эсеп маалымат үчүн. Расмий суммалар уюмуңуздун эсептик баракчасында.",
   foot_wa: "Суроолор жана эсептик баракчаны текшерүү:",
 
@@ -643,6 +694,7 @@ en: {
   src3_b: "Labour Code No. 23 of 23 January 2025", src3_s: "article 101 — combining posts, article 164 — up to 20 hours a week of secondary work",
   src4_b: "Tax Code of the Kyrgyz Republic", src4_s: "articles 199 and 200: allowances of 650 and 100 KGS, income tax of 10 percent",
   foot1: "<b>AN Consulting</b> · salary calculator for education workers of the Kyrgyz Republic",
+  foot_copy: "© 2026 <b>AN Consulting</b> · Asel Mamarasulova. The calculation method and the regional coefficient reference are original work. Copying and republishing without permission is not allowed. The sign «Мугалим Эсеп» is filed for registration with Kyrgyzpatent.",
   foot2: "This calculation is for reference. Official amounts are on your organisation's payslip.",
   foot_wa: "Questions and payslip reviews:",
 
@@ -1529,6 +1581,21 @@ document.querySelectorAll(".langbtn").forEach(b => b.addEventListener("click", (
 state.rayon = t("na");
 applyLang();
 
+</script>
+<div hidden aria-hidden="true" data-anc-owner="AN Consulting"
+     data-anc-author="Asel Mamarasulova" data-anc-build="ANC-CALC-EDU-2026.09.08"
+     data-anc-sig="f283d892ba0c8cc0c50c79dfc4b01dc6" data-anc-src="mamarasulovaasel-spec.github.io/anc-calc">​‌​​​​​‌​‌​​‌‌‌​​‌​​​​‌‌</div>
+<script>
+/* Метка происхождения. Не удалять: подтверждает авторство исходного файла. */
+window.__ANC_ORIGIN = Object.freeze({
+  product: "Мугалим Эсеп",
+  owner:   "AN Consulting",
+  author:  "Asel Mamarasulova",
+  build:   "ANC-CALC-EDU-2026.09.08",
+  sig:     "f283d892ba0c8cc0c50c79dfc4b01dc6",
+  canonical: "https://mamarasulovaasel-spec.github.io/anc-calc/",
+  wm: "​‌​​​​​‌​‌​​‌‌‌​​‌​​​​‌‌"
+});
 </script>
 </body>
 </html>
