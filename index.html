@@ -432,6 +432,15 @@ const EDU14 = {"Среднее общее":2000,"Среднее професси
 const KAT   = {"Нет":0,"Вторая":2000,"Первая":3000,"Высшая":5000};
 const TETR  = 2700, KLASS = 2100, SELO = 1800, PRES = 15000;
 const PF = .08, NPF = .02, TAX = .10, DED = 650, DED_CHILD = 100;
+const pct = v => String(Math.round(v * 1000) / 10).replace('.', ',');
+// Закон КР от 24.01.2004 № 8: ст. 2 п. 2 «а», «а-1», «б» и ст. 11-1 —
+// пенсионеры и возрастные не платят в ГНПФ, у инвалидов I–II группы свои ставки
+const STATUS_RATES = {
+  usual:     {pf: .08, npf: .02},
+  pensioner: {pf: .08, npf: 0},
+  age:       {pf: .10, npf: 0},
+  invalid:   {pf: .02, npf: 0}
+};
 
 const SPO = {"Среднее профессиональное":2.70,"Высшее — бакалавр":3.00,"Высшее — специалист/магистр":3.20};
 const VPO = {
@@ -526,7 +535,7 @@ ru: {
   presid_why: "15 000 сомов устанавливается за одну ставку", presid_why2: ", у вас нагрузка",
   presid_why3: "процентов ставки, поэтому и компенсация такая же доля",
   presid_why4: ". Районный коэффициент на неё не начисляется, страховые взносы с неё не удерживаются (пункт 18).",
-  pf: "Пенсионный фонд, 8 %", pf_why: "8 процентов от начислений без президентской компенсации.",
+  pf: "Пенсионный фонд", pf_why: "8 процентов от начислений без президентской компенсации.",
   npf: "Накопительный фонд, 2 %", npf_why: "2 процента от той же базы — государственный накопительный пенсионный фонд.",
   tax: "Подоходный налог, 10 %",
   tax_high_note: "Надбавка за стаж в высокогорье и прирост от районного коэффициента — {sum} — подоходным налогом не облагаются: статья 191 часть 4 пункт 1 Налогового кодекса. Взносы вычитаются только в части, приходящейся на облагаемый доход (статья 194 пункт 3).",
@@ -708,7 +717,7 @@ en: {
   presid_why: "15,000 KGS is set per full rate", presid_why2: ", your load is",
   presid_why3: "percent of a rate, so the compensation follows the same share",
   presid_why4: ". The regional coefficient does not apply to it and no social contributions are withheld from it (clause 18).",
-  pf: "Pension fund, 8 %", pf_why: "8 percent of gross pay excluding the presidential compensation.",
+  pf: "Pension fund", pf_why: "8 percent of gross pay excluding the presidential compensation.",
   npf: "Savings fund, 2 %", npf_why: "2 percent of the same base — the state savings pension fund.",
   tax: "Income tax, 10 %",
   tax_high_note: "The highland service allowance and the regional coefficient increase — {sum} — are exempt from income tax: Tax Code article 191 part 4 clause 1. Contributions are deducted only in the share attributable to taxable income (article 194 clause 3).",
@@ -753,6 +762,10 @@ ru: {
   selo:"Работаю в сельской местности", selo_s:"доплата 1 800 сомов в месяц",
   subst:"Часов замещения за месяц", subst_h:"Уроки за отсутствующего учителя — оплачиваются почасово.",
   children:"Детей на иждивении", children_h:"По 100 сомов вычета из налоговой базы за каждого.",
+  second:"Вторая должность", second_h:"Кружок или работа воспитателем оплачиваются отдельно, по своей норме часов: кружок 20, интернат 30, детсад 36.",
+  sec_no:"Нет, только уроки", sec_kruzhok:"Кружок или секция в школе",
+  sec_internat:"Воспитатель в интернате", sec_sad:"Воспитатель в детском саду",
+  second_hours:"Часов в неделю по второй должности", second_hours_h:"Оплата идёт от своей ставки и своей нормы, а не от учительской.",
   org:"Где вы работаете", org_h:"От типа организации зависят коэффициент и норма часов: 36 · 30 · 20.",
   org_ds:"Детский сад", org_int:"Школа-интернат общего типа", org_kr:"Внешкольная организация (кружок)",
   hours_k:"Часов в неделю фактически", hours_k_h:"Норма — 36 часов в детском саду. Больше нормы оплачивается пропорционально.",
@@ -807,6 +820,10 @@ kg: {
   selo:"Айылда иштейм", selo_s:"айына 1 800 сом кошумча",
   subst:"Айына алмаштыруу сааттары", subst_h:"Жок мугалимдин сабагы — саат боюнча төлөнөт.",
   children:"Багуудагы балдар", children_h:"Ар бирине салык базасынан 100 сом чегерилет.",
+  second:"Экинчи кызмат", second_h:"Ийрим же тарбиячы болуп иштөө өзүнчө, өз саат ченеми боюнча төлөнөт: ийрим 20, интернат 30, бала бакча 36.",
+  sec_no:"Жок, сабак гана", sec_kruzhok:"Мектептеги ийрим же секция",
+  sec_internat:"Интернаттагы тарбиячы", sec_sad:"Бала бакчадагы тарбиячы",
+  second_hours:"Экинчи кызмат боюнча жумасына саат", second_hours_h:"Төлөм өз ставкасынан жана өз ченеминен эсептелет.",
   org:"Кайда иштейсиз", org_h:"Коэффициент жана саат нормасы уюмдун түрүнөн көз каранды: 36 · 30 · 20.",
   org_ds:"Бала бакча", org_int:"Жалпы типтеги мектеп-интернат", org_kr:"Мектептен тышкаркы уюм (ийрим)",
   hours_k:"Жумасына иш жүзүндөгү сааттар", hours_k_h:"Бала бакчада норма — 36 саат. Нормадан ашыгы пропорционалдуу төлөнөт.",
@@ -861,6 +878,10 @@ en: {
   selo:"I work in a rural area", selo_s:"1,800 KGS a month",
   subst:"Substitution hours this month", subst_h:"Lessons covered for an absent teacher — paid by the hour.",
   children:"Dependent children", children_h:"100 KGS off the tax base for each child.",
+  second:"Second post", second_h:"A club or educator work is paid separately, under its own hour norm: club 20, boarding school 30, kindergarten 36.",
+  sec_no:"No, lessons only", sec_kruzhok:"Club or section at school",
+  sec_internat:"Educator at a boarding school", sec_sad:"Educator at a kindergarten",
+  second_hours:"Hours a week in the second post", second_hours_h:"Paid from its own rate and its own norm, not the teacher one.",
   org:"Where you work", org_h:"The organisation type sets the coefficient and the norm: 36 · 30 · 20 hours.",
   org_ds:"Детский сад", org_int:"Школа-интернат общего типа", org_kr:"Внешкольная организация (кружок)",
   hours_k:"Actual hours per week", hours_k_h:"The norm is 36 hours in a preschool. Hours above the norm are paid pro-rata.",
@@ -914,6 +935,10 @@ ru: {
   l_kat:"Квалификационная категория", e_kat:"Категория «{k}» — фиксированная сумма в месяц (пункт 24).",
   l_stage:"Надбавка за педагогический стаж", e_stage:"Стаж {y} лет: {txt} от ставки (пункт 10).",
   l_selo:"Сельская местность", e_selo:"1 800 сомов в месяц педагогическим работникам села, один раз независимо от нагрузки (пункт 21).",
+  l_sec_kruzhok:"Кружок или секция, {h} ч", l_sec_internat:"Воспитатель в интернате, {h} ч",
+  l_sec_sad:"Воспитатель в детском саду, {h} ч", l_stage2:"Надбавка за педстаж по второй должности",
+  e_second:"Вторая должность оплачивается отдельно: ставка {rate} за {norm} часов в неделю (пункты 28 и 30 Положения).",
+  e_stage2:"По совмещаемой должности надбавка за педстаж тоже положена (пункт 10 Положения).",
   l_subst:"Часы замещения ({h} ч)", e_subst:"Один час замещения стоит {price}: ставка ÷ (норма × 4,2) — пункт 30.",
   l_senior:"Надбавка старшему воспитателю", e_senior:"10 процентов к ставке старшему воспитателю (примечание к приложению 2).",
   l_post:"Должностной оклад", e_post_c:"Коэффициент {c} — по числу обучающихся ({n}) из приложений 7–13 Положения.",
@@ -966,6 +991,10 @@ kg: {
   l_kat:"Квалификациялык категория", e_kat:"«{k}» категория — айына туруктуу сумма (24-пункт).",
   l_stage:"Педагогикалык стаж үчүн үстөк", e_stage:"Стаж {y} жыл: ставкадан {txt} (10-пункт).",
   l_selo:"Айылдык жер", e_selo:"Айылдагы педагогикалык кызматкерлерге айына 1 800 сом, жүктөмгө карабай бир жолу (21-пункт).",
+  l_sec_kruzhok:"Ийрим же секция, {h} саат", l_sec_internat:"Интернаттагы тарбиячы, {h} саат",
+  l_sec_sad:"Бала бакчадагы тарбиячы, {h} саат", l_stage2:"Экинчи кызмат боюнча педстаж үстөгү",
+  e_second:"Экинчи кызмат өзүнчө төлөнөт: ставка {rate} жумасына {norm} саатка (жобонун 28 жана 30-пункттары).",
+  e_stage2:"Айкалыштырылган кызмат боюнча да педстаж үстөгү берилет (жобонун 10-пункту).",
   l_subst:"Алмаштыруу сааттары ({h} с)", e_subst:"Бир саат алмаштыруу {price}: ставка ÷ (норма × 4,2) — 30-пункт.",
   l_senior:"Улук тарбиячыга үстөк", e_senior:"Улук тарбиячыга ставкага 10 пайыз (2-тиркемеге эскертүү).",
   l_post:"Кызматтык айлык", e_post_c:"{c} коэффициенти — окугандардын санына ({n}) жараша, жобонун 7–13-тиркемелери.",
@@ -1018,6 +1047,10 @@ en: {
   l_kat:"Qualification category", e_kat:"Category «{k}» — a fixed monthly amount (clause 24).",
   l_stage:"Service allowance", e_stage:"{y} years of service: {txt} of the rate (clause 10).",
   l_selo:"Rural area", e_selo:"1,800 KGS a month for rural pedagogical staff, once regardless of workload (clause 21).",
+  l_sec_kruzhok:"Club or section, {h} h", l_sec_internat:"Boarding school educator, {h} h",
+  l_sec_sad:"Kindergarten educator, {h} h", l_stage2:"Service allowance on the second post",
+  e_second:"The second post is paid separately: a rate of {rate} for {norm} hours a week (clauses 28 and 30 of the Regulation).",
+  e_stage2:"The service allowance is due on a combined post too (clause 10 of the Regulation).",
   l_subst:"Substitution hours ({h} h)", e_subst:"One substitution hour costs {price}: rate ÷ (norm × 4.2) — clause 30.",
   l_senior:"Senior educator allowance", e_senior:"10 percent on top of the rate for a senior educator (note to appendix 2).",
   l_post:"Position salary", e_post_c:"Coefficient {c} — based on enrolment ({n}) from appendices 7–13 of the Regulation.",
@@ -1090,6 +1123,11 @@ const FIELDS = {
     {k:"klassruk", t:"check", label:f("klassruk"), sub:f("klassruk_s")},
     {k:"lang", t:"check", label:f("lang15"), sub:f("lang15_s")},
     {k:"selo", t:"check", label:f("selo"), sub:f("selo_s")},
+    {k:"second", t:"select", label:f("second"),
+     opts:[f("sec_no"), f("sec_kruzhok"), f("sec_internat"), f("sec_sad")],
+     def:f("sec_no"), hint:f("second_h")},
+    {k:"second_hours", t:"num", label:f("second_hours"), def:0, min:0, max:40, step:.5,
+     hint:f("second_hours_h")},
     {k:"subst", t:"num", label:f("subst"), def:0, min:0, max:200, step:1, hint:f("subst_h")},
     {k:"children", t:"num", label:f("children"), def:0, min:0, max:15, step:1, hint:f("children_h")}
   ],
@@ -1179,7 +1217,33 @@ const FIELDS = {
     {k:"children", t:"num", label:f("children"), def:0, min:0, max:15, step:1, hint:f("children_h")}
   ]
 };
-const fieldsOf = p => FIELDS[p]();
+function secondKind(v) {
+  if (!v) return null;
+  for (const key of ["sec_kruzhok", "sec_internat", "sec_sad"]) {
+    for (const lang of Object.keys(F)) {
+      if (F[lang][key] === v) return key.slice(4);
+    }
+  }
+  return null;
+}
+
+function statusKey(v) {
+  if (!v) return "usual";
+  for (const key of ["st_pens", "st_m64", "st_w69", "st_inv"]) {
+    for (const lang of Object.keys(F)) {
+      if (F[lang][key] === v) {
+        return key === "st_pens" ? "pensioner" : key === "st_inv" ? "invalid" : "age";
+      }
+    }
+  }
+  return "usual";
+}
+
+const fieldsOf = p => FIELDS[p]().concat([
+  {k:"status", t:"select", label:f("status"),
+   opts:[f("st_usual"), f("st_pens"), f("st_m64"), f("st_w69"), f("st_inv")],
+   def:f("st_usual"), hint:f("status_h")}
+]);
 let profile = "teacher";
 const state = {};
 
@@ -1295,8 +1359,23 @@ function calc(){
     const st = stavka * p * pedPct(+s.stage || 0);
     if (st) L.push([g("l_stage"), st, g("e_stage", {y:(+s.stage || 0), txt:pedTxt(+s.stage || 0)}),
       num(stavka) + " × " + num(p * 100) + " % × " + num(pedPct(+s.stage || 0) * 100) + " %"]);
+    // вторая педагогическая должность: своя ставка и своя норма (п. 28 и 30 Положения)
+    let pay2 = 0, ratio2 = 0;
+    const sec = secondKind(s.second), h2 = +s.second_hours || 0;
+    if (sec && h2 > 0){
+      const norm2 = sec === "kruzhok" ? 20 : sec === "internat" ? 30 : 36;
+      const rate2 = sec === "kruzhok" ? 3.10 * B
+                  : sec === "internat" ? EDU_I[s.edu] * B : EDU_K[s.edu] * B;
+      ratio2 = h2 / norm2;
+      pay2 = rate2 * ratio2;
+      L.push([g("l_sec_" + sec, {h:num(h2)}), pay2, g("e_second", {rate:som(rate2), norm:norm2}),
+        num(rate2) + " × " + num(h2) + " ÷ " + norm2]);
+      const st2 = pay2 * pedPct(+s.stage || 0);
+      if (st2) L.push([g("l_stage2"), st2, g("e_stage2"),
+        num(pay2) + " × " + num(pedPct(+s.stage || 0) * 100) + " %"]);
+    }
     if (s.selo) L.push([g("l_selo"), SELO, g("e_selo"), g("fx")]);
-    base = p; highBase = stavka * p;
+    base = Math.min(1, p + ratio2); highBase = stavka * p + pay2;
     if (+s.subst > 0){
       const hp = stavka / (norm * 4.2);
       L.push([g("l_subst", {h:num(+s.subst)}), hp * s.subst, g("e_subst", {price:som(hp)}), num(stavka) + " ÷ (" + norm + " × 4,2) × " + num(+s.subst)]);
@@ -1454,13 +1533,14 @@ function calc(){
   const presidSum = presidSet * base;
   const gross = withReg + presidSum;
   const insBase = gross - presidSum;
-  const pf = insBase * PF, npf = insBase * NPF;
+  const RATE = STATUS_RATES[statusKey(s.status)] || STATUS_RATES.usual;
+  const pf = insBase * RATE.pf, npf = insBase * RATE.npf;
   const children = +s.children || 0;
   // НК КР ст. 191 ч. 4 п. 1: надбавка за высокогорье и районный коэффициент не облагаются
   const highLine = L.filter(x => x[0] === g("l_high")).reduce((a, x) => a + x[1], 0);
   const nonTaxable = highLine + (withReg - itogo);
   // НК КР ст. 194 п. 3: вычет взносов — только по облагаемым доходам
-  const insDeduction = Math.max(0, insBase - nonTaxable) * (PF + NPF);
+  const insDeduction = Math.max(0, insBase - nonTaxable) * (RATE.pf + RATE.npf);
   const taxBase = gross - nonTaxable - insDeduction - DED - children * DED_CHILD;
   const tax = Math.max(0, taxBase) * TAX;
   const net = gross - pf - npf - tax;
@@ -1472,7 +1552,7 @@ function calc(){
   else state.__stavka = stavka;
 
   return {L, itogo, reg, withReg, presidSum, gross, pf, npf, tax, net, warn, children, taxBase,
-          base, nonTaxable, insDeduction};
+          base, nonTaxable, insDeduction, rate: RATE};
 }
 
 /* ---------------- вывод ---------------- */
@@ -1516,10 +1596,13 @@ function render(){
     '<div class="subtotal"><span>' + t("res_gross") + '</span><span class="v">' + som(r.gross) + '</span></div>' +
 
     '<div class="group-title" style="margin:14px 0 4px">' + t("res_deduct") + '</div>' +
-    '<details class="line minus"><summary><span class="t">' + t("pf") + '</span><span class="v">− ' + som(r.pf) + '</span></summary>' +
-    '<div class="why">' + t("pf_why") + '<br><code>' + num(r.gross - r.presidSum) + ' × 8 %</code></div></details>' +
-    '<details class="line minus"><summary><span class="t">' + t("npf") + '</span><span class="v">− ' + som(r.npf) + '</span></summary>' +
-    '<div class="why">' + t("npf_why") + '<br><code>' + num(r.gross - r.presidSum) + ' × 2 %</code></div></details>' +
+    '<details class="line minus"><summary><span class="t">' + t("pf") + ', ' +
+      pct(r.rate ? r.rate.pf : PF) + ' %</span><span class="v">− ' + som(r.pf) + '</span></summary>' +
+    '<div class="why">' + t("pf_why") + '<br><code>' + num(r.gross - r.presidSum) + ' × ' + pct(r.rate ? r.rate.pf : PF) + ' %</code></div></details>' +
+    (r.npf > 0 ?
+      '<details class="line minus"><summary><span class="t">' + t("npf") + '</span><span class="v">− ' + som(r.npf) + '</span></summary>' +
+      '<div class="why">' + t("npf_why") + '<br><code>' + num(r.gross - r.presidSum) + ' × 2 %</code></div></details>'
+      : '') +
     '<details class="line minus"><summary><span class="t">' + t("tax") + '</span><span class="v">− ' + som(r.tax) + '</span></summary>' +
     '<div class="why">' + t("tax_why") + (r.children ? ' ' + t("tax_why_children").split("{n}").join(r.children * 100) : '') + t("tax_why_end") +
     (r.nonTaxable > 0 ? '<br>' + t("tax_high_note").split("{sum}").join(som(r.nonTaxable)) : '') +
@@ -1540,7 +1623,9 @@ function render(){
       .concat(r.L.map(x => x[0] + ": " + som(x[1])))
       .concat(r.reg.why ? [t("reg_line") + num(r.reg.c) + ": +" + som(r.withReg - r.itogo)] : [])
       .concat([t("res_presid") + ": " + som(r.presidSum), t("res_gross") + ": " + som(r.gross),
-        t("pf") + ": −" + som(r.pf), t("npf") + ": −" + som(r.npf), t("tax") + ": −" + som(r.tax),
+        t("pf") + ": −" + som(r.pf),
+        ...(r.npf > 0 ? [t("npf") + ": −" + som(r.npf)] : []),
+        t("tax") + ": −" + som(r.tax),
         t("res_net") + ": " + som(r.net), "", t("copy_src")]).join("\n");
     navigator.clipboard.writeText(txt).then(() => {
       const b = document.getElementById("copy"); b.textContent = t("copied");
