@@ -1202,6 +1202,8 @@ const FIELDS = {
               def:f("subj_no"), hint:f("subj_h")});
       a.push({k:"tetr_hours", t:"num", label:f("tetr_hours"), def:0, min:0, max:54, step:.5,
               hint:f("tetr_hours_h")});
+      a.push({k:"subst", t:"num", label:f("subst"), def:0, min:0, max:200, step:1,
+              hint:f("subst_h")});
     }
     a.push({k:"selo", t:"check", label:f("selo"), sub:f("selo_s")});
     a.push({k:"children", t:"num", label:f("children"), def:0, min:0, max:15, step:1, hint:f("children_h")});
@@ -1504,6 +1506,12 @@ function calc(){
       hourPay = hstavka * hh / hn;
       if (hh > 0) L.push([g("l_hours", {h:num(hh)}), hourPay, g("e_hours", {rate:som(hstavka), norm:hn}), num(hstavka) + " × " + num(hh) + " ÷ " + hn]);
       if (s.klassruk) L.push([g("l_klass"), KLASS, g("e_klass"), g("fx")]);
+      if (+s.subst > 0){
+        // час замещения оплачивается по ставке учителя: ставка ÷ (норма × 4,2), пункт 30
+        const hp = hstavka / (hn * 4.2);
+        L.push([g("l_subst", {h:num(+s.subst)}), hp * s.subst, g("e_subst", {price:som(hp)}),
+          num(hstavka) + " ÷ (" + hn + " × 4,2) × " + num(+s.subst)]);
+      }
       if (s.subject && s.subject !== f("subj_no")){
         // часы для тетрадей могут отличаться от учебных (пункт 29)
         const th = +s.tetr_hours || 0;
