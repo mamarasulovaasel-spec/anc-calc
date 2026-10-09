@@ -750,6 +750,11 @@ const t = k => (I18N[LANG][k] !== undefined ? I18N[LANG][k] : I18N.ru[k]);
 const F = {
 ru: {
   klass:"В каких классах ведёте уроки", klass_h:"От этого зависит норма ставки: 16 или 18 часов в неделю.",
+  g_both:"И в 1–4, и в 5–11 классах",
+  hours_14:"Часов в неделю в 1–4 классах",
+  hours_14_h:"Заполняйте, если ведёте уроки в обеих ступенях — например, физрук или учитель музыки. Эти часы считаются по норме 16 (пункт 28).",
+  hours_511:"Часов в неделю в 5–11 классах",
+  hours_511_h:"Вторая часть нагрузки, считается по норме 18 (пункт 28).",
   g14:"1-4 классы", g511:"5-11 классы",
   edu:"Ваше образование", edu_h:"Коэффициент кратности по приложению 1 Положения.",
   edu_k_h:"Коэффициент кратности по приложениям 2 и 3 Положения.",
@@ -816,6 +821,11 @@ ru: {
 },
 kg: {
   klass:"Кайсы класстарда сабак бересиз", klass_h:"Ставканын нормасы ушундан көз каранды: жумасына 16 же 18 саат.",
+  g_both:"1–4тө да, 5–11де да",
+  hours_14:"1–4-класстарда жумасына саат",
+  hours_14_h:"Эки баскычта тең сабак берсеңиз толтуруңуз — мисалы, дене тарбия же музыка мугалими. Бул сааттар 16 ченем боюнча эсептелет (28-пункт).",
+  hours_511:"5–11-класстарда жумасына саат",
+  hours_511_h:"Жүктөмдүн экинчи бөлүгү, 18 ченем боюнча эсептелет (28-пункт).",
   g14:"1-4 классы", g511:"5-11 классы",
   edu:"Билимиңиз", edu_h:"Жобонун 1-тиркемеси боюнча эселик коэффициент.",
   edu_k_h:"Жобонун 2 жана 3-тиркемелери боюнча эселик коэффициент.",
@@ -882,6 +892,11 @@ kg: {
 },
 en: {
   klass:"Which grades do you teach", klass_h:"This sets the norm: 16 or 18 hours a week.",
+  g_both:"Both grades 1–4 and 5–11",
+  hours_14:"Hours a week in grades 1–4",
+  hours_14_h:"Fill in if you teach in both stages — a PE or music teacher, for example. These hours are counted against the norm of 16 (clause 28).",
+  hours_511:"Hours a week in grades 5–11",
+  hours_511_h:"The second part of the load, counted against the norm of 18 (clause 28).",
   g14:"1-4 классы", g511:"5-11 классы",
   edu:"Your education", edu_h:"Coefficient from appendix 1 of the Regulation.",
   edu_k_h:"Coefficient from appendices 2 and 3 of the Regulation.",
@@ -953,6 +968,7 @@ const f = k => (F[LANG][k] !== undefined ? F[LANG][k] : F.ru[k]);
 const L10N = {
 ru: {
   l_oklad:"Оклад по вашим часам",
+  e_oklad_mix:"Ставка {rate}. Часы 1–4 классов делятся на норму 16, часы 5–11 — на 18, доли складываются (пункт 28): {h14} ч ÷ 16 + {h511} ч ÷ 18.",
   e_oklad:"Ставка {rate} делится на норму {norm} часов и умножается на ваши {h} часов.",
   l_lang:"Надбавка за язык обучения", e_lang:"15 процентов к окладу учителям кыргызского и русского языка не как родного в сельских школах (пункт 25).",
   l_tetr:"Проверка тетрадей", e_tetr:"2 700 сомов за норму часов, при другой нагрузке — пропорционально (пункт 27).",
@@ -1011,6 +1027,7 @@ ru: {
 },
 kg: {
   l_oklad:"Сааттарыңыз боюнча айлык",
+  e_oklad_mix:"Ставка {rate}. 1–4-класстын сааттары 16 ченемге, 5–11-класстыкы 18ге бөлүнөт, үлүштөр кошулат (28-пункт): {h14} с ÷ 16 + {h511} с ÷ 18.",
   e_oklad:"{rate} ставка {norm} саат нормага бөлүнүп, сиздин {h} саатыңызга көбөйтүлөт.",
   l_lang:"Окутуу тили үчүн үстөк", e_lang:"Айыл мектептеринде кыргыз жана орус тилин эне тил эмес катары окуткандарга айлыкка 15 пайыз (25-пункт).",
   l_tetr:"Дептер текшерүү", e_tetr:"Норма сааттар үчүн 2 700 сом, башка жүктөмдө — пропорционалдуу (27-пункт).",
@@ -1069,6 +1086,7 @@ kg: {
 },
 en: {
   l_oklad:"Pay for your hours",
+  e_oklad_mix:"Rate {rate}. Hours in grades 1–4 are divided by the norm of 16, hours in grades 5–11 by 18, and the shares add up (clause 28): {h14} h ÷ 16 + {h511} h ÷ 18.",
   e_oklad:"The rate of {rate} is divided by the norm of {norm} hours and multiplied by your {h} hours.",
   l_lang:"Language of instruction allowance", e_lang:"15 percent on top of salary for teachers of Kyrgyz and Russian as a non-native language in rural schools (clause 25).",
   l_tetr:"Notebook marking", e_tetr:"2,700 KGS for the standard hours, pro-rated for a different load (clause 27).",
@@ -1145,7 +1163,11 @@ const SUBJ = ["Кыргызский язык и чтение","Русский я
 /* ---------------- поля ---------------- */
 const FIELDS = {
   teacher: () => [
-    {k:"klass", t:"select", label:f("klass"), opts:[f("g14"), f("g511")], def:f("g511"), hint:f("klass_h")},
+    {k:"klass", t:"select", label:f("klass"), opts:[f("g14"), f("g511"), f("g_both")], def:f("g511"), hint:f("klass_h")},
+    {k:"hours_14", t:"num", label:f("hours_14"), def:0, min:0, max:30, step:.5,
+     hint:f("hours_14_h")},
+    {k:"hours_511", t:"num", label:f("hours_511"), def:0, min:0, max:30, step:.5,
+     hint:f("hours_511_h")},
     {k:"edu", t:"select", label:f("edu"), opts:EDU_LIST, def:"Высшее — специалист/магистр", hint:f("edu_h")},
     {k:"hours", t:"num", label:f("hours_w"), def:18, min:0, max:54, step:.5, hint:f("hours_w_h")},
     {k:"stage", t:"num", label:f("stage"), def:12, min:0, max:60, step:1, hint:f("stage_h")},
@@ -1357,6 +1379,9 @@ function buildVillage(){
 function dimFields(){
   const rules = [
     ["tetr_hours", () => state.subject === f("subj_no")],
+    ["hours_14", () => state.klass !== f("g_both")],
+    ["hours_511", () => state.klass !== f("g_both")],
+    ["hours", () => state.klass === f("g_both")],
     ["second_hours", () => !secondKind(state.second)]
   ];
   rules.forEach(([key, isOff]) => {
@@ -1402,23 +1427,35 @@ function calc(){
   let stavka = 0, norm = 0, hours = 0, base = 0, highBase = 0, presidSet = PRES;
 
   if (profile === "teacher"){
+    const mixed = s.klass === f("g_both");
+    const h14 = +s.hours_14 || 0, h511 = +s.hours_511 || 0;
     norm = s.klass === f("g14") ? 16 : 18;
-    hours = +s.hours || 0;
+    hours = mixed ? h14 + h511 : (+s.hours || 0);
     const k = EDU_T[s.edu];
     stavka = k * B;
-    const ratio = norm ? hours / norm : 0, p = part(ratio);
+    // уроки в обеих ступенях: каждая часть по своей норме, доли складываются (пункт 28)
+    const ratio = mixed ? (h14 / 16 + h511 / 18) : (norm ? hours / norm : 0), p = part(ratio);
     const oklad = stavka * ratio;
-    L.push([g("l_oklad"), oklad, g("e_oklad", {rate:som(stavka), norm:norm, h:num(hours)}), k + " × 7 040 × " + num(hours) + " ÷ " + norm]);
+    L.push([g("l_oklad"), oklad,
+      mixed ? g("e_oklad_mix", {rate:som(stavka), h14:num(h14), h511:num(h511)})
+            : g("e_oklad", {rate:som(stavka), norm:norm, h:num(hours)}),
+      mixed ? (num(stavka) + " × (" + num(h14) + " ÷ 16 + " + num(h511) + " ÷ 18)")
+            : (k + " × 7 040 × " + num(hours) + " ÷ " + norm)]);
     if (s.lang) L.push([g("l_lang"), oklad * .15, g("e_lang"), num(oklad) + " × 15 %"]);
     if (s.subject !== f("subj_no")) {
       // часы для тетрадей могут отличаться от учебной нагрузки (пункт 29)
       const th = +s.tetr_hours || 0;
-      const tr = th > 0 ? th / norm : ratio;
+      const tr = th > 0 ? th / norm : ratio;   // при двух ступенях доля уже посчитана по нормам
       L.push([g("l_tetr"), TETR * tr, th > 0 ? g("e_tetr_hours") : g("e_tetr"),
                "2 700 × " + num(th > 0 ? th : hours) + " ÷ " + norm]);
     }
     if (s.klassruk) L.push([g("l_klass"), KLASS, g("e_klass"), g("fx")]);
-    if (s.klass === f("g14")) L.push([g("l_edu14"), EDU14[s.edu] * p, g("e_edu14"), num(EDU14[s.edu]) + " × " + num(p * 100) + " %"]);
+    if (s.klass === f("g14") || (mixed && h14 > 0)){
+      // надбавка идёт по доле часов именно в 1-4 классах
+      const part14 = mixed ? Math.min(1, h14 / 16) : p;
+      L.push([g("l_edu14"), EDU14[s.edu] * part14, g("e_edu14"),
+        num(EDU14[s.edu]) + " × " + num(part14 * 100) + " %"]);
+    }
     const katIdx = [f("kat_no"), f("kat_2"), f("kat_1"), f("kat_h3")].indexOf(s.kat);
     const katSum = [0, 2000, 3000, 5000][katIdx < 0 ? 0 : katIdx];
     if (katSum) L.push([g("l_kat"), katSum, g("e_kat", {k:s.kat}), g("fx")]);
